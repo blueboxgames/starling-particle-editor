@@ -8,19 +8,20 @@ package feathers.controls
 
 	public class EditableSlider extends NumericStepper
 	{
+		public static const INVALIDATION_FLAG_COMPONENT_STATE:String = "componentState";
+
 		public static const STATE_NONE:String = "stateNone";
 		public static const STATE_HOVER:String = "stateHover";
 		public static const STATE_EDIT:String = "stateEdit";
 		public static const STATE_SLIDE:String = "stateSlide";
 
-		public static const MOUSE_STATE_IN:String = "mouseIn";
-		public static const MOUSE_STATE_OUT:String = "mouseOut";
+		public static const TOUCH_STATE_IN:String = "touchIn";
+		public static const TOUCH_STATE_OUT:String = "touchOut";
 
-		private var _touchData:TouchData;
 		private var _currentState:String = STATE_NONE;
-		private var _mouseState:String = MOUSE_STATE_OUT;
+		private var _touchState:String = TOUCH_STATE_OUT;
 		private var _slideEnable:Boolean = true;
-
+		
 		public function get currentState():String
 		{
 			return _currentState;
@@ -33,36 +34,30 @@ package feathers.controls
 				return;
 			}
 			_currentState = value;
-			this.invalidate(INVALIDATION_FLAG_STATE);
+			this.invalidate(INVALIDATION_FLAG_COMPONENT_STATE);
 		}
 
-		public function get mouseState():String
+		public function get touchState():String
 		{
-			return _mouseState;
+			return _touchState;
 		}
 
-		public function set mouseState(value:String):void
+		public function set touchState(value:String):void
 		{
-			if(_mouseState == value )
+			if(_touchState == value )
 			{
 				return;
 			}
-			_mouseState = value;
-			this.invalidate(INVALIDATION_FLAG_STATE);
+			_touchState = value;
+			this.invalidate(INVALIDATION_FLAG_COMPONENT_STATE);
 		}
 		/**
 		 * Constuctor
 		 */
 		public function EditableSlider()
 		{
-			this.addEventListener(TouchEvent.TOUCH, component_touchHandler);
-			this.addEventListener(Event.ADDED_TO_STAGE, component_addedToStageHandler)
-			
-			
-			if(!this.step)
-			{
-				this.step = 1;
-			}
+			super();
+			this.addEventListener(Event.ADDED_TO_STAGE, component_addedToStageHandler);
 		}
 
 		override protected function initialize():void
@@ -70,40 +65,39 @@ package feathers.controls
 			super.initialize();
 			this.buttonLayoutMode = StepperButtonLayoutMode.SPLIT_HORIZONTAL;
 			this.addEventListener(TouchEvent.TOUCH, component_touchHandler);
-			
-			
 		}
 
 		override protected function layoutChildren():void
 		{
 			super.layoutChildren();
-			if(this.buttonLayoutMode == StepperButtonLayoutMode.SPLIT_HORIZONTAL)
+			if( this.buttonLayoutMode == StepperButtonLayoutMode.SPLIT_HORIZONTAL )
 			{
 				this.decrementButton.x = 0;
 				this.decrementButton.y = 0;
 				this.decrementButton.height = this.actualHeight;
-				this.decrementButton.validate();
+				// this.decrementButton.validate();
 
+				this.incrementButton.x = this.actualWidth - this.incrementButton.width;
 				this.incrementButton.y = 0;
 				this.incrementButton.height = this.actualHeight;
-				this.incrementButton.validate();
-				this.incrementButton.x = this.actualWidth - this.incrementButton.width;
+				// this.incrementButton.validate();
 
-				this.textInput.x = this.decrementButton.width + this._textInputGap;
-				this.textInput.width = this.actualWidth - this.decrementButton.width - this.incrementButton.width - 2 * this._textInputGap;
+				this.textInput.x = this.decrementButton.x + this.decrementButton.width;
+				this.textInput.width = this.actualWidth - this.decrementButton.width - this.incrementButton.width;
 				this.textInput.height = this.actualHeight;
 
-				if(this.mouseState == MOUSE_STATE_OUT || this.currentState == STATE_EDIT )
+				if(this.touchState == TOUCH_STATE_OUT || this.currentState == STATE_EDIT )
 				{
 					hideButtons();
-					this.textInput.x = this.decrementButton.x;
+					this.textInput.x = 0;
 					this.textInput.width = this.actualWidth;
+					this.textInput.validate();
 				}
 				else
 				{
 					showButtons();
-					this.textInput.x = this.decrementButton.width + this._textInputGap;
-					this.textInput.width = this.actualWidth - this.decrementButton.width - this.incrementButton.width - 2 * this._textInputGap;
+					this.textInput.x = this.decrementButton.x + this.decrementButton.width;
+					this.textInput.width = this.actualWidth - this.decrementButton.width - this.incrementButton.width;
 				}
 			}
 		}
@@ -111,7 +105,7 @@ package feathers.controls
 		override protected function draw():void
 		{
 			super.draw();
-			var stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
+			var stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_COMPONENT_STATE);
 
 			if(stateInvalid)
 			{
@@ -180,28 +174,32 @@ package feathers.controls
 		private function component_touchHandler(e:TouchEvent):void
 		{
 			var touch:Touch = e.getTouch(stage);
-
-			if (this.mouseState == MOUSE_STATE_IN)
+			if(!touch)
 			{
-				if(touch.isTouching(this.textInput))
+				this.currentState = STATE_NONE;
+			} else {
+				if (this.touchState == TOUCH_STATE_IN)
 				{
-					if(touch.phase == TouchPhase.MOVED)
+					if(touch.isTouching(this.textInput))
 					{
-						this.currentState = STATE_SLIDE;
-						sliderMove(touch, 0.5);
-					}
-					if(touch.phase == TouchPhase.ENDED)
-					{
-						if(this.currentState != STATE_SLIDE)
+						if(touch.phase == TouchPhase.MOVED)
 						{
-							this.currentState = STATE_EDIT;
-							_slideEnable = false;
+							this.currentState = STATE_SLIDE;
+							sliderMove(touch, 0.5);
 						}
-						else
+						if(touch.phase == TouchPhase.ENDED)
 						{
-							this.currentState = STATE_NONE;
-							this.invalidate(INVALIDATION_FLAG_DATA);
-							_slideEnable = true;
+							if(this.currentState != STATE_SLIDE)
+							{
+								this.currentState = STATE_EDIT;
+								_slideEnable = false;
+							}
+							else
+							{
+								this.currentState = STATE_NONE;
+								this.invalidate(INVALIDATION_FLAG_DATA);
+								_slideEnable = true;
+							}
 						}
 					}
 				}
@@ -221,14 +219,14 @@ package feathers.controls
 			{
 				if(touch.isTouching(this))
 				{
-					this.mouseState = MOUSE_STATE_IN;
+					this.touchState = TOUCH_STATE_IN;
 				}
 				else if (touch.isTouching(stage))
 				{
-					this.mouseState = MOUSE_STATE_OUT;
+					this.touchState = TOUCH_STATE_OUT;
 				}
 
-				if(this.mouseState == MOUSE_STATE_OUT)
+				if(this.touchState == TOUCH_STATE_OUT)
 				{
 					if (this.currentState == STATE_EDIT)
 					{
