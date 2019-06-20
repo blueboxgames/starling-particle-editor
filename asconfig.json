@@ -1,0 +1,25 @@
+{
+	"type": "app",
+	"config": "air",
+	"airOptions": {
+		"target": "native",
+		"windows": {
+			"extdir": ["ext"],
+			"target": "native",
+			"output": "dist/windows/StarlingParticleEditor.exe"
+		}
+	},
+	"application": "descriptor.xml",
+	"compilerOptions": {
+		"source-path": [
+			"src"
+		],
+		"library-path": [
+			"lib"
+		],
+		"output": "bin/Applications.swf"
+	},
+	"files": [
+		"src/Application.as"
+	]
+}
