@@ -8,38 +8,56 @@ package
 
   import flash.geom.Rectangle;
 
-  import panels.MainPanel;
+  import view.MainView;
 
+  import starling.assets.AssetManager;
   import starling.core.Starling;
   import starling.events.Event;
   import starling.events.ResizeEvent;
 
+  import utils.Localizations;
+
   public class Main extends Drawers
   {
     /**
-     * @private
+     * Main stage viewport.
      */
-    private var _viewPort:Rectangle =  Starling.current.viewPort;
+    private var viewPort:Rectangle =  Starling.current.viewPort;
+    /**
+     *Navigator through the screens.
+     */
     private var navigator:StackScreenNavigator;
 
+    /**
+     * @private Constructor.
+     */
     public function Main(content:IFeathersControl=null)
     {
       new MetalWorksDesktopTheme();
       super(content);
     }
 
+    /**
+     * Initialize navigator, screens and localizations.
+     */
     override protected function initialize():void
     {
       super.initialize();
+      
       this.stage.addEventListener(ResizeEvent.RESIZE, stage_onResizeHandler);
 
       this.navigator = new StackScreenNavigator();
       this.content = this.navigator;
 
-      this.addView(MainPanel.NAME, MainPanel);
-      this.navigator.rootScreenID = MainPanel.NAME;
+      this.addView(MainView.NAME, MainView);
+      
+      Localizations.instance.addEventListener(Event.CHANGE, localizations_changeHandler);
+      Localizations.instance.changeLocale("en_US", new AssetManager());
     }
 
+    /**
+     * Adds a new view to main navigator.
+     */
     private function addView(screenType:String, screenClass:Object, pushTranstion:Function = null, popTranstion:Function = null) : void
     {
       var item:StackScreenNavigatorItem = new StackScreenNavigatorItem(screenClass);
@@ -48,16 +66,27 @@ package
       if( popTranstion != null )
         item.popTransition = popTranstion;
       item.addPopEvent(Event.COMPLETE);
-      item.setScreenIDForPushEvent(MainPanel.NAME, MainPanel.NAME);
+      item.setScreenIDForPushEvent(MainView.NAME, MainView.NAME);
       this.navigator.addScreen(screenType, item);
     }
 
+    /**
+     * Changes viewport accordingly.
+     */
     private function stage_onResizeHandler(e:ResizeEvent):void
     {
-      this._viewPort.width = e.width , this._viewPort.height = e.height;
-      Starling.current.viewPort = this._viewPort;
+      this.viewPort.width = e.width , this.viewPort.height = e.height;
+      Starling.current.viewPort = this.viewPort;
 
       this.stage.stageWidth = e.width, this.stage.stageHeight = e.height;
+    }
+
+    /**
+     * Reconstruct navigator when localization is changed.
+     */
+    private function localizations_changeHandler(e:Event):void
+    {
+      this.navigator.rootScreenID = MainView.NAME;
     }
   }
 }

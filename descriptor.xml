@@ -14,6 +14,9 @@
     <minimizable>true</minimizable>
     <maximizable>true</maximizable>
     <resizable>true</resizable>
+    <x>30</x>
+    <width>430</width>
+    <height>430</height>
     <!-- <minSize>1024 768</minSize> -->
     <depthAndStencil>true</depthAndStencil>
   </initialWindow>

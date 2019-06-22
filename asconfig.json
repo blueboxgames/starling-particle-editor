@@ -11,6 +11,7 @@
 	},
 	"application": "descriptor.xml",
 	"compilerOptions": {
+		"default-frame-rate": 60,
 		"source-path": [
 			"src"
 		],
