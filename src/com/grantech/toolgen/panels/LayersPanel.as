@@ -21,10 +21,10 @@ package com.grantech.toolgen.panels
 	import flash.display.Bitmap;
 	import starling.display.Image;
 	import com.grantech.manager.ParticleManager;
+	import com.grantech.managers.DataManager;
 
 	public class LayersPanel extends PanelScreen
 	{
-		static public var data:ListCollection = new ListCollection();
 		private var listDisplay:List;
 		
 		[Embed(source="/media/icons/addLayer.png")]
@@ -50,8 +50,9 @@ package com.grantech.toolgen.panels
 			{
 				return new LayerListItemRenderer();
 			}
-			listDisplay.dataProvider = data;
+			listDisplay.dataProvider = DataManager.instance.layers;
 			addChild(listDisplay);
+			listDisplay.addEventListener(Event.CHANGE, listDisplay_changeHandler);
 
 			this.footerFactory = function():LayoutGroup {
 				var footer:LayoutGroup = new LayoutGroup();
@@ -62,16 +63,16 @@ package com.grantech.toolgen.panels
 				var addButton:Button = new Button();
 				//addButton.label = Localizations.instance.get("add");
 				var addButtonIcon:Image = new Image(Texture.fromBitmap(new addLayer()));
-				addButtonIcon.width = 24;
-				addButtonIcon.height = 24;
+				addButtonIcon.width = 18;
+				addButtonIcon.height = 18;
 				addButton.defaultIcon = addButtonIcon;
 				addButton.addEventListener(Event.TRIGGERED, addButton_triggeredHandler);
 				
 				var removeButton:Button = new Button();
 				//removeButton.label = Localizations.instance.get("remove");
 				var removeButtonIcon:Image = new Image(Texture.fromBitmap(new removeLayer()));
-				removeButtonIcon.width = 24;
-				removeButtonIcon.height = 24;
+				removeButtonIcon.width = 18;
+				removeButtonIcon.height = 18;
 				removeButton.defaultIcon = removeButtonIcon;
 				removeButton.addEventListener(Event.TRIGGERED, removeButton_triggeredHandler);
 
@@ -80,15 +81,18 @@ package com.grantech.toolgen.panels
 				return footer;
 			}
 		}
+
+		private function listDisplay_changeHandler(event:Event):void
+		{
+			DataManager.instance.layerProps.removeAll();
+//			this.particleManager.dispatchEventWith("particleSelected", false, listDisplay.selectedIndex);
+		}
 		
 		private function addButton_triggeredHandler(event:Event):void
 		{
 			var selectedIndex:int = listDisplay.selectedIndex;
-			data.addItem({});
-			if(selectedIndex < 0)
-			{
-				listDisplay.selectedIndex = selectedIndex + 1;
-			}
+			DataManager.instance.addNewLayer();
+			listDisplay.selectedIndex = DataManager.instance.layers.length - 1;
 		}
 		
 		private function removeButton_triggeredHandler(event:Event):void
@@ -96,10 +100,9 @@ package com.grantech.toolgen.panels
 			var selectedIndex:int = listDisplay.selectedIndex;
 			if( selectedIndex < 0 )
 				return;
-			data.removeItemAt(selectedIndex);
+			DataManager.instance.layers.removeItemAt(selectedIndex);
 			if( selectedIndex > 0 )
 				listDisplay.selectedIndex = selectedIndex - 1;
 		}
-
 	}
 }

@@ -1,4 +1,4 @@
-package com.grantech.manager
+package com.grantech.managers
 {
 	import starling.extensions.PDParticleSystem;
 	import feathers.data.ListCollection;
@@ -11,15 +11,36 @@ package com.grantech.manager
 	import feathers.controls.List;
 
 
-	public class ParticleManager extends FeathersControl
+	public class DataManager
 	{
-		public static var instance:ParticleManager = new ParticleManager();
-		public var particleList:List;
-		public var particleDataProvider:ListCollection;
+		private static var _instance:DataManager;
+		public static function get instance() : DataManager
+		{
+			if( _instance == null )
+				_instance = new DataManager();
+				return _instance;
+		}
+		
+		private var _layers:ListCollection;
+		public function get layers():ListCollection
+		{
+			return _layers;
+		}
+		private var _layerProps:ListCollection;
+		public function get layerProps():ListCollection
+		{
+			return _layerProps;
+		}
+
+		public function addNewLayer() : void
+		{
+			this.layers.addItem(new defaultConfig)
+		}
+
 		// TODO:
 		// private static const emptyConfig:Object = serializer.readConfig(config:File)
 		// private static const defaultTexture:Texture = Texture.fromTexture(new Quad(1,1,0xffffff) as Texture);
-		public static const defaultConfig:Object = {
+		private static const defaultConfig:Object = {
 			"emitterXVariance": {
 				"type": Number,
 				"min": -Infinity,
@@ -288,21 +309,11 @@ package com.grantech.manager
 			}
 		};
 
-		public function ParticleManager()
+		public function DataManager()
 		{
 			super();
-		}
-
-		override protected function initialize():void
-		{
-			super.initialize();
-			instance = this;
-			this.particleDataProvider = new ListCollection();
-		}
-
-		private function particleDataProvider_triggeredHandler(e:Event):void
-		{
-			
+			this._layers = new ListCollection(); 
+			this._layerProps = new ListCollection();
 		}
 
 		public function createNewParticle(particleConfig:Object=null, particleTexture:Texture=null):void

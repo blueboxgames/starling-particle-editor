@@ -15,7 +15,7 @@ package com.grantech.toolgen.panels
 
 	public class InspectorPanel extends Panel
 	{
-		private var particleManager:ParticleManager;
+		
 		public function InspectorPanel()
 		{
 			this.name = "InspectorPanel";
@@ -27,15 +27,6 @@ package com.grantech.toolgen.panels
 		override protected function initialize():void
 		{
 			super.initialize();
-			this.particleManager = ParticleManager.instance;
-			if(!this.particleManager.isInitialized)
-			{
-				this.particleManager.initializeNow();
-			}
-			this.particleManager.addEventListener("particleSelected", function():void
-			{
-				trace("Config!!!");
-			});
 		}
 
 		// private function particleManager_particleCreatedHandler(e:Event):void

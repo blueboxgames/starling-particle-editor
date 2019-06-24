@@ -36,12 +36,10 @@ package com.grantech.toolgen.controls.items
 		private var configLoaded:Boolean;
 		private var imageLoaded:Boolean;
 
-		private var particleManager:ParticleManager = new ParticleManager();
-
 		override protected function initialize():void
 		{
 			super.initialize();
-			this.particleManager.dispatchEventWith("particleCreated");
+			// this.particleManager.dispatchEventWith("particleCreated");
 
 			_backgroundDisabledSkin = new Quad(1,1, 0xAAFFFF);
 			_backgroundSelectedSkin = new Quad(1,1, 0xFFAAAA);
