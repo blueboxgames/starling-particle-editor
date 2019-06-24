@@ -24,8 +24,7 @@ package com.grantech.toolgen.panels
 
 	public class LayersPanel extends PanelScreen
 	{
-		private var particleManager:ParticleManager;
-		//private var data:ListCollection;
+		static public var data:ListCollection = new ListCollection();
 		private var listDisplay:List;
 		
 		[Embed(source="/media/icons/addLayer.png")]
@@ -37,12 +36,6 @@ package com.grantech.toolgen.panels
 		override protected function initialize():void
 		{
 			super.initialize();
-			this.particleManager = ParticleManager.instance;
-			if(!this.particleManager.isInitialized)
-			{
-				this.particleManager.initializeNow();
-			}
-
 			layout= new AnchorLayout();
 
 			this.title = Localizations.instance.get("layers");
@@ -57,9 +50,8 @@ package com.grantech.toolgen.panels
 			{
 				return new LayerListItemRenderer();
 			}
-			listDisplay.dataProvider = this.particleManager.particleDataProvider;
+			listDisplay.dataProvider = data;
 			addChild(listDisplay);
-			listDisplay.addEventListener(Event.CHANGE, listDisplay_changeHandler);
 
 			this.footerFactory = function():LayoutGroup {
 				var footer:LayoutGroup = new LayoutGroup();
@@ -70,16 +62,16 @@ package com.grantech.toolgen.panels
 				var addButton:Button = new Button();
 				//addButton.label = Localizations.instance.get("add");
 				var addButtonIcon:Image = new Image(Texture.fromBitmap(new addLayer()));
-				addButtonIcon.width = 18;
-				addButtonIcon.height = 18;
+				addButtonIcon.width = 24;
+				addButtonIcon.height = 24;
 				addButton.defaultIcon = addButtonIcon;
 				addButton.addEventListener(Event.TRIGGERED, addButton_triggeredHandler);
 				
 				var removeButton:Button = new Button();
 				//removeButton.label = Localizations.instance.get("remove");
 				var removeButtonIcon:Image = new Image(Texture.fromBitmap(new removeLayer()));
-				removeButtonIcon.width = 18;
-				removeButtonIcon.height = 18;
+				removeButtonIcon.width = 24;
+				removeButtonIcon.height = 24;
 				removeButton.defaultIcon = removeButtonIcon;
 				removeButton.addEventListener(Event.TRIGGERED, removeButton_triggeredHandler);
 
@@ -88,18 +80,11 @@ package com.grantech.toolgen.panels
 				return footer;
 			}
 		}
-
-		private function listDisplay_changeHandler(event:Event):void
-		{
-			this.particleManager.dispatchEventWith("particleSelected", false, listDisplay.selectedIndex);
-		}
 		
 		private function addButton_triggeredHandler(event:Event):void
 		{
 			var selectedIndex:int = listDisplay.selectedIndex;
-			this.particleManager.particleDataProvider.addItem(
-				ParticleManager.defaultConfig
-			);
+			data.addItem({});
 			if(selectedIndex < 0)
 			{
 				listDisplay.selectedIndex = selectedIndex + 1;
@@ -111,7 +96,7 @@ package com.grantech.toolgen.panels
 			var selectedIndex:int = listDisplay.selectedIndex;
 			if( selectedIndex < 0 )
 				return;
-			this.particleManager.particleDataProvider.removeItemAt(selectedIndex);
+			data.removeItemAt(selectedIndex);
 			if( selectedIndex > 0 )
 				listDisplay.selectedIndex = selectedIndex - 1;
 		}
