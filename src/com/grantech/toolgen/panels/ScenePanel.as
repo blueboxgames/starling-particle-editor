@@ -1,4 +1,4 @@
-package panels
+package com.grantech.toolgen.panels
 {
 	import feathers.controls.Panel;
 
@@ -11,16 +11,14 @@ package panels
 	import starling.events.ResizeEvent;
 	import feathers.controls.EditableSlider;
 	import starling.extensions.ParticleSystem;
+	import feathers.controls.Screen;
 
-	public class SceneView extends Panel
+	public class ScenePanel extends Screen
 	{
 		private var config:Object;
 		private var particleSystem:PDParticleSystem;
- 
-		[Embed(source = "fire_particle.png")]
-		private static const FireParticle:Class;
 		
-		public function SceneView()
+		public function ScenePanel()
 		{
 			this.addEventListener(Event.ADDED_TO_STAGE, sceneView_addedToStageHandler);
 			this.addEventListener("particleDataRecieved", sceneView_particleDataHandler);
@@ -28,28 +26,19 @@ package panels
 		}
 
 		override protected function initialize():void
-    {
-			super.initialize();
-			this.title = "Scene View";
-			
+		{
+			this.name = "ScenePanel";
 		}
 
-		override protected function draw():void
+		override protected function stage_resizeHandler(event:Event):void
 		{
-			super.draw();
-			this.width = 0.7 * this.stage.stageWidth;
-			this.height = this.stage.stageHeight - (this.header.height);
+			this.width = stage.stageWidth * 0.6;
 		}
 
 		private function sceneView_addedToStageHandler(e:Event):void
 		{
 			this.removeEventListener(Event.ADDED_TO_STAGE, sceneView_addedToStageHandler);
-			this.stage.addEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
-		}
-
-		private function stage_resizeHandler(e:ResizeEvent):void
-		{
-			this.invalidate(INVALIDATION_FLAG_SIZE);
+			this.stage.starling.addEventListener("removeParticle", sceneView_removeParticleHandler);
 		}
 
 		private function sceneView_particleDataHandler(e:Event):void
@@ -75,20 +64,26 @@ package panels
 				config = XML(file.data.readUTFBytes(file.data.length));
 			}
 			
-			var psTexture:Texture = Texture.fromBitmap(new FireParticle());
-			particleSystem = new PDParticleSystem(config, psTexture);
-			particleSystem.x = 160;
-			particleSystem.y = 240;
-			addChild(particleSystem);
-			Starling.juggler.add(particleSystem);
-			// start emitting particles
-			particleSystem.start();
+			//var psTexture:Texture = Texture.fromBitmap(new FireParticle());
+			// particleSystem = new PDParticleSystem(config, psTexture);
+			// particleSystem.name = file.name;
+			// particleSystem.x = this.width/2;
+			// particleSystem.y = this.height/2;
+			// addChild(particleSystem);
+			// Starling.juggler.add(particleSystem);
+			// // start emitting particles
+			// particleSystem.start();
 			this.dispatchEventWith(Event.COMPLETE, false, particleSystem);
 		}
 
 		private function sceneView_particleChangeHandler(e:Event):void
 		{
 			this.particleSystem = e.data as PDParticleSystem;
+		}
+
+		private function sceneView_removeParticleHandler(e:Event):void
+		{
+			this.removeChild(this.getChildByName(e.data.name));
 		}
 	}
 }

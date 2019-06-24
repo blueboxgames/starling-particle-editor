@@ -1,3 +1,6 @@
 {
-	"toolbar": "Toolbar"
+	"toolbar": "Toolbar",
+	"layers": "Layers",
+	"add_config": "Add Config",
+	"add_image": "Add Image"
 }

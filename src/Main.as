@@ -1,5 +1,8 @@
 package
 {
+  import com.grantech.toolgen.utils.Localizations;
+  import com.grantech.toolgen.view.MainView;
+
   import feathers.controls.Drawers;
   import feathers.controls.StackScreenNavigator;
   import feathers.controls.StackScreenNavigatorItem;
@@ -8,17 +11,14 @@ package
 
   import flash.geom.Rectangle;
 
-  import view.MainView;
-
   import starling.assets.AssetManager;
   import starling.core.Starling;
   import starling.events.Event;
   import starling.events.ResizeEvent;
 
-  import utils.Localizations;
-
   public class Main extends Drawers
   {
+    static public var theme:MetalWorksDesktopTheme;
     /**
      * Main stage viewport.
      */
@@ -33,7 +33,7 @@ package
      */
     public function Main(content:IFeathersControl=null)
     {
-      new MetalWorksDesktopTheme();
+      theme = new MetalWorksDesktopTheme();
       super(content);
     }
 

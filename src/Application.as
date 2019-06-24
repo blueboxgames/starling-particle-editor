@@ -21,9 +21,9 @@ package
 		{
 			this.stage.scaleMode = StageScaleMode.NO_SCALE;
 			this.stage.align = StageAlign.TOP_LEFT;
-			// // this.stage.frameRate = 60;
-			// this.stage.stageWidth = 800;
-			// this.stage.stageHeight = 600;
+			this.stage.frameRate = 60;
+			this.stage.stageWidth = 800;
+			this.stage.stageHeight = 600;
 			this.stage.nativeWindow.addEventListener(Event.RESIZE, stage_resize);
 			this.loaderInfo.addEventListener(Event.COMPLETE, loaderInfo_completeHandler);
 		}
