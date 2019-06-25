@@ -17,6 +17,7 @@ package com.grantech.panels
 	import starling.display.Quad;
 	import starling.events.Event;
 	import starling.textures.Texture;
+	import starling.textures.TextureSmoothing;
 
 	public class LayersPanel extends PanelScreen
 	{
@@ -51,23 +52,25 @@ package com.grantech.panels
 
 			this.footerFactory = function():LayoutGroup {
 				var footer:LayoutGroup = new LayoutGroup();
-				footer.backgroundSkin = new Quad(1,1, 0xff0000);
+				footer.backgroundSkin = new Quad(1,1, 0x272822);
 				var layoutType:HorizontalLayout = new HorizontalLayout();
 				footer.layout = layoutType;
 
 				var addButton:Button = new Button();
-				//addButton.label = Localizations.instance.get("add");
+				addButton.width = 24;
+				addButton.height = 24;
+				addButton.defaultSkin = new Quad(1,1, 0x272822);
 				var addButtonIcon:Image = new Image(Texture.fromBitmap(new addLayer()));
-				addButtonIcon.width = 18;
-				addButtonIcon.height = 18;
+				addButtonIcon.scale = 0.12;
 				addButton.defaultIcon = addButtonIcon;
 				addButton.addEventListener(Event.TRIGGERED, addButton_triggeredHandler);
 				
 				var removeButton:Button = new Button();
-				//removeButton.label = Localizations.instance.get("remove");
+				removeButton.width = 24;
+				removeButton.height = 24;
+				removeButton.defaultSkin = new Quad(1,1, 0x272822);
 				var removeButtonIcon:Image = new Image(Texture.fromBitmap(new removeLayer()));
-				removeButtonIcon.width = 18;
-				removeButtonIcon.height = 18;
+				removeButtonIcon.scale = 0.12;
 				removeButton.defaultIcon = removeButtonIcon;
 				removeButton.addEventListener(Event.TRIGGERED, removeButton_triggeredHandler);
 

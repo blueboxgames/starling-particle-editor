@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="64"
+   height="64"
+   viewBox="0 0 16.933333 16.933334"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
+   sodipodi:docname="addLayer.svg"
+   inkscape:export-filename="C:\Users\Fudo Sakurai\Projects\starling-particle-editor\src\media\icons\addLayer.png"
+   inkscape:export-xdpi="320"
+   inkscape:export-ydpi="320">
+  <title
+     id="title3715">Add Layer</title>
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="2.8284271"
+     inkscape:cx="-13.755105"
+     inkscape:cy="26.335498"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer2"
+     showgrid="false"
+     units="px"
+     inkscape:pagecheckerboard="false"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     inkscape:window-width="1366"
+     inkscape:window-height="715"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1">
+    <sodipodi:guide
+       position="8.4666667,8.4666667"
+       orientation="1,0"
+       id="guide3728"
+       inkscape:locked="false"
+       inkscape:label=""
+       inkscape:color="rgb(0,0,255)" />
+    <sodipodi:guide
+       position="8.4666667,8.4666667"
+       orientation="0,1"
+       id="guide3730"
+       inkscape:locked="false"
+       inkscape:label=""
+       inkscape:color="rgb(0,0,255)" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Add Layer</dc:title>
+        <dc:date>2019-June-25</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Fudo Sakurai</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>CC</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <cc:license
+           rdf:resource="http://creativecommons.org/licenses/by/4.0/" />
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/licenses/by/4.0/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Notice" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Attribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layers"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-280.06665)">
+    <g
+       inkscape:groupmode="layer"
+       id="layer2"
+       inkscape:label="Back">
+      <path
+         style="fill:#ffffff;stroke:#ffffff;stroke-width:0.26458335px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 8.9107725,284.42755 -0.4866444,-0.24804 -6.5618736,3.5797 6.5618736,3.56877 6.6524369,-3.56699 -0.461876,-0.26894 -1.841654,0.0175 0.456029,0.26894 -4.8049359,2.57247 -4.6956608,-2.56662 4.6956608,-2.56078 0.4843568,0.27479 z"
+         id="path3734"
+         inkscape:connector-curvature="0"
+         inkscape:label="LayerTop" />
+      <path
+         style="fill:#ffffff;stroke:#ffffff;stroke-width:0.26458335px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 2.7748592,289.29863 -0.8886711,0.5028 6.5840871,3.58976 6.5822778,-3.57807 -0.900364,-0.53788 -5.6819138,3.08697 z"
+         id="path3736"
+         inkscape:connector-curvature="0"
+         inkscape:label="LayerBottom" />
+    </g>
+    <g
+       inkscape:groupmode="layer"
+       id="layer3"
+       inkscape:label="Plus">
+      <path
+         style="fill:#ffffff;stroke:#ffffff;stroke-width:0.26458335px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 9.8164552,284.23384 h 1.7590658 v -1.76831 h 0.897115 v 1.76565 h 1.789035 v 0.88867 h -1.800728 v 1.7715 h -0.882825 v -1.7715 H 9.8241615 Z"
+         id="path3739"
+         inkscape:connector-curvature="0"
+         inkscape:label="PlusPath" />
+    </g>
+  </g>
+</svg>
