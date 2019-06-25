@@ -1,16 +1,13 @@
-package com.grantech.toolgen.panels
+package com.grantech.panels
 {
-	import feathers.controls.LayoutGroup;
+	import feathers.controls.ScrollContainer;
 	import feathers.layout.HorizontalAlign;
+	import feathers.layout.VerticalAlign;
 	import feathers.layout.VerticalLayout;
 	import feathers.layout.VerticalLayoutData;
-	import feathers.controls.PanelScreen;
-	import feathers.controls.Screen;
-	import feathers.controls.ScrollContainer;
+
 	import starling.events.Event;
 	import starling.events.ResizeEvent;
-	import feathers.layout.VerticalAlign;
-	import starling.display.Quad;
 
 	public class SidebarPanel extends ScrollContainer
 	{

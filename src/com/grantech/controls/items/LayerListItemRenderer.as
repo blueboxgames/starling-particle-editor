@@ -1,24 +1,16 @@
-package com.grantech.toolgen.controls.items
+package com.grantech.controls.items
 {
+	import com.grantech.utils.Localizations;
+
 	import feathers.controls.Button;
-	import feathers.controls.Check;
-	import feathers.controls.LayoutGroup;
-	import feathers.layout.HorizontalLayout;
+	import feathers.layout.AnchorLayout;
+	import feathers.layout.AnchorLayoutData;
 
 	import flash.net.FileFilter;
 	import flash.net.FileReference;
 
-	import starling.events.Event;
-	import starling.events.Touch;
-	import starling.events.TouchEvent;
-
-	import starling.events.TouchPhase;
-	import com.grantech.toolgen.utils.Localizations;
 	import starling.display.Quad;
-	import feathers.layout.AnchorLayout;
-	import feathers.layout.AnchorLayoutData;
-	import feathers.skins.ImageSkin;
-	import com.grantech.manager.ParticleManager;
+	import starling.events.Event;
 
 	public class LayerListItemRenderer extends AbstractTouchableListItemRenderer
 	{

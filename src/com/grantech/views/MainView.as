@@ -1,15 +1,14 @@
-package com.grantech.toolgen.view
+package com.grantech.views
 {
-	import com.grantech.toolgen.panels.ScenePanel;
-	import com.grantech.toolgen.panels.SidebarPanel;
+	import com.grantech.panels.ScenePanel;
+	import com.grantech.panels.SidebarPanel;
 
-	import feathers.controls.PanelScreen;
+	import feathers.controls.Screen;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
 
 	import starling.events.Event;
 	import starling.events.ResizeEvent;
-	import feathers.controls.Screen;
 
 	public class MainView extends Screen
 	{

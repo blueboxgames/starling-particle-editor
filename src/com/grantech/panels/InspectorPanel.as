@@ -1,17 +1,7 @@
-package com.grantech.toolgen.panels
+package com.grantech.panels
  {
-	import com.grantech.toolgen.component.ParticleConfig;
-	import com.grantech.toolgen.utils.Localizations;
-
-	import feathers.controls.LayoutGroup;
 	import feathers.controls.Panel;
-	import feathers.layout.HorizontalAlign;
-	import feathers.layout.VerticalAlign;
-	import feathers.layout.VerticalLayout;
 
-	import starling.events.Event;
-	import starling.extensions.PDParticleSystem;
-	import com.grantech.manager.ParticleManager;
 
 	public class InspectorPanel extends Panel
 	{

@@ -1,27 +1,22 @@
-package com.grantech.toolgen.panels
+package com.grantech.panels
 {
-	import com.grantech.toolgen.controls.items.LayerListItemRenderer;
-	import com.grantech.toolgen.utils.Localizations;
+	import com.grantech.managers.DataManager;
+	import com.grantech.controls.items.LayerListItemRenderer;
+	import com.grantech.utils.Localizations;
 
 	import feathers.controls.Button;
 	import feathers.controls.LayoutGroup;
 	import feathers.controls.List;
 	import feathers.controls.PanelScreen;
 	import feathers.controls.renderers.IListItemRenderer;
-	import feathers.data.ListCollection;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
 	import feathers.layout.HorizontalLayout;
 
-	import starling.events.Event;
-	import starling.display.Quad;
-	import feathers.skins.ImageSkin;
-	import feathers.controls.ImageLoader;
-	import starling.textures.Texture;
-	import flash.display.Bitmap;
 	import starling.display.Image;
-	import com.grantech.manager.ParticleManager;
-	import com.grantech.managers.DataManager;
+	import starling.display.Quad;
+	import starling.events.Event;
+	import starling.textures.Texture;
 
 	public class LayersPanel extends PanelScreen
 	{

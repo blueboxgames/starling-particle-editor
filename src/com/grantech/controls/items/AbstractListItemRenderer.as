@@ -1,12 +1,13 @@
-package com.grantech.toolgen.controls.items
+package com.grantech.controls.items
 {
 
 import feathers.controls.renderers.LayoutGroupListItemRenderer;
 import feathers.skins.ImageSkin;
+
 import flash.geom.Rectangle;
 import flash.utils.clearInterval;
 import flash.utils.setInterval;
-import starling.core.Starling;
+
 import starling.events.Event;
 
 public class AbstractListItemRenderer extends LayoutGroupListItemRenderer

@@ -1,10 +1,9 @@
 package feathers.controls
 {
+	import starling.events.Event;
 	import starling.events.Touch;
-	import starling.events.TouchData;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
-	import starling.events.Event;
 
 	public class EditableSlider extends NumericStepper
 	{

@@ -1,6 +1,7 @@
-package com.grantech.toolgen.controls.items
+package com.grantech.controls.items
 {
 import flash.geom.Point;
+
 import starling.display.DisplayObjectContainer;
 import starling.events.Event;
 import starling.events.Touch;

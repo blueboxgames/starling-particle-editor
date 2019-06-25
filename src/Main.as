@@ -1,7 +1,7 @@
 package
 {
-  import com.grantech.toolgen.utils.Localizations;
-  import com.grantech.toolgen.view.MainView;
+  import com.grantech.utils.Localizations;
+  import com.grantech.views.MainView;
 
   import feathers.controls.Drawers;
   import feathers.controls.StackScreenNavigator;

@@ -11,10 +11,10 @@
 package starling.extensions
 {
     import flash.display3D.Context3DBlendFactor;
+    import flash.utils.Dictionary;
 
     import starling.textures.Texture;
     import starling.utils.deg2rad;
-    import flash.utils.Dictionary;
 
     public class PDParticleSystem extends ParticleSystem
     {

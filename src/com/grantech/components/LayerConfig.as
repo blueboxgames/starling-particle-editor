@@ -1,11 +1,12 @@
-package com.grantech.toolgen.component
+package com.grantech.components
 {
-	import feathers.controls.LayoutGroup;
-	import feathers.controls.Label;
 	import feathers.controls.Button;
-	import feathers.layout.HorizontalLayout;
+	import feathers.controls.Label;
+	import feathers.controls.LayoutGroup;
 	import feathers.layout.HorizontalAlign;
+	import feathers.layout.HorizontalLayout;
 	import feathers.layout.VerticalAlign;
+
 	import starling.events.Event;
 
 	public class LayerConfig extends LayoutGroup

@@ -1,17 +1,9 @@
-package com.grantech.toolgen.panels
+package com.grantech.panels
 {
-	import feathers.controls.Panel;
+	import feathers.controls.Screen;
 
-	import starling.core.Starling;
 	import starling.events.Event;
 	import starling.extensions.PDParticleSystem;
-	import starling.textures.Texture;
-	import feathers.layout.AnchorLayoutData;
-	import feathers.layout.HorizontalLayout;
-	import starling.events.ResizeEvent;
-	import feathers.controls.EditableSlider;
-	import starling.extensions.ParticleSystem;
-	import feathers.controls.Screen;
 
 	public class ScenePanel extends Screen
 	{

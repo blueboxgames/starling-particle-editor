@@ -1,15 +1,14 @@
-package com.grantech.toolgen.component
+package com.grantech.components
 {
-	import feathers.core.FeathersControl;
-	import feathers.controls.Label;
 	import feathers.controls.EditableSlider;
-	import starling.extensions.PDParticleSystem;
+	import feathers.controls.Label;
 	import feathers.controls.LayoutGroup;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.HorizontalLayoutData;
-	import starling.events.Event;
-	import feathers.layout.HorizontalAlign;
 	import feathers.layout.VerticalAlign;
+
+	import starling.events.Event;
+	import starling.extensions.PDParticleSystem;
 
 	public class ParticleConfig extends LayoutGroup
 	{
