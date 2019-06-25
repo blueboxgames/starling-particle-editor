@@ -1,7 +1,7 @@
 package com.grantech.panels
 {
-	import com.grantech.managers.DataManager;
 	import com.grantech.controls.items.LayerListItemRenderer;
+	import com.grantech.managers.DataManager;
 	import com.grantech.utils.Localizations;
 
 	import feathers.controls.Button;
@@ -17,7 +17,6 @@ package com.grantech.panels
 	import starling.display.Quad;
 	import starling.events.Event;
 	import starling.textures.Texture;
-	import starling.textures.TextureSmoothing;
 
 	public class LayersPanel extends PanelScreen
 	{
