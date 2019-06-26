@@ -1,6 +1,4 @@
 {
-	"toolbar": "Toolbar",
-	"layers": "Layers",
-	"add_config": "Add Config",
-	"add_image": "Add Image"
+	"layers_panel_title": "Layers",
+	"inspector_panel_title": "Inspector"
 }

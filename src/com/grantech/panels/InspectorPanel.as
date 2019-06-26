@@ -1,70 +1,40 @@
 package com.grantech.panels
  {
-	import feathers.controls.Panel;
+	import com.grantech.controls.items.InspectorListItemRenderer;
+	import com.grantech.managers.DataManager;
+	import com.grantech.utils.Localizations;
+
+	import feathers.controls.List;
+	import feathers.controls.PanelScreen;
+	import feathers.controls.renderers.IListItemRenderer;
+	import feathers.layout.AnchorLayout;
+	import feathers.layout.AnchorLayoutData;
 
 
-	public class InspectorPanel extends Panel
+	public class InspectorPanel extends PanelScreen
 	{
+		private var list:List;
 		
 		public function InspectorPanel()
 		{
-			this.name = "InspectorPanel";
-			// this.addEventListener("particleData", sidebarPanel_particleDataHandler);
-			// this.addEventListener(Event.ADDED_TO_STAGE, inspectorPanel_addedToStageHandler);
-			// this.particleManager.addEventListener("particleCreated", particleManager_particleCreatedHandler);
+			super();
 		}
 
 		override protected function initialize():void
 		{
 			super.initialize();
+			this.layout = new AnchorLayout();
+			this.title = Localizations.instance.get("inspector_panel_title");
+			
+			this.list = new List();
+			this.list.layoutData = new AnchorLayoutData(0, 0, 0, 0);
+			this.list.dataProvider = DataManager.instance.inspector;
+			this.list.itemRendererFactory = function () : IListItemRenderer
+			{
+				return new InspectorListItemRenderer();
+			}
+			this.addChild(this.list);
 		}
-
-		// private function particleManager_particleCreatedHandler(e:Event):void
-		// {
-		// 	// this.particleManager.createNewParticle()
-		// }
-
-		// private function inspectorPanel_addedToStageHandler(e:Event):void
-		// {
-		// 	this.removeEventListener(Event.ADDED_TO_STAGE, inspectorPanel_addedToStageHandler);
-		// 	this.stage.starling.addEventListener("removeParticle", sidebarPanel_removeParticleHandler);
-		// }
-
-		// override protected function initialize():void
-		// {
-		// 	this.title = Localizations.instance.get("toolbar");
-		// }
-
-		// private function particleDataLoader_completeHandler(e:Event):void
-		// {
-		// 	this.dispatchEventWith(Event.COMPLETE, false, e.data);
-		// }
-
-		// private function sidebarPanel_particleDataHandler(e:Event):void
-		// {
-		// 	// var ps:PDParticleSystem = e.data as PDParticleSystem;
-		// 	// var group:LayoutGroup = new LayoutGroup();
-		// 	// group.name = e.data.name;
-		// 	// var containerLayout:VerticalLayout = new VerticalLayout();
-		// 	// containerLayout.horizontalAlign = HorizontalAlign.JUSTIFY;
-		// 	// containerLayout.verticalAlign = VerticalAlign.JUSTIFY;
-		// 	// group.layout = containerLayout;
-		// 	// group.width = this.width - this.padding;
-		// 	// for (var config:String in ps.properties)
-		// 	// {
-		// 	// 	var configLine:ParticleConfig;
-		// 	// 	if(ps.properties[config] is Number){
-		// 	// 		configLine = new ParticleConfig(config, ps, config);
-		// 	// 		group.addChild(configLine);
-		// 	// 	}
-		// 	// }
-		// 	// this.addChild(group);
-		// }
-
-		// private function sidebarPanel_removeParticleHandler(e:Event):void
-		// {
-		// 	this.removeChild(this.getChildByName(e.data.name));
-		// }
 	}
 }
 

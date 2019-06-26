@@ -1,11 +1,14 @@
 package com.grantech.managers
 {
-	import com.grantech.models.ParticleDataModel;
+	import com.grantech.models.ParticleData;
 
+	import feathers.core.IFeathersEventDispatcher;
 	import feathers.data.ListCollection;
 
+	import starling.events.EventDispatcher;
 
-	public class DataManager
+
+	public class DataManager extends EventDispatcher implements IFeathersEventDispatcher
 	{
 		private static var _instance:DataManager;
 		public static function get instance() : DataManager
@@ -15,32 +18,34 @@ package com.grantech.managers
 				return _instance;
 		}
 		
+		private var _selectedLayer:int;
+		public function get selectedLayer():int
+		{
+			return _selectedLayer;
+		}
+		
 		private var _layers:ListCollection;
 		public function get layers():ListCollection
 		{
 			return _layers;
 		}
-		private var _layerProps:ListCollection;
-		public function get layerProps():ListCollection
+		private var _inspector:ListCollection;
+		public function get inspector():ListCollection
 		{
-			return _layerProps;
+			return _inspector;
 		}
 
 		public function addNewLayer():void
 		{
-			var newParticleModel:ParticleDataModel = new ParticleDataModel();
-			this.layers.addItem(newParticleModel.defaultParticleModel);
+			this.layers.addItem(new ParticleData());
 		}
-
-		// TODO:
-		// private static const emptyConfig:Object = serializer.readConfig(config:File)
-		// private static const defaultTexture:Texture = Texture.fromTexture(new Quad(1,1,0xffffff) as Texture);
 
 		public function DataManager()
 		{
 			super();
 			this._layers = new ListCollection(); 
-			this._layerProps = new ListCollection();
-		}
+			this._inspector = new ListCollection();
+			this._selectedLayer = -1;
+		} 
 	}
 }

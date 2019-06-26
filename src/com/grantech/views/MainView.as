@@ -33,28 +33,15 @@ package com.grantech.views
     {
 			super.initialize();
 			this.name = "MainView";
-			//this.title = "Integer";
 
 			this.layout = new AnchorLayout();
 
 			this.scenePanel = new ScenePanel();
-			this.scenePanel.initializeNow();
-			this.leftDock = new SidebarPanel();
-			this.leftDock.initializeNow();
-
 			this.scenePanel.layoutData = new AnchorLayoutData(0,NaN,0,0);
-			this.leftDock.layoutData = new AnchorLayoutData(0,0,0);
-			
-			leftDock.getChildByName("InspectorPanel").addEventListener("particleChange", function(e:Event):void
-			{
-				scenePanel.dispatchEventWith("particleChange", false, e.data);
-			});
-			scenePanel.addEventListener(Event.COMPLETE, function(e:Event):void
-			{
-				leftDock.getChildByName("InspectorPanel").dispatchEventWith("particleData", false, e.data);
-			});
-
 			this.addChild(scenePanel);
+
+			this.leftDock = new SidebarPanel();
+			this.leftDock.layoutData = new AnchorLayoutData(0,0,0);
 			this.addChild(leftDock);
 			
 			this.readjustLayout();
@@ -70,11 +57,5 @@ package com.grantech.views
 			this.leftDock.width = stage.stageWidth * 0.4;
 			this.scenePanel.width = stage.stageWidth * 0.6;
 		}
-
-		private function particleDataLoader_completeHandler(e:Event):void
-		{
-			scenePanel.dispatchEventWith("particleDataRecieved", false, e.data);
-		}
-
 	}
 }

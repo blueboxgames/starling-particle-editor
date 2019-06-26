@@ -38,15 +38,13 @@ package com.grantech.controls.items
 
 			this.layout = new AnchorLayout();;
 
-			
-			
 			this.configBrowse = new Button();
 			this.configBrowse.alpha = 0.5;
 			this.configBrowse.width = 100;
 			this.configBrowse.label = Localizations.instance.get("add_config");
 			this.configBrowse.layoutData = new AnchorLayoutData(NaN, NaN, 4, 4);
 			this.configBrowse.addEventListener(starling.events.Event.TRIGGERED, configBrowse_triggeredHandler);
-			this.addChild(configBrowse);
+			this.addChild(this.configBrowse);
 
 			this.imageBrowse = new Button();
 			this.imageBrowse.alpha = 0.5;
@@ -54,7 +52,7 @@ package com.grantech.controls.items
 			this.imageBrowse.label = Localizations.instance.get("add_image");
 			this.imageBrowse.layoutData = new AnchorLayoutData(NaN, NaN, 4, 108);
 			this.imageBrowse.addEventListener(starling.events.Event.TRIGGERED, imageBrowse_triggeredHandler);
-			this.addChild(imageBrowse);
+			this.addChild(this.imageBrowse);
 		}
 
 		override public function set isSelected(value:Boolean):void

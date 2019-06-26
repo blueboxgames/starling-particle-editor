@@ -33,7 +33,7 @@ package com.grantech.panels
 			super.initialize();
 			layout= new AnchorLayout();
 
-			this.title = Localizations.instance.get("layers");
+			this.title = Localizations.instance.get("layers_panel_title");
 			
 			/* var listLayout:VerticalLayout = new VerticalLayout();
 			listLayout.horizontalAlign = HorizontalAlign.CENTER;
@@ -81,8 +81,7 @@ package com.grantech.panels
 
 		private function listDisplay_changeHandler(event:Event):void
 		{
-			DataManager.instance.layerProps.removeAll();
-//			this.particleManager.dispatchEventWith("particleSelected", false, listDisplay.selectedIndex);
+			DataManager.instance.dispatchEventWith("particleSelected", null, listDisplay.selectedIndex);
 		}
 		
 		private function addButton_triggeredHandler(event:Event):void
@@ -101,5 +100,7 @@ package com.grantech.panels
 			if( selectedIndex > 0 )
 				listDisplay.selectedIndex = selectedIndex - 1;
 		}
+
+
 	}
 }

@@ -1,6 +1,4 @@
 {
-	"toolbar": "ابزارها",
-	"layers": "لایه ها",
-	"add_config": "اطلاعات",
-	"add_image": "عکس"
+	"layers_panel_title": "لایه‌ها",
+	"inspector_panel_title": "تحلیل‌گر"
 }
