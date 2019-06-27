@@ -7,7 +7,7 @@ package com.grantech.models
 	/**
 	 * Base Data serializeable class.
 	 */
-	public class SerializableData extends EventDispatcher
+	public class SerializableDataModel extends EventDispatcher
 	{
 		/**
 		 * @private
@@ -33,7 +33,7 @@ package com.grantech.models
 		/**
 		 * Constructor
 		 */
-		public function SerializableData()
+		public function SerializableDataModel()
 		{
 			this.properties = new Dictionary();
 		}

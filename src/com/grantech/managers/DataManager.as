@@ -1,6 +1,6 @@
 package com.grantech.managers
 {
-	import com.grantech.models.ParticleData;
+	import com.grantech.models.ParticleDataModel;
 
 	import feathers.core.IFeathersEventDispatcher;
 	import feathers.data.ListCollection;
@@ -37,7 +37,7 @@ package com.grantech.managers
 
 		public function addNewLayer():void
 		{
-			this.layers.addItem(new ParticleData());
+			this.layers.addItem(new ParticleDataModel());
 		}
 
 		public function DataManager()

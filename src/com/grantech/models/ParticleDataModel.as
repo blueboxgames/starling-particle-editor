@@ -2,9 +2,9 @@ package com.grantech.models
 {
 	import starling.extensions.ColorArgb;
 
-	public class ParticleData extends LayerData
+	public class ParticleDataModel extends LayerDataModel
 	{
-		public function ParticleData()
+		public function ParticleDataModel()
 		{
 			this.initialize();
 		}
