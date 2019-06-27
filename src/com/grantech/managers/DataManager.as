@@ -6,6 +6,7 @@ package com.grantech.managers
 	import feathers.data.ListCollection;
 
 	import starling.events.EventDispatcher;
+	import starling.events.Event;
 
 
 	public class DataManager extends EventDispatcher implements IFeathersEventDispatcher
@@ -43,9 +44,27 @@ package com.grantech.managers
 		public function DataManager()
 		{
 			super();
+			this.addEventListener("particleLayerChange", dataManager_particleLayerChangeHandler);
+			this.addEventListener("particleDataChanged", dataManager_particleDataChangeHandler);
+
+			this._selectedLayer = -1;
 			this._layers = new ListCollection(); 
 			this._inspector = new ListCollection();
-			this._selectedLayer = -1;
-		} 
+		}
+
+		protected function dataManager_particleLayerChangeHandler(event:Event):void
+		{
+			this._selectedLayer = event.data.selectedLayer;
+			this.inspector.removeAll();
+			for(var key:String in layers.getItemAt(selectedLayer).properties)
+			{
+				this.inspector.addItem({label: key, value: layers.getItemAt(selectedLayer).getProperty(key)});
+			}
+		}
+
+		protected function dataManager_particleDataChangeHandler(event:Event):void
+		{
+			layers.getItemAt(selectedLayer).setProperty(event.data.label, event.data.value);
+		}
 	}
 }

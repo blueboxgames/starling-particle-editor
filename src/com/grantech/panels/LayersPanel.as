@@ -81,7 +81,7 @@ package com.grantech.panels
 
 		private function listDisplay_changeHandler(event:Event):void
 		{
-			DataManager.instance.dispatchEventWith("particleSelected", null, listDisplay.selectedIndex);
+			DataManager.instance.dispatchEventWith( "particleLayerChange", false, {selectedLayer: this.listDisplay.selectedIndex } );
 		}
 		
 		private function addButton_triggeredHandler(event:Event):void

@@ -17,7 +17,7 @@ package com.grantech.models
 		/**
 		 * Returns current properties dictionary.
 		 */
-		protected function get properties():Dictionary
+		public function get properties():Dictionary
 		{
 			return this._properties;
 		}
@@ -35,7 +35,7 @@ package com.grantech.models
 		 */
 		public function SerializableDataModel()
 		{
-			this.properties = new Dictionary();
+			this._properties = new Dictionary();
 		}
 
 		/**

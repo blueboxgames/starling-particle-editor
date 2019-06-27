@@ -394,8 +394,5 @@ package com.grantech.models
 		{
 			this.setProperty("endColorVariance", value);
 		}
-
-
-
 	}
 }
