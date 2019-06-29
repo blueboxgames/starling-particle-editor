@@ -89,6 +89,7 @@ package com.grantech.panels
 			var selectedIndex:int = listDisplay.selectedIndex;
 			DataManager.instance.addNewLayer();
 			listDisplay.selectedIndex = DataManager.instance.layers.length - 1;
+			DataManager.instance.dispatchEventWith("particleLayerAdded", false, {selectedIndex: listDisplay.selectedIndex})
 		}
 		
 		private function removeButton_triggeredHandler(event:Event):void
