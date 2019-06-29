@@ -56,6 +56,8 @@ package com.grantech.managers
 		{
 			this._selectedLayer = event.data.selectedLayer;
 			this.inspector.removeAll();
+			if(selectedLayer == -1)
+				return;
 			for(var key:String in layers.getItemAt(selectedLayer).properties)
 			{
 				this.inspector.addItem({label: key, value: layers.getItemAt(selectedLayer).getProperty(key)});
