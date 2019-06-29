@@ -14,12 +14,10 @@ package com.grantech.panels
 	{
 		[Embed(source="/test.png")]
 		private static const BlueflameParticle:Class;
-		private var particleSystemsCollection:Vector.<PDParticleSystem>;
 
 		public function ScenePanel()
 		{
 			super();
-			this.particleSystemsCollection = new Vector.<PDParticleSystem>;
 		}
 
 		override protected function initialize():void
@@ -27,12 +25,14 @@ package com.grantech.panels
 			super.initialize();
 			this.name = "ScenePanel";
 			DataManager.instance.addEventListener("particleLayerAdded", dataManager_particleLayerAddedHandler);
+			DataManager.instance.addEventListener("particleLayerRemoved", dataManager_particleLayerRemovedHandler);
 		}
 
 		protected function particleFromDataModel(config:ParticleDataModel):PDParticleSystem
 		{
 			var blueTexture:Texture = Texture.fromEmbeddedAsset(BlueflameParticle);
 			var particleSystem:PDParticleSystem = new PDParticleSystem(config, blueTexture);
+			// TODO: Handle this when scene has cursor.
 			particleSystem.x = this.width/2;
 			particleSystem.y = this.height/2;
 			return particleSystem;
@@ -40,13 +40,20 @@ package com.grantech.panels
 
 		protected function dataManager_particleLayerAddedHandler(event:Event):void
 		{
-			var particleSystem:PDParticleSystem = particleFromDataModel(DataManager.instance.layers.getItemAt(event.data.selectedIndex) as ParticleDataModel);
-			particleSystem.emitterX = 320;
-    	particleSystem.emitterY = 240;
-            
-      this.addChild(particleSystem);
-      Starling.juggler.add(particleSystem);
-      particleSystem.start();
+			var index:int = event.data.selectedIndex;
+			var particleSystem:PDParticleSystem = particleFromDataModel(DataManager.instance.layers.getItemAt(index) as ParticleDataModel);
+      this.addChildAt(particleSystem, index);
+			Starling.juggler.add(particleSystem);
+			particleSystem.start();
+		}
+
+		protected function dataManager_particleLayerRemovedHandler(event:Event):void
+		{
+			var index:int = event.data.selectedIndex;
+			var particleSystem:PDParticleSystem  = this.getChildAt(index) as PDParticleSystem;
+			particleSystem.stop();
+			Starling.juggler.remove(particleSystem);
+			this.removeChildAt(index);
 		}
 	}
 }

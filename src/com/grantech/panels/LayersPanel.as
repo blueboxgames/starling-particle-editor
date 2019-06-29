@@ -97,6 +97,7 @@ package com.grantech.panels
 			var selectedIndex:int = listDisplay.selectedIndex;
 			if( selectedIndex < 0 )
 				return;
+			DataManager.instance.dispatchEventWith("particleLayerRemoved", false, {selectedIndex: listDisplay.selectedIndex})
 			DataManager.instance.layers.removeItemAt(selectedIndex);
 			if( selectedIndex > 0 )
 				listDisplay.selectedIndex = selectedIndex - 1;
