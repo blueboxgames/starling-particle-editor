@@ -72,7 +72,6 @@ package com.grantech.managers
 			this._inspector = new ListCollection();
 		}
 
-
 		protected function dataManager_particleDataChangeHandler(event:Event):void
 		{
 			layers.getItemAt(selectedLayer).setProperty(event.data.label, event.data.value);

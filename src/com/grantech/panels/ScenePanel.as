@@ -14,31 +14,31 @@ package com.grantech.panels
 	{
 		[Embed(source="/test.png")]
 		private static const BlueflameParticle:Class;
-		private var particleSystemsCollection:Vector.<PDParticleSystem>;
 
 		public function ScenePanel()
 		{
 			super();
-			this.particleSystemsCollection = new Vector.<PDParticleSystem>;
 		}
 
 		override protected function initialize():void
 		{
 			super.initialize();
 			this.name = "ScenePanel";
-			DataManager.instance.addEventListener(Event.SELECT, dataManager_selectLayerAddedHandler);
+			DataManager.instance.addEventListener(Event.SELECT, dataManager_selectLayerHandler);
+			DataManager.instance.addEventListener("particleLayerRemoved", dataManager_particleLayerRemovedHandler);
 		}
 
 		protected function particleFromDataModel(config:ParticleDataModel):PDParticleSystem
 		{
 			var blueTexture:Texture = Texture.fromEmbeddedAsset(BlueflameParticle);
 			var particleSystem:PDParticleSystem = new PDParticleSystem(config, blueTexture);
+			// TODO: Handle this when scene has cursor.
 			particleSystem.x = this.width/2;
 			particleSystem.y = this.height/2;
 			return particleSystem;
 		}
 
-		protected function dataManager_selectLayerAddedHandler(event:Event):void
+		protected function dataManager_selectLayerHandler(event:Event):void
 		{
 			var index:int = event.data as int;
 
@@ -53,11 +53,20 @@ package com.grantech.panels
       particleSystem.start();
 		}
 
-		override public function dispose() : void
+		protected function dataManager_particleLayerRemovedHandler(event:Event):void
 		{
-			DataManager.instance.removeEventListener(Event.SELECT, dataManager_selectLayerAddedHandler);
+			var index:int = event.data.selectedIndex;
+			var particleSystem:PDParticleSystem  = this.getChildAt(index) as PDParticleSystem;
+			particleSystem.stop();
+			Starling.juggler.remove(particleSystem);
+			this.removeChildAt(index);
+		}
+
+		override public function dispose():void
+		{
+			DataManager.instance.removeEventListener(Event.SELECT, dataManager_selectLayerHandler);
+			DataManager.instance.removeEventListener("particleLayerRemoved", dataManager_particleLayerRemovedHandler);
 			super.dispose();
 		}
 	}
-
 }
