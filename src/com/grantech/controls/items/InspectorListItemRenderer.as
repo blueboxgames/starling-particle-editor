@@ -21,6 +21,7 @@ package com.grantech.controls.items
 		override protected function initialize():void
 		{
 			super.initialize();
+			trace(" InspectorListItemRenderer init");
 
 			var hLayout:HorizontalLayout = new HorizontalLayout();
 			hLayout.gap = 5;
@@ -48,17 +49,17 @@ package com.grantech.controls.items
 			{
 				this.label.text = this.data.label;
 				this.component.value = this.data.value;
-				this.component.addEventListener(Event.CHANGE, commitDataToList);
+				// this.component.addEventListener(Event.CHANGE, commitDataToList);
 			}
 			else
 			{
-				this.removeFromParent();
+				// this.removeFromParent();
 			}
 		}
 
 		private function commitDataToList(e:Event):void
 		{
-			DataManager.instance.dispatchEventWith("particleDataChanged",false, {label: this.data.label, value: this.component.value});
+			// DataManager.instance.dispatchEventWith("particleDataChanged",false, {label: this.data.label, value: this.component.value});
 		}
 	}
 }

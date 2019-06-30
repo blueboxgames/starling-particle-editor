@@ -26,7 +26,7 @@ package com.grantech.panels
 		{
 			super.initialize();
 			this.name = "ScenePanel";
-			DataManager.instance.addEventListener("particleLayerAdded", dataManager_particleLayerAddedHandler);
+			DataManager.instance.addEventListener(Event.SELECT, dataManager_selectLayerAddedHandler);
 		}
 
 		protected function particleFromDataModel(config:ParticleDataModel):PDParticleSystem
@@ -38,9 +38,13 @@ package com.grantech.panels
 			return particleSystem;
 		}
 
-		protected function dataManager_particleLayerAddedHandler(event:Event):void
+		protected function dataManager_selectLayerAddedHandler(event:Event):void
 		{
-			var particleSystem:PDParticleSystem = particleFromDataModel(DataManager.instance.layers.getItemAt(event.data.selectedIndex) as ParticleDataModel);
+			var index:int = event.data as int;
+
+			if( index < 0 || index >= DataManager.instance.layers.length )
+				return;
+			var particleSystem:PDParticleSystem = particleFromDataModel(DataManager.instance.layers.getItemAt(event.data as int) as ParticleDataModel);
 			particleSystem.emitterX = 320;
     	particleSystem.emitterY = 240;
             
@@ -48,5 +52,12 @@ package com.grantech.panels
       Starling.juggler.add(particleSystem);
       particleSystem.start();
 		}
+
+		override public function dispose() : void
+		{
+			DataManager.instance.removeEventListener(Event.SELECT, dataManager_selectLayerAddedHandler);
+			super.dispose();
+		}
 	}
+
 }

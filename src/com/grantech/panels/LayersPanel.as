@@ -79,12 +79,12 @@ package com.grantech.panels
 			}
 		}
 
-		private function listDisplay_changeHandler(event:Event):void
+		protected function listDisplay_changeHandler(event:Event):void
 		{
-			DataManager.instance.dispatchEventWith( "particleLayerChange", false, {selectedLayer: this.listDisplay.selectedIndex } );
+			DataManager.instance.selectedLayer = this.listDisplay.selectedIndex;
 		}
 		
-		private function addButton_triggeredHandler(event:Event):void
+		protected function addButton_triggeredHandler(event:Event):void
 		{
 			var selectedIndex:int = listDisplay.selectedIndex;
 			DataManager.instance.addNewLayer();

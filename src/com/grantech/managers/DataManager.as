@@ -7,7 +7,8 @@ package com.grantech.managers
 
 	import starling.events.EventDispatcher;
 	import starling.events.Event;
-
+	import flash.utils.Dictionary;
+	
 
 	public class DataManager extends EventDispatcher implements IFeathersEventDispatcher
 	{
@@ -20,9 +21,28 @@ package com.grantech.managers
 		}
 		
 		private var _selectedLayer:int;
+
+		public function set selectedLayer(value:int):void
+		{
+			if( this._selectedLayer == value )
+				return;
+			this.inspector.removeAll();
+			
+
+			if( value >= 0 && value < this.layers.length )
+			{
+				this._selectedLayer = value;
+				for(var key:String in layers.getItemAt(selectedLayer).properties)
+				{
+					this.inspector.addItem({label: key, value: layers.getItemAt(selectedLayer).getProperty(key)});
+				}
+			}
+
+			DataManager.instance.dispatchEventWith(Event.SELECT, false, value);
+		}
 		public function get selectedLayer():int
 		{
-			return _selectedLayer;
+			return this._selectedLayer;
 		}
 		
 		private var _layers:ListCollection;
@@ -44,23 +64,14 @@ package com.grantech.managers
 		public function DataManager()
 		{
 			super();
-			this.addEventListener("particleLayerChange", dataManager_particleLayerChangeHandler);
-			this.addEventListener("particleDataChanged", dataManager_particleDataChangeHandler);
+			// this.addEventListener("particleLayerChange", dataManager_particleLayerChangeHandler);
+			// this.addEventListener("particleDataChanged", dataManager_particleDataChangeHandler);
 
 			this._selectedLayer = -1;
 			this._layers = new ListCollection(); 
 			this._inspector = new ListCollection();
 		}
 
-		protected function dataManager_particleLayerChangeHandler(event:Event):void
-		{
-			this._selectedLayer = event.data.selectedLayer;
-			this.inspector.removeAll();
-			for(var key:String in layers.getItemAt(selectedLayer).properties)
-			{
-				this.inspector.addItem({label: key, value: layers.getItemAt(selectedLayer).getProperty(key)});
-			}
-		}
 
 		protected function dataManager_particleDataChangeHandler(event:Event):void
 		{
