@@ -1,6 +1,7 @@
 package com.grantech.panels
 {
 	import com.grantech.managers.DataManager;
+	import com.grantech.managers.SceneManager;
 	import com.grantech.models.ParticleDataModel;
 
 	import feathers.controls.Screen;
@@ -24,8 +25,9 @@ package com.grantech.panels
 		{
 			super.initialize();
 			this.name = "ScenePanel";
-			DataManager.instance.addEventListener(Event.SELECT, dataManager_selectLayerHandler);
-			DataManager.instance.addEventListener("particleLayerRemoved", dataManager_particleLayerRemovedHandler);
+			DataManager.instance.addEventListener(Event.ADDED, dataManager_addedHandler);
+			DataManager.instance.addEventListener(Event.SELECT, dataManager_selectHandler);
+			DataManager.instance.addEventListener(Event.REMOVED, dataManager_removedHandler);
 		}
 
 		protected function particleFromDataModel(config:ParticleDataModel):PDParticleSystem
@@ -38,34 +40,44 @@ package com.grantech.panels
 			return particleSystem;
 		}
 
-		protected function dataManager_selectLayerHandler(event:Event):void
+		protected function dataManager_addedHandler(event:Event):void
 		{
-			var index:int = event.data as int;
-
-			if( index < 0 || index >= DataManager.instance.layers.length )
-				return;
-			var particleSystem:PDParticleSystem = particleFromDataModel(DataManager.instance.layers.getItemAt(event.data as int) as ParticleDataModel);
-			particleSystem.emitterX = 320;
-    	particleSystem.emitterY = 240;
-            
-      this.addChild(particleSystem);
-      Starling.juggler.add(particleSystem);
-      particleSystem.start();
+			var reference:ParticleDataModel = event.data as ParticleDataModel;
+			var blueTexture:Texture = Texture.fromEmbeddedAsset(BlueflameParticle);
+			var particleSystem:PDParticleSystem = new PDParticleSystem(reference, blueTexture);
+			
+			particleSystem.start();
+			Starling.juggler.add(particleSystem);
+			SceneManager.instance.addParticleSystem(reference.id, particleSystem);
+			this.addChild(particleSystem);
 		}
 
-		protected function dataManager_particleLayerRemovedHandler(event:Event):void
+		/**
+		 * Not implemented
+		 */
+		protected function dataManager_selectHandler(event:Event):void
 		{
-			var index:int = event.data.selectedIndex;
-			var particleSystem:PDParticleSystem  = this.getChildAt(index) as PDParticleSystem;
+			var index:int = event.data.index;
+			var particleModel:ParticleDataModel = DataManager.instance.layers.getItemAt(index) as ParticleDataModel;
+			var particleSystem:PDParticleSystem = SceneManager.instance.getParticleSystem(particleModel.id);
+		}
+
+		protected function dataManager_removedHandler(event:Event):void
+		{
+			var index:int = event.data.index;
+			var particleModel:ParticleDataModel = DataManager.instance.layers.getItemAt(index) as ParticleDataModel;
+			var particleSystem:PDParticleSystem = SceneManager.instance.getParticleSystem(particleModel.id)
 			particleSystem.stop();
 			Starling.juggler.remove(particleSystem);
-			this.removeChildAt(index);
+			this.removeChild(particleSystem);
+			particleSystem.dispose();
 		}
 
 		override public function dispose():void
 		{
-			DataManager.instance.removeEventListener(Event.SELECT, dataManager_selectLayerHandler);
-			DataManager.instance.removeEventListener("particleLayerRemoved", dataManager_particleLayerRemovedHandler);
+			DataManager.instance.removeEventListener(Event.ADDED, dataManager_addedHandler);
+			DataManager.instance.removeEventListener(Event.SELECT, dataManager_selectHandler);
+			DataManager.instance.removeEventListener(Event.REMOVED, dataManager_removedHandler);
 			super.dispose();
 		}
 	}

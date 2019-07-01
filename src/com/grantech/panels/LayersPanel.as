@@ -81,13 +81,13 @@ package com.grantech.panels
 
 		protected function listDisplay_changeHandler(event:Event):void
 		{
-			DataManager.instance.selectedLayer = this.listDisplay.selectedIndex;
+			DataManager.instance.currentLayerIndex = this.listDisplay.selectedIndex;
 		}
 		
 		protected function addButton_triggeredHandler(event:Event):void
 		{
 			var selectedIndex:int = listDisplay.selectedIndex;
-			DataManager.instance.addNewLayer();
+			DataManager.instance.addLayer();
 			listDisplay.selectedIndex = DataManager.instance.layers.length - 1;
 			DataManager.instance.dispatchEventWith("particleLayerAdded", false, {selectedIndex: listDisplay.selectedIndex})
 		}
@@ -97,8 +97,7 @@ package com.grantech.panels
 			var selectedIndex:int = listDisplay.selectedIndex;
 			if( selectedIndex < 0 )
 				return;
-			DataManager.instance.dispatchEventWith("particleLayerRemoved", false, {selectedIndex: listDisplay.selectedIndex})
-			DataManager.instance.layers.removeItemAt(selectedIndex);
+			DataManager.instance.removeLayerAt(selectedIndex);
 			if( selectedIndex > 0 )
 				listDisplay.selectedIndex = selectedIndex - 1;
 		}
