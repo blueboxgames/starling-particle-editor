@@ -178,6 +178,22 @@ package com.grantech.managers
 			return _inspector;
 		}
 
+		private function orderFunction(a:Object, b:Object):int
+		{
+			if (a.order > b.order)
+			{
+				return -1;
+			}
+			else if (a.order < b.order)
+			{
+				return 1;
+			}
+			else
+			{
+				return 0;
+			}
+		}
+
 		/**
 		 * Constructor.
 		 */
@@ -188,6 +204,8 @@ package com.grantech.managers
 			this._currentLayerIndex = -1;
 			this._layers = new ListCollection(); 
 			this._inspector = new ListCollection();
+
+			this._layers.sortCompareFunction = orderFunction;
 		}
 	}
 }
