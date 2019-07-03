@@ -37,5 +37,3 @@ package com.grantech.panels
 		}
 	}
 }
-
-			

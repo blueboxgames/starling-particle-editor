@@ -17,6 +17,7 @@ package com.grantech.panels
 	import starling.display.Quad;
 	import starling.events.Event;
 	import starling.textures.Texture;
+	import com.grantech.models.ParticleDataModel;
 
 	public class LayersPanel extends PanelScreen
 	{
@@ -81,15 +82,13 @@ package com.grantech.panels
 
 		protected function listDisplay_changeHandler(event:Event):void
 		{
-			DataManager.instance.currentLayerIndex = this.listDisplay.selectedIndex;
+			DataManager.instance.selectLayer(this.listDisplay.selectedItem);
 		}
 		
 		protected function addButton_triggeredHandler(event:Event):void
 		{
-			var selectedIndex:int = listDisplay.selectedIndex;
 			DataManager.instance.addLayer();
-			listDisplay.selectedIndex = DataManager.instance.layers.length - 1;
-			DataManager.instance.dispatchEventWith("particleLayerAdded", false, {selectedIndex: listDisplay.selectedIndex})
+			this.listDisplay.selectedIndex = DataManager.instance.currentLayerIndex;
 		}
 		
 		private function removeButton_triggeredHandler(event:Event):void

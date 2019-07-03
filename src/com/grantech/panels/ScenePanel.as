@@ -13,6 +13,8 @@ package com.grantech.panels
 
 	public class ScenePanel extends Screen
 	{
+		private var _liveChangeEnabled:Boolean;
+
 		[Embed(source="/test.png")]
 		private static const BlueflameParticle:Class;
 
@@ -26,8 +28,11 @@ package com.grantech.panels
 			super.initialize();
 			this.name = "ScenePanel";
 			DataManager.instance.addEventListener(Event.ADDED, dataManager_addedHandler);
+			DataManager.instance.addEventListener(Event.CHANGE, dataManager_changeHandler);
 			DataManager.instance.addEventListener(Event.SELECT, dataManager_selectHandler);
 			DataManager.instance.addEventListener(Event.REMOVED, dataManager_removedHandler);
+
+			this._liveChangeEnabled = true;
 		}
 
 		protected function particleFromDataModel(config:ParticleDataModel):PDParticleSystem
@@ -52,14 +57,30 @@ package com.grantech.panels
 			this.addChild(particleSystem);
 		}
 
+		protected function dataManager_changeHandler(event:Event):void
+		{
+			var index:int = event.data.index;
+			var key:String = event.data.key;
+			var value:Number = event.data.value;
+			var particleModel:ParticleDataModel = DataManager.instance.layers.getItemAt(index) as ParticleDataModel;
+			var particleSystem:PDParticleSystem = SceneManager.instance.getParticleSystem(particleModel.id)
+
+			particleSystem[key] = value;
+		}
+
 		/**
 		 * Not implemented
 		 */
 		protected function dataManager_selectHandler(event:Event):void
 		{
+			if (!event.data) 
+				return;
 			var index:int = event.data.index;
 			var particleModel:ParticleDataModel = DataManager.instance.layers.getItemAt(index) as ParticleDataModel;
-			var particleSystem:PDParticleSystem = SceneManager.instance.getParticleSystem(particleModel.id);
+			if(particleModel != null)
+			{
+				var particleSystem:PDParticleSystem = SceneManager.instance.getParticleSystem(particleModel.id);
+			}
 		}
 
 		protected function dataManager_removedHandler(event:Event):void

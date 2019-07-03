@@ -8,11 +8,12 @@ package com.grantech.controls.items
 	import feathers.layout.HorizontalLayoutData;
 
 	import starling.events.Event;
+	import feathers.controls.NumericStepper;
 
 	public class InspectorListItemRenderer extends AbstractTouchableListItemRenderer
 	{
 		private var label:Label;
-		private var component:EditableSlider;
+		private var component:NumericStepper;
 		public function InspectorListItemRenderer()
 		{
 			super();
@@ -21,7 +22,6 @@ package com.grantech.controls.items
 		override protected function initialize():void
 		{
 			super.initialize();
-			trace(" InspectorListItemRenderer init");
 
 			var hLayout:HorizontalLayout = new HorizontalLayout();
 			hLayout.gap = 5;
@@ -32,10 +32,6 @@ package com.grantech.controls.items
 			this.addChild(this.label);
 
 			this.component = new EditableSlider();
-			// TODO: Write component generator based on some data.
-			this.component.minimum = 0;
-			this.component.maximum = 100;
-			this.component.step = 1;
 			this.component.layoutData = new HorizontalLayoutData(50);
 			this.addChild(this.component);
 		}
@@ -43,18 +39,19 @@ package com.grantech.controls.items
 		override protected function commitData():void
 		{
 			super.commitData();
-			if(this.data == null)
-				return;
-			if(this.data.value is Number)
+			if(this._data && this._owner)
 			{
 				this.label.text = this.data.label;
-				this.component.value = this.data.value;
-				// this.component.addEventListener(Event.CHANGE, commitDataToList);
+				this.component.value = this.data.value as Number;
+				this.component.step = this.data.step as Number;
+				this.component.minimum = -1000;
+				this.component.maximum = 1000;
 			}
-			else
-			{
-				// this.removeFromParent();
-			}
+			// if(this.data.value is Number)
+			// {
+
+			// 	// this.component.addEventListener(Event.CHANGE, commitDataToList);
+			// }
 		}
 
 		private function commitDataToList(e:Event):void

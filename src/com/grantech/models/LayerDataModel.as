@@ -53,12 +53,12 @@ package com.grantech.models
 			return this.setProperty("y", value);
 		}
 
-		public function get order():int
+		public function get order():Number
 		{
 			return this.getProperty("order");
 		}
 
-		public function set order(value:int):void
+		public function set order(value:Number):void
 		{
 			this.setProperty("order", value);
 		}

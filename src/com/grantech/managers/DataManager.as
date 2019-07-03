@@ -7,6 +7,7 @@ package com.grantech.managers
 
 	import starling.events.Event;
 	import starling.events.EventDispatcher;
+	import com.grantech.models.InspectorDataProject;
 
 	/**
 	 * Dispatched when a layer is added.
@@ -31,6 +32,10 @@ package com.grantech.managers
 	 */
 	public class DataManager extends EventDispatcher implements IFeathersEventDispatcher
 	{
+		/**
+		 * For sanity check only
+		 */
+		public const MAXIMUM_LAYER_COUNT:int = 100;
 		/**
 		 * @private Variable which contains DataManager singleton.
 		 */
@@ -66,21 +71,42 @@ package com.grantech.managers
 		{
 			if( this._currentLayerIndex == index )
 				return;
+
+			// New selected layer causes removing all inspector items.
 			this.inspector.removeAll();
 
-			if( this._currentLayerIndex >= 0 && this._currentLayerIndex < this.layers.length )
+			// Index range is out of range. _currentLayerIndex range: [-1, int.MAX_VALUE]
+			if(index < -1)
+				return;
+			
+			this._currentLayerIndex = index;
+			if(this._currentLayerIndex > -1)
 			{
-				this._currentLayerIndex = index;
-				for(var key:String in layerAt(this._currentLayerIndex))
+				var inspectorDataProjector:InspectorDataProject = new InspectorDataProject();
+				var layerProps:ParticleDataModel = layers.getItemAt(index) as ParticleDataModel;
+				for(var key:String in layerProps.properties)
 				{
-					this.inspector.addItem({
-						label: key,
-						value: layerAt(this._currentLayerIndex).getProperty(key)
-					});
+					if( !isNaN(inspectorDataProjector.getMin(key)) )
+					{
+						inspector.addItem({
+							label: key,
+							value: layerProps.getProperty(key),
+							min: inspectorDataProjector.getMin(key),
+							max: inspectorDataProjector.getMax(key),
+							step: inspectorDataProjector.getStep(key)
+						});
+					}
 				}
 			}
+			DataManager.instance.dispatchEventWith(Event.SELECT, false, {index: this.currentLayerIndex});
+			trace("CurrentLayer: " + this._currentLayerIndex);
+		}
 
-			DataManager.instance.dispatchEventWith(Event.SELECT, false, {index: index});
+		private var _layerCount:int;
+
+		public function get layerCount():int
+		{
+			return this._layerCount;
 		}
 
 		/**
@@ -114,19 +140,55 @@ package com.grantech.managers
 		/**
 		 * Method to add new layer.
 		 */
-		public function addLayer(name:String=null, x:Number=0, y:Number=0):void
+		public function addLayer(name:String=null, x:Number=0, y:Number=0, order:Number=0):void
 		{
+			/**
+			 * Algorithm addLayer:
+			 * if layersCount > maximumLayerCount then
+			 * 	throw range error
+			 * 
+			 * -> create new `model`.
+			 * -> add model to a ListCollection.
+			 * -> incerement layercount.
+			 * Event -> ADDED, `model`
+			 * 
+			 * Call -> selectLayer(model)
+			 */
+
+			if(this._layerCount > MAXIMUM_LAYER_COUNT)
+				throw new RangeError("New layer exceedes maximum layer count.");
+
+			// Create new particle model.
 			var particleModel:ParticleDataModel = new ParticleDataModel();
 			particleModel.id = genNewLayerId();
 			particleModel.name = name ? name : "";
 			particleModel.x = x;
 			particleModel.y = y;
-			particleModel.order = this.layers.length; // means it's the last item in list.
+			particleModel.order = order;
 
-			var particleID:int = particleModel.id;
-			this.layers.addItem(particleModel);
-			
+			// Add model to list.
+			this.layers.addItemAt(particleModel, this.currentLayerIndex+1);
+			// Increment layer count.
+			this._layerCount += 1;
+			// Dispatch Event.
 			DataManager.instance.dispatchEventWith(Event.ADDED, false, particleModel);
+			
+			// Call to select layer.
+			this.selectLayer(particleModel);
+		}
+
+		/**
+		 * Method to select layer with it's object.
+		 */
+		public function selectLayer(model:Object):void
+		{
+			/**
+			 * Algorithm selectLayer:
+			 * -> get index of model.
+			 * Call -> selectLayerAt(index)
+			 */
+			var index:int = this.layers.getItemIndex(model);
+			this.selectLayerAt(index);
 		}
 
 		/**
@@ -134,35 +196,45 @@ package com.grantech.managers
 		 */
 		public function selectLayerAt(index:int):void
 		{
+			/**
+			 * Algorithm selectLayerAt:
+			 * if (new index == current index) or (new index < 0) then
+			 * 	halt;
+			 * 
+			 * Set -> currentLayerIndex to new index
+			 * Event -> SELECT, currentLayerIndex
+			 */
+			if (this.currentLayerIndex == index || index < 0 )
+				return;
 			this.currentLayerIndex = index;
-			DataManager.instance.dispatchEventWith(Event.SELECT, false, { index: index} );
+			DataManager.instance.dispatchEventWith(Event.SELECT, false, { index: index } );
 		}
 
-		// /**
-		//  * Returns a layer data by id.
-		//  */
-		// public function getLayerById(id:int):Object
-		// {
-		// 	return this.layers.data;
-		// }
-
 		/**
-		 * Method to remove layer with reference.
+		 * Method to remove layer with it's object.
 		 */
 		public function removeLayer(layer:Object):void
 		{
-			var indexValue:int = this.layers.getItemIndex(layer);
-			DataManager.instance.dispatchEventWith(Event.REMOVED, false, { index: indexValue });
-			this.layers.removeItem(layer);
+			var index:int = this.layers.getItemIndex(layer);
+			this.removeLayerAt(index);
 		}
 
 		/**
-		 * Method to remove layer with index.
+		 * Method to remove layer with it's index.
 		 */
 		public function removeLayerAt(index:int):void
 		{
+			if (this.layerCount == 0)
+				return;
+
 			DataManager.instance.dispatchEventWith(Event.REMOVED, false, { index: index });
 			this.layers.removeItemAt(index);
+			this._layerCount -= 1;
+			// Must handle this at both list and it's collection.
+			if(index >= 0)
+			{
+				this.currentLayerIndex = index - 1;
+			}
 		}
 
 		/**
@@ -194,6 +266,8 @@ package com.grantech.managers
 			}
 		}
 
+		private var _zIndex:Number;
+
 		/**
 		 * Constructor.
 		 */
@@ -201,6 +275,8 @@ package com.grantech.managers
 		{
 			super();
 			this._idHolder = -1;
+			this._layerCount = 0;
+			this._zIndex = 0;
 			this._currentLayerIndex = -1;
 			this._layers = new ListCollection(); 
 			this._inspector = new ListCollection();
