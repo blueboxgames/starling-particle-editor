@@ -28,6 +28,12 @@ package com.grantech.managers
 	[Event(name="removed",type="starling.events.Event")]
 
 	/**
+	 * Dispatched when a data is changed.
+	 * @eventType starling.events.Event.CHANGE
+	 */
+	[Event(name="change",type="starling.events.Event")]
+
+	/**
 	 * Manager for layers data.
 	 */
 	public class DataManager extends EventDispatcher implements IFeathersEventDispatcher
@@ -235,6 +241,12 @@ package com.grantech.managers
 			{
 				this.currentLayerIndex = index - 1;
 			}
+		}
+
+		public function editCurrentLayerData(key:String, value:*):void
+		{
+			layerAt(currentLayerIndex).setProperty(key, value);
+			DataManager.instance.dispatchEventWith(Event.CHANGE, false, { key: key, value: value });
 		}
 
 		/**

@@ -8,12 +8,11 @@ package com.grantech.controls.items
 	import feathers.layout.HorizontalLayoutData;
 
 	import starling.events.Event;
-	import feathers.controls.NumericStepper;
 
 	public class InspectorListItemRenderer extends AbstractTouchableListItemRenderer
 	{
 		private var label:Label;
-		private var component:NumericStepper;
+		private var component:EditableSlider;
 		public function InspectorListItemRenderer()
 		{
 			super();
@@ -44,19 +43,15 @@ package com.grantech.controls.items
 				this.label.text = this.data.label;
 				this.component.value = this.data.value as Number;
 				this.component.step = this.data.step as Number;
-				this.component.minimum = -1000;
-				this.component.maximum = 1000;
+				this.component.minimum = this.data.min as Number;
+				this.component.maximum = this.data.max as Number;
 			}
-			// if(this.data.value is Number)
-			// {
-
-			// 	// this.component.addEventListener(Event.CHANGE, commitDataToList);
-			// }
+			this.component.addEventListener(Event.CHANGE, component_changeHandler);
 		}
 
-		private function commitDataToList(e:Event):void
+		private function component_changeHandler(e:Event):void
 		{
-			// DataManager.instance.dispatchEventWith("particleDataChanged",false, {label: this.data.label, value: this.component.value});
+			DataManager.instance.editCurrentLayerData(this.data.label, this.component.value);			
 		}
 	}
 }

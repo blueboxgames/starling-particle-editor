@@ -16,67 +16,67 @@ package com.grantech.models
 			
 			"defaultDuration": {
 				min: -1,
-				max: 1000,
+				max: Number.MAX_VALUE,
 				step: 1
 			},
 
 			"emitterXVariance": {
-				min: -1000,
-				max: 1000,
+				min: Number.MIN_VALUE,
+				max: Number.MAX_VALUE,
 				step: 1
 			},
 
 			"emitterYVariance": {
-				min: -1000,
-				max: 1000,
+				min: Number.MIN_VALUE,
+				max: Number.MAX_VALUE,
 				step: 1
 			},
 			
 			"gravityX": {
-				min: -1000,
-				max: 1000,
+				min: Number.MIN_VALUE,
+				max: Number.MAX_VALUE,
 				step: 1
 			},
 			
 			"gravityY": {
-				min: -1000,
-				max: 1000,
+				min: Number.MIN_VALUE,
+				max: Number.MAX_VALUE,
 				step: 1
 			},
 
 			"lifespan": {
 				min: 0,
-				max: 1000,
+				max: Number.MAX_VALUE,
 				step: 1
 			},
 
 			"lifespanVariance": {
 				min: 0,
-				max: 1000,
+				max: Number.MAX_VALUE,
 				step: 1
 			},
 			
 			"startSize": {
 				min: 0,
-				max: 1000,
+				max: Number.MAX_VALUE,
 				step: 1
 			},
 
 			"startSizeVariance": {
 				min: 0,
-				max: 1000,
+				max: Number.MAX_VALUE,
 				step: 1
 			},
 
 			"endSize": {
 				min: 0,
-				max: 1000,
+				max: Number.MAX_VALUE,
 				step: 1
 			},
 
 			"endSizeVariance": {
 				min: 0,
-				max: 1000,
+				max: Number.MAX_VALUE,
 				step: 1
 			},
 
@@ -93,85 +93,85 @@ package com.grantech.models
 			},
 
 			"startRotation": {
-				min: -1000,
-				max: 1000,
+				min: Number.MIN_VALUE,
+				max: Number.MAX_VALUE,
 				step: 1
 			},
 
 			"startRotationVariance": {
-				min: -1000,
-				max: 1000,
+				min: Number.MIN_VALUE,
+				max: Number.MAX_VALUE,
 				step: 1
 			},
 
 			"endRotation": {
-				min: -1000,
-				max: 1000,
+				min: Number.MIN_VALUE,
+				max: Number.MAX_VALUE,
 				step: 1
 			},
 
 			"endRotationVariance": {
-				min: -1000,
-				max: 1000,
+				min: Number.MIN_VALUE,
+				max: Number.MAX_VALUE,
 				step: 1
 			},
 
 			"speed": {
 				min: 0,
-				max: 1000,
+				max: Number.MAX_VALUE,
 				step: 1
 			},
 
 			"speedVariance": {
 				min: 0,
-				max: 1000,
+				max: Number.MAX_VALUE,
 				step: 1
 			},
 
 			"radialAcceleration": {
-				min: -1000,
-				max: 1000,
+				min: Number.MIN_VALUE,
+				max: Number.MAX_VALUE,
 				step: 1
 			},
 			"radialAccelerationVariance": {
 				min: 0,
-				max: 1000,
+				max: Number.MAX_VALUE,
 				step: 1
 			},
 
 			"tangentialAcceleration": {
-				min: -1000,
-				max: 1000,
+				min: Number.MIN_VALUE,
+				max: Number.MAX_VALUE,
 				step: 1
 			},
 
 			"tangentialAccelerationVariance": {
 				min: 0,
-				max: 1000,
+				max: Number.MAX_VALUE,
 				step: 1
 			},
 
 			"maxRadius": {
 				min: 0,
-				max: 1000,
+				max: Number.MAX_VALUE,
 				step: 1
 			},
 			
 			"maxRadiusVariance": {
 				min: 0,
-				max: 1000,
+				max: Number.MAX_VALUE,
 				step: 1
 			},
 			
 			"minRadius": {
 				min: 0,
-				max: 1000,
+				max: Number.MAX_VALUE,
 				step: 1
 			},
 			
 			"minRadiusVariance": {
 				min: 0,
-				max: 1000,
+				max: Number.MAX_VALUE,
 				step: 1
 			},
 			
@@ -262,21 +262,21 @@ package com.grantech.models
 
 		public function getMin(property:String):Number
 		{
-			var value:Number = -1000;			
+			var value:Number = Number.MIN_VALUE;			
 			value = this.propertyList[property] ? this.propertyList[property].min : NaN;
 			return value;
 		}
 
 		public function getMax(property:String):Number
 		{
-			var value:Number = -1000;			
+			var value:Number = Number.MIN_VALUE;			
 			value = this.propertyList[property] ? this.propertyList[property].max : NaN;
 			return value;
 		}
 
 		public function getStep(property:String):Number
 		{
-			var value:Number = -1000;			
+			var value:Number = Number.MIN_VALUE;			
 			value = this.propertyList[property] ? this.propertyList[property].step : NaN;
 			return value;
 		}

@@ -50,6 +50,8 @@ package com.grantech.panels
 			var reference:ParticleDataModel = event.data as ParticleDataModel;
 			var blueTexture:Texture = Texture.fromEmbeddedAsset(BlueflameParticle);
 			var particleSystem:PDParticleSystem = new PDParticleSystem(reference, blueTexture);
+			particleSystem.x = this.width/2;
+			particleSystem.y = this.height/2;
 			
 			particleSystem.start();
 			Starling.juggler.add(particleSystem);
@@ -59,13 +61,11 @@ package com.grantech.panels
 
 		protected function dataManager_changeHandler(event:Event):void
 		{
-			var index:int = event.data.index;
+			var index:int = DataManager.instance.currentLayerIndex;
 			var key:String = event.data.key;
 			var value:Number = event.data.value;
 			var particleModel:ParticleDataModel = DataManager.instance.layers.getItemAt(index) as ParticleDataModel;
-			var particleSystem:PDParticleSystem = SceneManager.instance.getParticleSystem(particleModel.id)
-
-			particleSystem[key] = value;
+			SceneManager.instance.changeParticleSystem(particleModel.id, key, value);
 		}
 
 		/**
@@ -97,6 +97,7 @@ package com.grantech.panels
 		override public function dispose():void
 		{
 			DataManager.instance.removeEventListener(Event.ADDED, dataManager_addedHandler);
+			DataManager.instance.removeEventListener(Event.CHANGE, dataManager_changeHandler);
 			DataManager.instance.removeEventListener(Event.SELECT, dataManager_selectHandler);
 			DataManager.instance.removeEventListener(Event.REMOVED, dataManager_removedHandler);
 			super.dispose();

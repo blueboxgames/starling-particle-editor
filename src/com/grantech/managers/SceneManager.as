@@ -51,6 +51,11 @@ package com.grantech.managers
 			return this._particleSystems[id];
 		}
 
+		public function changeParticleSystem(id:int, key:String, value:*):void
+		{
+			this._particleSystems[id][key] = value;
+		}
+
 		public function removeParticleSystem(id:int):void
 		{
 			this._particleSystems[id] = null;
