@@ -1,9 +1,13 @@
 package com.grantech.controls.items
 {
+	import com.grantech.managers.DataManager;
+
 	import feathers.controls.EditableSlider;
 	import feathers.controls.Label;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.HorizontalLayoutData;
+
+	import starling.events.Event;
 
 	public class InspectorListItemRenderer extends AbstractTouchableListItemRenderer
 	{
@@ -34,11 +38,20 @@ package com.grantech.controls.items
 		override protected function commitData():void
 		{
 			super.commitData();
-			if(this.data == null)
-				return;
-				
-			// DataManager.instance.inspector
-			this.label.text = this.data.name;
+			if(this._data && this._owner)
+			{
+				this.label.text = this.data.label;
+				this.component.step = this.data.step as Number;
+				this.component.minimum = this.data.min as Number;
+				this.component.maximum = this.data.max as Number;
+				this.component.value = this.data.value as Number;
+			}
+			this.component.addEventListener(Event.CHANGE, component_changeHandler);
+		}
+
+		private function component_changeHandler(e:Event):void
+		{
+			DataManager.instance.editCurrentLayerData(this.data.label, this.component.value);			
 		}
 	}
 }

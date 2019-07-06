@@ -80,10 +80,5 @@ package starling.extensions
             blue = argb.blue;
             alpha = argb.alpha;
         }
-
-        public function toString():String
-        {
-            return "rbga(" + this.red*255 + "," + this.green*255 + "," + this.blue*255 + ")";
-        }
     }
 }

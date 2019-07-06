@@ -1,10 +1,11 @@
 package com.grantech.models
 {
 	import starling.extensions.ColorArgb;
+	import starling.textures.Texture;
 
-	public class ParticleData extends LayerData
+	public class ParticleDataModel extends LayerDataModel
 	{
-		public function ParticleData()
+		public function ParticleDataModel()
 		{
 			this.initialize();
 		}
@@ -16,24 +17,24 @@ package com.grantech.models
 		{
 			this.emitterType = 0;
 			this.duration = -1;
-			this.emitterXVariance = 0;
-			this.emitterYVariance = 0;
-			this.gravityX = 0;
-			this.gravityY = 0;
-			this.lifespan = 0;
-			this.lifespanVariance = 0;
-			this.startSize = 0;
-			this.startSizeVariance = 0;
-			this.endSize = 0;
+			this.emitterXVariance = 15;
+			this.emitterYVariance = -20;
+			this.gravityX = -1000;
+			this.gravityY = -740;
+			this.lifespan = 1.1;
+			this.lifespanVariance = 0.4;
+			this.startSize = 111;
+			this.startSizeVariance = 10;
+			this.endSize = 40;
 			this.endSizeVariance = 0;
-			this.emitAngle = 0;
-			this.emitAngleVariance = 0;
-			this.startRotation = 0;
+			this.emitAngle = -146;
+			this.emitAngleVariance = 50;
+			this.startRotation = 720;
 			this.startRotationVariance = 0;
 			this.endRotation = 0;
 			this.endRotationVariance = 0;
-			this.speed = 0;
-			this.speedVariance = 0;
+			this.speed = 244;
+			this.speedVariance = 5;
 			this.radialAcceleration = 0;
 			this.radialAccelerationVariance = 0;
 			this.tangentialAcceleration = 0;
@@ -46,10 +47,14 @@ package com.grantech.models
 			this.rotatePerSecond = 0;
 			this.rotatePerSecondVariance = 0;
 			/**? Colors */
-			this.startColor = new ColorArgb(0,0,0,0);
-			this.startColorVariance = new ColorArgb(0,0,0,0);
-			this.endColor = new ColorArgb(0,0,0,0);
-			this.endColorVariance = new ColorArgb(0,0,0,0);
+			this.startColor = new ColorArgb(0.4,0,0,1);
+			this.startColorVariance = new ColorArgb(0,0,0,1);
+			this.finishColor = new ColorArgb(0,0,0,1);
+			this.finishColorVariance = new ColorArgb(0,0,0,1);
+			this.blendFuncSource = 770;
+			this.blendFuncDestination = 1;
+			this.maxParticles = 300;
+			this.texture = null;
 		}
 
 		public function get emitterType():int
@@ -77,9 +82,24 @@ package com.grantech.models
 			return this.getProperty("emitterXVariance");
 		}
 
+		public function get sourcePositionVariancex():Number
+		{
+			return this.getProperty("emitterXVariance");
+		}
+
 		public function set emitterXVariance(value:Number):void
 		{
 			this.setProperty("emitterXVariance", value);
+		}
+
+		public function get emitterYVariance():Number
+		{
+			return this.getProperty("emitterYVariance");
+		}
+
+		public function get sourcePositionVariancey():Number
+		{
+			return this.getProperty("emitterYVariance");
 		}
 
 		public function set emitterYVariance(value:Number):void
@@ -94,9 +114,19 @@ package com.grantech.models
 			return this.getProperty("lifespan");
 		}
 
+		public function get particleLifespan():Number
+		{
+			return this.getProperty("lifespan");
+		}
+
 		public function set lifespan(value:Number):void
 		{
 			this.setProperty("lifespan", value);
+		}
+
+		public function get particleLifespanVariance():Number
+		{
+			return this.getProperty("lifespanVariance");
 		}
 
 		public function get lifespanVariance():Number
@@ -365,6 +395,50 @@ package com.grantech.models
 			this.setProperty("startColor", value);
 		}
 
+		public function get startColorRed():Number
+		{
+			return this.startColor.red;
+		}
+
+		public function set startColorRed(value:Number):void
+		{
+			this.startColor.red = value;
+			this.setProperty("startColor", value);
+		}
+
+		public function get startColorGreen():Number
+		{
+			return this.startColor.green;
+		}
+
+		public function set startColorGreen(value:Number):void
+		{
+			this.startColor.green = value;
+			this.setProperty("startColor", value);
+		}
+
+		public function get startColorBlue():Number
+		{
+			return this.startColor.blue;
+		}
+
+		public function set startColorBlue(value:Number):void
+		{
+			this.startColor.blue = value;
+			this.setProperty("startColor", value);
+		}
+
+		public function get startColorAlpha():Number
+		{
+			return this.startColor.alpha;
+		}
+
+		public function set startColorAlpha(value:Number):void
+		{
+			this.startColor.alpha = value;
+			this.setProperty("startColor", value);
+		}
+
 		public function get startColorVariance():ColorArgb
 		{
 			return this.getProperty("startColorVariance");
@@ -375,27 +449,196 @@ package com.grantech.models
 			this.setProperty("startColorVariance", value);
 		}
 
-		public function get endColor():ColorArgb
+		public function get startColorVarianceRed():Number
 		{
-			return this.getProperty("endColor");
+			return this.startColorVariance.red;
 		}
 
-		public function set endColor(value:ColorArgb):void
+		public function set startColorVarianceRed(value:Number):void
 		{
-			this.setProperty("endColor", value);
+			this.startColorVariance.red = value;
+			this.setProperty("startColorVariance", this.startColorVariance);
 		}
 
-		public function get endColorVariance():ColorArgb
+		public function get startColorVarianceGreen():Number
 		{
-			return this.getProperty("endColorVariance");
+			return this.startColorVariance.green;
 		}
 
-		public function set endColorVariance(value:ColorArgb):void
+		public function set startColorVarianceGreen(value:Number):void
 		{
-			this.setProperty("endColorVariance", value);
+			this.startColorVariance.green = value;
+			this.setProperty("startColorVariance", this.startColorVariance);
 		}
 
+		public function get startColorVarianceBlue():Number
+		{
+			return this.getProperty("startColorVarianceBlue");
+		}
 
+		public function set startColorVarianceBlue(value:Number):void
+		{
+			this.startColorVariance.blue = value;
+			this.setProperty("startColorVariance", value);
+		}
 
+		public function get startColorVarianceAlpha():Number
+		{
+			return this.startColor.alpha;
+		}
+
+		public function set startColorVarianceAlpha(value:Number):void
+		{
+			this.startColor.alpha = value;
+			this.setProperty("startColorVariance", value);
+		}
+
+		public function get finishColor():ColorArgb
+		{
+			return this.getProperty("finishColor");
+		}
+
+		public function set finishColor(value:ColorArgb):void
+		{
+			this.setProperty("finishColor", value);
+		}
+
+		public function get finishColorRed():Number
+		{
+			return this.finishColor.red;
+		}
+
+		public function set finishColorRed(value:Number):void
+		{
+			this.finishColor.red = value;
+			this.setProperty("finishColor", value);
+		}
+
+		public function get finishColorGreen():Number
+		{
+			return this.finishColor.green;
+		}
+
+		public function set finishColorGreen(value:Number):void
+		{
+			this.finishColor.green = value;
+			this.setProperty("finishColor", value);
+		}
+
+		public function get finishColorBlue():Number
+		{
+			return this.finishColor.blue;
+		}
+
+		public function set finishColorBlue(value:Number):void
+		{
+			this.finishColor.blue = value;
+			this.setProperty("finishColor", value);
+		}
+
+		public function get finishColorAlpha():Number
+		{
+			return this.finishColor.alpha;
+		}
+
+		public function set finishColorAlpha(value:Number):void
+		{
+			this.finishColor.alpha = value;
+			this.setProperty("finishColor", value);
+		}
+
+		public function get finishColorVariance():ColorArgb
+		{
+			return this.getProperty("finishColorVariance");
+		}
+
+		public function set finishColorVariance(value:ColorArgb):void
+		{
+			this.setProperty("finishColorVariance", value);
+		}
+
+		public function get finishColorVarianceRed():Number
+		{
+			return this.finishColorVariance.red;
+		}
+
+		public function set finishColorVarianceRed(value:Number):void
+		{
+			this.finishColorVariance.red = value;
+			this.setProperty("finishColorVariance", value);
+		}
+
+		public function get finishColorVarianceGreen():Number
+		{
+			return this.finishColorVariance.green;
+		}
+
+		public function set finishColorVarianceGreen(value:Number):void
+		{
+			this.finishColorVariance.green = value;
+			this.setProperty("finishColorVariance", value);
+		}
+
+		public function get finishColorVarianceBlue():Number
+		{
+			return this.finishColorVariance.blue;
+		}
+
+		public function set finishColorVarianceBlue(value:Number):void
+		{
+			this.finishColorVariance.blue = value;
+			this.setProperty("finishColorVariance", value);
+		}
+
+		public function get finishColorVarianceAlpha():Number
+		{
+			return this.finishColorVariance.alpha;
+		}
+
+		public function set finishColorVarianceAlpha(value:Number):void
+		{
+			this.finishColorVariance.alpha = value;
+			this.setProperty("finishColorVariance", value);
+		}
+
+		public function get blendFuncSource():Number
+		{
+			return this.getProperty("blendFuncSource");
+		}
+
+		public function set blendFuncSource(value:Number):void
+		{
+			this.setProperty("blendFuncSource", value);
+		}
+
+		public function get blendFuncDestination():Number
+		{
+			return this.getProperty("blendFuncDestination");
+		}
+
+		public function set blendFuncDestination(value:Number):void
+		{
+			this.setProperty("blendFuncDestination", value);
+		}
+
+		public function get maxParticles():Number
+		{
+			return this.getProperty("maxParticles");
+		}
+
+		public function set maxParticles(value:Number):void
+		{
+			this.setProperty("maxParticles", value);
+		}
+
+		public function get texture():Texture
+		{
+			return this.getProperty("texture");
+		}
+
+		public function set texture(value:Texture):void
+		{
+			this.setProperty("texture", value);
+		}
 	}
 }
