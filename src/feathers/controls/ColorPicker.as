@@ -87,7 +87,7 @@ package feathers.controls
 			_data = value;
 		}
 
-		private var _gap:Number;
+		private var _gap:Number = 0;
 		
 		public function get gap():Number
 		{
@@ -196,35 +196,31 @@ package feathers.controls
 				if (touch.phase == TouchPhase.BEGAN)
 				{
 					touch.getLocation(this.colorPalette, m_TouchEndedPoint);
-					getColor(int(m_TouchEndedPoint.x), int(m_TouchEndedPoint.y));
+					this.colorIndicator.color = this.bitmapData.getPixel(m_TouchEndedPoint.x, m_TouchEndedPoint.y);
 				}
 
 				if (touch.phase == TouchPhase.MOVED){
 					if (stage.hitTest(m_TouchEndedPoint) == touch.target)
 					{
 						touch.getLocation(this.colorPalette, m_TouchEndedPoint);
-						getColor(int(m_TouchEndedPoint.x), int(m_TouchEndedPoint.y));
+						this.colorIndicator.color = this.bitmapData.getPixel(m_TouchEndedPoint.x, m_TouchEndedPoint.y);
 					}
 				}
 
 				if (touch.phase == TouchPhase.ENDED){
 					if (stage.hitTest(m_TouchEndedPoint) == touch.target)
 					{
-						// TODO: Write a workaround so we don't dispatch change on every mouse
-						// movement.
+						touch.getLocation(this.colorPalette, m_TouchEndedPoint);
+						var currentColor:uint = this.bitmapData.getPixel(m_TouchEndedPoint.x, m_TouchEndedPoint.y)
+						this.colorIndicator.color = currentColor;
+						var newColor:ColorArgb = ColorArgb.fromArgb(currentColor);
+						this.r = newColor.red * 255;
+						this.g = newColor.green * 255;
+						this.b = newColor.blue * 255;
+						this.dispatchEventWith(Event.CHANGE);
 					}
 				}
 			}
-		}
-		
-		private function getColor(_x:int,_y:int):void {
-			var currentValue:uint = this.bitmapData.getPixel(_x, _y);
-			this.colorIndicator.color = currentValue;
-			var newColor:ColorArgb = ColorArgb.fromArgb(currentValue);
-			this.r = newColor.red * 255;
-			this.g = newColor.green * 255;
-			this.b = newColor.blue * 255;
-			this.dispatchEventWith(Event.CHANGE);
 		}
 	}
 }
