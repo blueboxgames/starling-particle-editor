@@ -41,10 +41,10 @@ package com.grantech.controls.items
 			if(this._data && this._owner)
 			{
 				this.label.text = this.data.label;
-				this.component.value = this.data.value as Number;
 				this.component.step = this.data.step as Number;
 				this.component.minimum = this.data.min as Number;
 				this.component.maximum = this.data.max as Number;
+				this.component.value = this.data.value as Number;
 			}
 			this.component.addEventListener(Event.CHANGE, component_changeHandler);
 		}
