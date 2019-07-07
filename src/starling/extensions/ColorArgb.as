@@ -80,5 +80,10 @@ package starling.extensions
             blue = argb.blue;
             alpha = argb.alpha;
         }
+
+        public function toString():String
+        {
+            return "(" + red*255 + "," + green*255 + "," + blue*255 + ":" + Math.round(alpha * 100)/100 + ")";
+        }
     }
 }
