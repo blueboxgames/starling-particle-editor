@@ -14,7 +14,7 @@ package com.grantech.utils
 	[Event(name="change", type="starling.events.Event")]
 	public class Localizations extends EventDispatcher
 	{
-		static public var _instance:Localizations;
+		static private var _instance:Localizations;
 		public var locale:String;
 		public var localeDictionary:Object;
 		public var assetManager:AssetManager;

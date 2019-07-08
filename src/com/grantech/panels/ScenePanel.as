@@ -63,7 +63,7 @@ package com.grantech.panels
 		{
 			var index:int = DataManager.instance.currentLayerIndex;
 			var key:String = event.data.key;
-			var value:Number = event.data.value;
+			var value:* = event.data.value;
 			var particleModel:ParticleDataModel = DataManager.instance.layers.getItemAt(index) as ParticleDataModel;
 			SceneManager.instance.changeParticleSystem(particleModel.id, key, value);
 		}

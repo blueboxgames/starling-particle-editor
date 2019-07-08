@@ -7,7 +7,6 @@ package com.grantech.managers
 
 	import starling.events.Event;
 	import starling.events.EventDispatcher;
-	import com.grantech.models.InspectorDataProject;
 
 	/**
 	 * Dispatched when a layer is added.
@@ -84,28 +83,21 @@ package com.grantech.managers
 			// Index range is out of range. _currentLayerIndex range: [-1, int.MAX_VALUE]
 			if(index < -1)
 				return;
-			
+
 			this._currentLayerIndex = index;
 			if(this._currentLayerIndex > -1)
 			{
-				var inspectorDataProjector:InspectorDataProject = new InspectorDataProject();
 				var layerProps:ParticleDataModel = layers.getItemAt(index) as ParticleDataModel;
 				for(var key:String in layerProps.properties)
 				{
-					if( !isNaN(inspectorDataProjector.getMin(key)) )
+					// TODO: do something about this
+					if(key != 'id' && key != 'name' && key != 'order' && key != 'blendFuncSource' && key != 'x' && key != 'y' &&
+					key != 'blendFuncDestination' && key != 'maxParticles')
 					{
-						inspector.addItem({
-							label: key,
-							value: layerProps.getProperty(key),
-							min: inspectorDataProjector.getMin(key),
-							max: inspectorDataProjector.getMax(key),
-							step: inspectorDataProjector.getStep(key)
-						});
+						this.inspector.addItem({key:key , value:layerProps.properties[key]});
 					}
 				}
 			}
-			DataManager.instance.dispatchEventWith(Event.SELECT, false, {index: this.currentLayerIndex});
-			trace("CurrentLayer: " + this._currentLayerIndex);
 		}
 
 		private var _layerCount:int;
@@ -178,7 +170,7 @@ package com.grantech.managers
 			this._layerCount += 1;
 			// Dispatch Event.
 			DataManager.instance.dispatchEventWith(Event.ADDED, false, particleModel);
-			
+
 			// Call to select layer.
 			this.selectLayer(particleModel);
 		}

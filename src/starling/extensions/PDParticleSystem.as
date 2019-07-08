@@ -475,10 +475,10 @@ package starling.extensions
         public function get startColorVariance():ColorArgb { return _startColorVariance; }
         public function set startColorVariance(value:ColorArgb):void { _startColorVariance = value; }
 
-        public function get endColor():ColorArgb { return _endColor; }
-        public function set endColor(value:ColorArgb):void { _endColor = value; }
+        public function get finishColor():ColorArgb { return _endColor; }
+        public function set finishColor(value:ColorArgb):void { _endColor = value; }
 
-        public function get endColorVariance():ColorArgb { return _endColorVariance; }
-        public function set endColorVariance(value:ColorArgb):void { _endColorVariance = value; }
+        public function get finishColorVariance():ColorArgb { return _endColorVariance; }
+        public function set finishColorVariance(value:ColorArgb):void { _endColorVariance = value; }
     }
 }

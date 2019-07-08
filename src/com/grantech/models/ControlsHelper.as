@@ -1,10 +1,23 @@
 package com.grantech.models
 {
-	public class InspectorDataProject
+	public class ControlsHelper
 	{
-		public function InspectorDataProject()
+		static public const TYPE_SLIDER:int = 0;
+		static public const TYPE_COLOR_PICKER:int = 1;
+		public function ControlsHelper()
 		{
-			
+			super();
+		}
+		private static var _instance:ControlsHelper;
+
+		/**
+		 * ControlsHelper singleton access method.
+		 */
+		public static function get instance() : ControlsHelper
+		{
+			if( _instance == null )
+				_instance = new ControlsHelper();
+				return _instance;
 		}
 
 		private var propertyList:Object = {
@@ -16,67 +29,67 @@ package com.grantech.models
 			
 			"defaultDuration": {
 				min: -1,
-				max: Number.MAX_VALUE,
+				max: 10000,
 				step: 1
 			},
 
 			"emitterXVariance": {
-				min: Number.MIN_VALUE,
-				max: Number.MAX_VALUE,
+				min: -10000,
+				max: 10000,
 				step: 1
 			},
 
 			"emitterYVariance": {
-				min: Number.MIN_VALUE,
-				max: Number.MAX_VALUE,
+				min: -10000,
+				max: 10000,
 				step: 1
 			},
 			
 			"gravityX": {
-				min: Number.MIN_VALUE,
-				max: Number.MAX_VALUE,
+				min: -10000,
+				max: 10000,
 				step: 1
 			},
 			
 			"gravityY": {
-				min: Number.MIN_VALUE,
-				max: Number.MAX_VALUE,
+				min: -10000,
+				max: 10000,
 				step: 1
 			},
 
 			"lifespan": {
 				min: 0,
-				max: Number.MAX_VALUE,
+				max: 10000,
 				step: 1
 			},
 
 			"lifespanVariance": {
 				min: 0,
-				max: Number.MAX_VALUE,
+				max: 10000,
 				step: 1
 			},
 			
 			"startSize": {
 				min: 0,
-				max: Number.MAX_VALUE,
+				max: 10000,
 				step: 1
 			},
 
 			"startSizeVariance": {
 				min: 0,
-				max: Number.MAX_VALUE,
+				max: 10000,
 				step: 1
 			},
 
 			"endSize": {
 				min: 0,
-				max: Number.MAX_VALUE,
+				max: 10000,
 				step: 1
 			},
 
 			"endSizeVariance": {
 				min: 0,
-				max: Number.MAX_VALUE,
+				max: 10000,
 				step: 1
 			},
 
@@ -93,85 +106,85 @@ package com.grantech.models
 			},
 
 			"startRotation": {
-				min: Number.MIN_VALUE,
-				max: Number.MAX_VALUE,
+				min: -10000,
+				max: 10000,
 				step: 1
 			},
 
 			"startRotationVariance": {
-				min: Number.MIN_VALUE,
-				max: Number.MAX_VALUE,
+				min: -10000,
+				max: 10000,
 				step: 1
 			},
 
 			"endRotation": {
-				min: Number.MIN_VALUE,
-				max: Number.MAX_VALUE,
+				min: -10000,
+				max: 10000,
 				step: 1
 			},
 
 			"endRotationVariance": {
-				min: Number.MIN_VALUE,
-				max: Number.MAX_VALUE,
+				min: -10000,
+				max: 10000,
 				step: 1
 			},
 
 			"speed": {
 				min: 0,
-				max: Number.MAX_VALUE,
+				max: 10000,
 				step: 1
 			},
 
 			"speedVariance": {
 				min: 0,
-				max: Number.MAX_VALUE,
+				max: 10000,
 				step: 1
 			},
 
 			"radialAcceleration": {
-				min: Number.MIN_VALUE,
-				max: Number.MAX_VALUE,
+				min: -10000,
+				max: 10000,
 				step: 1
 			},
 			"radialAccelerationVariance": {
 				min: 0,
-				max: Number.MAX_VALUE,
+				max: 10000,
 				step: 1
 			},
 
 			"tangentialAcceleration": {
-				min: Number.MIN_VALUE,
-				max: Number.MAX_VALUE,
+				min: -10000,
+				max: 10000,
 				step: 1
 			},
 
 			"tangentialAccelerationVariance": {
 				min: 0,
-				max: Number.MAX_VALUE,
+				max: 10000,
 				step: 1
 			},
 
 			"maxRadius": {
 				min: 0,
-				max: Number.MAX_VALUE,
+				max: 10000,
 				step: 1
 			},
 			
 			"maxRadiusVariance": {
 				min: 0,
-				max: Number.MAX_VALUE,
+				max: 10000,
 				step: 1
 			},
 			
 			"minRadius": {
 				min: 0,
-				max: Number.MAX_VALUE,
+				max: 10000,
 				step: 1
 			},
 			
 			"minRadiusVariance": {
 				min: 0,
-				max: Number.MAX_VALUE,
+				max: 10000,
 				step: 1
 			},
 			
@@ -260,23 +273,38 @@ package com.grantech.models
 			}
 		}
 
+		public function getType(property:String):int
+		{
+			switch( property )
+			{
+				case "startColor":
+				case "startColorVariance":
+				case "finishColor":
+				case "finishColorVariance":
+					return TYPE_COLOR_PICKER
+					break;
+				default:
+					return TYPE_SLIDER;
+					break;
+			}
+		}
 		public function getMin(property:String):Number
 		{
-			var value:Number = Number.MIN_VALUE;			
+			var value:Number = -10000;			
 			value = this.propertyList[property] ? this.propertyList[property].min : NaN;
 			return value;
 		}
 
 		public function getMax(property:String):Number
 		{
-			var value:Number = Number.MIN_VALUE;			
+			var value:Number = -10000;			
 			value = this.propertyList[property] ? this.propertyList[property].max : NaN;
 			return value;
 		}
 
 		public function getStep(property:String):Number
 		{
-			var value:Number = Number.MIN_VALUE;			
+			var value:Number = -10000;			
 			value = this.propertyList[property] ? this.propertyList[property].step : NaN;
 			return value;
 		}

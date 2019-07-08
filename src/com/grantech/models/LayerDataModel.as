@@ -2,7 +2,10 @@ package com.grantech.models
 {
 	public class LayerDataModel extends SerializableDataModel
 	{
-		public function LayerDataModel(){}
+		public function LayerDataModel()
+		{
+			super();
+		}
 
 		/**
 		 * Returns current layer id.

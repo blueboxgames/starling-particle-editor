@@ -1,7 +1,10 @@
 package com.grantech.controls.items
 {
 	import com.grantech.managers.DataManager;
+	import com.grantech.models.ControlsHelper;
+	import com.grantech.utils.Localizations;
 
+	import feathers.controls.ColorPicker;
 	import feathers.controls.EditableSlider;
 	import feathers.controls.Label;
 	import feathers.layout.HorizontalLayout;
@@ -11,8 +14,12 @@ package com.grantech.controls.items
 
 	public class InspectorListItemRenderer extends AbstractTouchableListItemRenderer
 	{
-		private var label:Label;
-		private var component:EditableSlider;
+		private var key:String;
+		private var value:*;
+
+		private var labelDisplay:Label;
+		private var sliderDisplay:EditableSlider;
+		private var colorPickerDisplay:ColorPicker;
 		public function InspectorListItemRenderer()
 		{
 			super();
@@ -26,32 +33,69 @@ package com.grantech.controls.items
 			hLayout.gap = 5;
 			this.layout = hLayout;
 
-			this.label = new Label();
-			this.label.layoutData = new HorizontalLayoutData(50);
-			this.addChild(this.label);
-
-			this.component = new EditableSlider();
-			this.component.layoutData = new HorizontalLayoutData(50);
-			this.addChild(this.component);
+			this.labelDisplay = new Label();
+			this.labelDisplay.layoutData = new HorizontalLayoutData(50);
+			this.addChild(this.labelDisplay);
 		}
 
 		override protected function commitData():void
 		{
 			super.commitData();
-			if(this._data && this._owner)
-			{
-				this.label.text = this.data.label;
-				this.component.step = this.data.step as Number;
-				this.component.minimum = this.data.min as Number;
-				this.component.maximum = this.data.max as Number;
-				this.component.value = this.data.value as Number;
-			}
-			this.component.addEventListener(Event.CHANGE, component_changeHandler);
+			if( this._data == null || this._owner == null )
+				return;
+			this.removeChildren();
+			this.key = this._data.key as String;
+			
+			this.value = DataManager.instance.layers.getItemAt(DataManager.instance.currentLayerIndex).getProperty(this.key);
+			this.labelDisplay.text = Localizations.instance.get(this.key);
+			this.addChild(this.labelDisplay);
+			if( ControlsHelper.instance.getType(this.key) == ControlsHelper.TYPE_COLOR_PICKER )
+				createColorPicker();
+			else
+				createSlider();
 		}
 
-		private function component_changeHandler(e:Event):void
+		private function sliderDisplay_changeHandler(e:Event):void
 		{
-			DataManager.instance.editCurrentLayerData(this.data.label, this.component.value);			
+			this.value = this.sliderDisplay.value;
+			DataManager.instance.editCurrentLayerData(this.key, this.value);			
+		}
+
+		private function colorPickerDisplay_changeHandler(e:Event):void
+		{
+			this.value = this.colorPickerDisplay.data;
+			DataManager.instance.editCurrentLayerData(this.key, this.value);			
+		}
+
+		private function createSlider():void
+		{
+			if( this.colorPickerDisplay !=null )
+			{
+				this.colorPickerDisplay = null;
+			}
+			this.sliderDisplay = new EditableSlider();
+			this.sliderDisplay.addEventListener(Event.CHANGE, sliderDisplay_changeHandler);
+			this.sliderDisplay.layoutData = new HorizontalLayoutData(50);
+			
+			this.sliderDisplay.step = ControlsHelper.instance.getStep(this.key);
+			this.sliderDisplay.minimum = ControlsHelper.instance.getMin(this.key);
+			this.sliderDisplay.maximum = ControlsHelper.instance.getMax(this.key);
+			this.sliderDisplay.value = this.value;
+			this.addChild(this.sliderDisplay);
+		}
+
+		private function createColorPicker():void
+		{
+			if( this.sliderDisplay !=null )
+			{
+				this.sliderDisplay = null;
+			}
+			this.colorPickerDisplay = new ColorPicker();
+			this.colorPickerDisplay.addEventListener(Event.CHANGE, colorPickerDisplay_changeHandler);
+			this.colorPickerDisplay.layoutData = new HorizontalLayoutData(50);
+			
+			this.colorPickerDisplay.data = this.value;
+			this.addChild(this.colorPickerDisplay);
 		}
 	}
 }

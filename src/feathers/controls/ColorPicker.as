@@ -1,8 +1,12 @@
 package feathers.controls
 {
+	import flash.geom.Point;
+
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
 	import starling.events.Event;
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
 	import starling.extensions.ColorArgb;
 
 	public class ColorPicker extends LayoutGroup
@@ -133,12 +137,13 @@ package feathers.controls
 			var factory:Function = this._colorPickerElementFactory != null ? this._colorPickerElementFactory : defaultColorPickerElementFactory;
 			this.colorPickerElement = AbstractColorPicker(factory());
 			this.colorPickerElement.addEventListener(Event.CHANGE, colorPickerElement_changeHandler);
-			this.colorPickerElement.y = this.colorIndicator.height;
+			this.colorPickerElement.y = this.colorIndicator.y + this.colorIndicator.height;
 			this.colorPickerElement.scaleX = 0.7;
 			this.colorPickerElement.scaleY = 0.7;
 			this.colorPickerElement.visible = false;
-			this.colorPickerElement.initializeNow();
-			this.addChild(this.colorPickerElement as DisplayObject);
+			// this.colorPickerElement.initializeNow();
+			// this.colorPickerElement.validate();
+			this.stage.addChild(this.colorPickerElement as DisplayObject);
 		}
 
 		protected function colorPickerElement_changeHandler(e:Event):void
@@ -149,12 +154,46 @@ package feathers.controls
 			this.data.alpha = this.colorPickerElement.a / 255;
 			this.colorIndicator.defaultSkin = new Quad(1,1, this.data.toArgb());
 			this.colorLabel.text = this.data.toString();
+			this.dispatchEventWith(Event.CHANGE);
 		}
 
 		protected function colorIndicator_triggeredHandler(e:Event):void
 		{
-			this.colorPickerElement.visible = !this.colorPickerElement.visible;
+			this.stage.addEventListener(TouchEvent.TOUCH, indicator_touchHandler);
 		}
+
+		protected function indicator_touchHandler(e:TouchEvent):void
+		{
+			
+			var touch:Touch = e.getTouch(this.stage);
+			if(touch)
+			{
+				if( touch.phase == "ended" && touch.target == this.colorIndicator )
+				{
+					this.colorPickerElement.visible = !this.colorPickerElement.visible;
+					var point:Point = getCurrentPos(touch);
+					this.colorPickerElement.x = point.x - 260*this.colorPickerElement.scale;
+					this.colorPickerElement.y = point.y + this.colorIndicator.height;
+				}
+				if(touch.phase == "ended")
+				{
+					if(touch.target != this.colorIndicator)
+					{
+						this.colorPickerElement.visible = false;
+						this.stage.removeEventListener(TouchEvent.TOUCH, indicator_touchHandler);
+						return;
+					}
+				}			
+			}	
+		}
+
+		protected function getCurrentPos(touch:Touch):Point
+		{
+			var point:Point = new Point;
+			point.x = touch.globalX;
+			point.y = touch.globalY;
+			return point;
+		} 
 
 		override protected function draw():void
 		{
