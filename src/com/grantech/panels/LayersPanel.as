@@ -29,6 +29,12 @@ package com.grantech.panels
 		[Embed(source="/media/icons/removeLayer.png")]
 		public static var removeLayer:Class;
 
+		[Embed(source="/media/icons/raiseLayer.png")]
+		public static var raiseLayer:Class;
+		
+		[Embed(source="/media/icons/lowerLayer.png")]
+		public static var lowerLayer:Class;
+
 		override protected function initialize():void
 		{
 			super.initialize();
@@ -64,6 +70,7 @@ package com.grantech.panels
 				addButtonIcon.scale = 0.12;
 				addButton.defaultIcon = addButtonIcon;
 				addButton.addEventListener(Event.TRIGGERED, addButton_triggeredHandler);
+				footer.addChild(addButton);
 				
 				var removeButton:Button = new Button();
 				removeButton.width = 24;
@@ -73,9 +80,28 @@ package com.grantech.panels
 				removeButtonIcon.scale = 0.12;
 				removeButton.defaultIcon = removeButtonIcon;
 				removeButton.addEventListener(Event.TRIGGERED, removeButton_triggeredHandler);
-
-				footer.addChild(addButton);
 				footer.addChild(removeButton);
+
+				var raiseLayerButton:Button = new Button();
+				raiseLayerButton.width = 24;
+				raiseLayerButton.height = 24;
+				raiseLayerButton.defaultSkin = new Quad(1,1, 0x272822);
+				var raiseLayerButtonIcon:Image = new Image(Texture.fromBitmap(new raiseLayer()));
+				raiseLayerButtonIcon.scale = 0.12;
+				raiseLayerButton.defaultIcon = raiseLayerButtonIcon;
+				raiseLayerButton.addEventListener(Event.TRIGGERED, raiseLayerButton_triggeredHandler);
+				footer.addChild(raiseLayerButton);
+				
+				var lowerLayerButton:Button = new Button();
+				lowerLayerButton.width = 24;
+				lowerLayerButton.height = 24;
+				lowerLayerButton.defaultSkin = new Quad(1,1, 0x272822);
+				var lowerLayerButtonIcon:Image = new Image(Texture.fromBitmap(new lowerLayer()));
+				lowerLayerButtonIcon.scale = 0.12;
+				lowerLayerButton.defaultIcon = lowerLayerButtonIcon;
+				lowerLayerButton.addEventListener(Event.TRIGGERED, lowerLayerButton_triggeredHandler);
+				footer.addChild(lowerLayerButton);
+
 				return footer;
 			}
 		}
@@ -99,6 +125,16 @@ package com.grantech.panels
 			DataManager.instance.removeLayerAt(selectedIndex);
 			if( selectedIndex > 0 )
 				listDisplay.selectedIndex = selectedIndex - 1;
+		}
+
+		private function raiseLayerButton_triggeredHandler(event:Event):void
+		{
+			DataManager.instance.raiseLayerAt(listDisplay.selectedIndex);
+		}
+
+		private function lowerLayerButton_triggeredHandler(event:Event):void
+		{
+			DataManager.instance.lowerLayerAt(listDisplay.selectedIndex);
 		}
 	}
 }

@@ -7,6 +7,7 @@ package com.grantech.managers
 
 	import starling.events.Event;
 	import starling.events.EventDispatcher;
+	import com.grantech.models.LayerDataModel;
 
 	/**
 	 * Dispatched when a layer is added.
@@ -161,7 +162,7 @@ package com.grantech.managers
 			particleModel.name = name ? name : "";
 			particleModel.x = x;
 			particleModel.y = y;
-			particleModel.order = order;
+			particleModel.order = _layers.length == 0 ? 0 : this._layers.getItemAt(0).order+1;
 
 			// Add model to list.
 			this.layers.addItemAt(particleModel, this.currentLayerIndex+1);
@@ -253,7 +254,7 @@ package com.grantech.managers
 			return _inspector;
 		}
 
-		private function orderFunction(a:Object, b:Object):int
+		public function orderFunction(a:Object, b:Object):int
 		{
 			if (a.order > b.order)
 			{
@@ -270,6 +271,35 @@ package com.grantech.managers
 		}
 
 		private var _zIndex:Number;
+
+		public function raiseLayerAt(index:int):void
+		{
+			var layer:LayerDataModel = this.layers.getItemAt(index) as LayerDataModel;
+			if(index == 0)
+				return;
+			var higherLayer:LayerDataModel = this.layers.getItemAt(index-1) as LayerDataModel;
+			var tmp:int = layer.order;
+			layer.order = higherLayer.order;
+			higherLayer.order = tmp;
+			this._layers.refresh();
+			this._layers.updateAll();
+		}
+		
+		public function lowerLayerAt(index:int):void
+		{
+			var layer:LayerDataModel = this.layers.getItemAt(index) as LayerDataModel;
+			if(index == this.layers.length-1)
+			{
+				return;
+			}
+			var lowerLayer:LayerDataModel = this.layers.getItemAt(index+1) as LayerDataModel;
+			var tmp:int = layer.order;
+			layer.order = lowerLayer.order;
+			lowerLayer.order = tmp
+			layer.order = lowerLayer.order-1;
+			this._layers.refresh();
+			this._layers.updateAll();
+		}
 
 		/**
 		 * Constructor.
