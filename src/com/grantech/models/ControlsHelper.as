@@ -4,6 +4,7 @@ package com.grantech.models
 	{
 		static public const TYPE_SLIDER:int = 0;
 		static public const TYPE_COLOR_PICKER:int = 1;
+		static public const TYPE_DROPDOWN:int = 2;
 		public function ControlsHelper()
 		{
 			super();
@@ -282,6 +283,10 @@ package com.grantech.models
 				case "finishColor":
 				case "finishColorVariance":
 					return TYPE_COLOR_PICKER
+					break;
+				case "blendFuncSource":
+				case "blendFuncDestination":
+					return TYPE_DROPDOWN
 					break;
 				default:
 					return TYPE_SLIDER;
