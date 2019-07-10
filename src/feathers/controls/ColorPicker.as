@@ -8,10 +8,15 @@ package feathers.controls
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.extensions.ColorArgb;
+	import feathers.layout.HorizontalLayout;
+	import feathers.layout.HorizontalLayoutData;
+	import feathers.layout.VerticalAlign;
+	import feathers.layout.HorizontalAlign;
+	import feathers.events.FeathersEventType;
 
 	public class ColorPicker extends LayoutGroup
 	{
-		private var colorLabel:Label;
+		private var colorNumber:TextInput;
 		private var colorIndicator:Button;
 
 		private var _red:int;
@@ -112,17 +117,24 @@ package feathers.controls
 		override protected function initialize():void
 		{
 			super.initialize();
+			var hLayout:HorizontalLayout = new HorizontalLayout();
+			hLayout.verticalAlign = VerticalAlign.MIDDLE;
+			this.layout = hLayout;
 
 			this.colorIndicator = new Button();
+			this.colorIndicator.layoutData = new HorizontalLayoutData(NaN, NaN);
 			this.colorIndicator.width = 20
 			this.colorIndicator.height = 20;
+			this.colorIndicator.defaultIcon = new Quad(15,15, this.data.toArgb());
 			this.colorIndicator.addEventListener(Event.TRIGGERED, colorIndicator_triggeredHandler);
 			this.addChild(this.colorIndicator);
 			
-			this.colorLabel = new Label();
-			this.colorLabel.x = 20 + this.gap;
-			this.colorLabel.text = this.data.toString();
-			this.addChild(this.colorLabel);
+			this.colorNumber = new TextInput();
+			this.colorNumber.addEventListener(FeathersEventType.ENTER, colorNumber_enterHandler);
+			this.colorNumber.layoutData = new HorizontalLayoutData(100, NaN);
+
+			this.colorNumber.text = this.data.toString();
+			this.addChild(this.colorNumber);
 		}
 
 		protected function createColorPickerElement():void
@@ -141,8 +153,6 @@ package feathers.controls
 			this.colorPickerElement.scaleX = 0.7;
 			this.colorPickerElement.scaleY = 0.7;
 			this.colorPickerElement.visible = false;
-			// this.colorPickerElement.initializeNow();
-			// this.colorPickerElement.validate();
 			this.stage.addChild(this.colorPickerElement as DisplayObject);
 		}
 
@@ -152,9 +162,90 @@ package feathers.controls
 			this.data.green = this.colorPickerElement.g / 255;
 			this.data.blue = this.colorPickerElement.b / 255;
 			this.data.alpha = this.colorPickerElement.a / 255;
-			this.colorIndicator.defaultSkin = new Quad(1,1, this.data.toArgb());
-			this.colorLabel.text = this.data.toString();
+			this.colorIndicator.defaultIcon = new Quad(15,15, this.data.toArgb());
+			this.colorNumber.text = this.data.toString();
 			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		protected function colorNumber_enterHandler(e:Event):void
+		{
+			if(isValidHex(this.colorNumber.text))
+			{
+				this.data = rgbHexToARGB(this.colorNumber.text);
+			} 
+			else if(isValidHexA(this.colorNumber.text))
+			{
+				this.data = argbHexToARGB(this.colorNumber.text);
+			}
+			this.colorPickerElement.r = this.data.red;
+			this.colorPickerElement.g = this.data.green;
+			this.colorPickerElement.b = this.data.blue;
+			this.colorPickerElement.a = this.data.alpha * 255;
+			// this.colorPickerElement.colorIndicator.color =this.data.toArgb();
+			this.colorIndicator.defaultIcon = new Quad(15,15, this.data.toArgb());
+			this.colorNumber.text = this.data.toString();
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		private function rgbHexToARGB(text:String):ColorArgb
+		{
+			var color:ColorArgb = new ColorArgb();
+			if (text.length == 4)
+			{
+				color.red = ( parseInt(text.slice(1,2), 16) + 16 * parseInt(text.slice(1,2), 16) ) / 255;
+				color.green = ( parseInt(text.slice(2,3), 16) + 16 * parseInt(text.slice(2,3), 16) ) / 255;
+				color.blue = ( parseInt(text.slice(3,4), 16) + 16 * parseInt(text.slice(3,4), 16) ) / 255;
+			}
+			else if (text.length == 7)
+			{
+				color.red = parseInt(text.slice(1,3), 16) / 255;
+				color.green = parseInt(text.slice(3,5), 16) / 255;
+				color.blue = parseInt(text.slice(5,7), 16) / 255;
+			}
+			color.alpha = 1;
+			this.data = color;
+			
+			return color;
+		}
+
+		private function argbHexToARGB(text:String):ColorArgb
+		{
+			var color:ColorArgb = new ColorArgb();
+			if (text.length == 5)
+			{
+				color.red = ( parseInt(text.slice(1,2), 16) + 16 * parseInt(text.slice(1,2), 16) ) / 255;
+				color.green = ( parseInt(text.slice(2,3), 16) + 16 * parseInt(text.slice(2,3), 16) ) / 255;
+				color.blue = ( parseInt(text.slice(3,4), 16) + 16 * parseInt(text.slice(3,4), 16) ) / 255;
+				color.alpha = ( parseInt(text.slice(4,5), 16) + 16 * parseInt(text.slice(4,5), 16) ) / 255;
+			}
+			else if (text.length == 9)
+			{
+				color.red = parseInt(text.slice(1,3), 16) / 255;
+				color.green = parseInt(text.slice(3,5), 16) / 255;
+				color.blue = parseInt(text.slice(5,7), 16) / 255;
+				color.alpha = parseInt(text.slice(7,9), 16) / 255;
+			}
+			return color;
+		}
+
+		private function isValidHex(text:String):Boolean
+		{
+			var isOk:Boolean = false;
+			if( text.search('^#(?:[0-9a-fA-F]{3}){1,2}$') == 0 )
+			{
+				isOk = true;
+			}
+			return isOk;
+		}
+
+		private function isValidHexA(text:String):Boolean
+		{
+			var isOk:Boolean = false;
+			if( text.search('^#(?:[0-9a-fA-F]{4}){1,2}$') == 0 )
+			{
+				isOk = true;
+			}
+			return isOk;
 		}
 
 		protected function colorIndicator_triggeredHandler(e:Event):void
@@ -210,6 +301,7 @@ package feathers.controls
 		{
 			this.colorIndicator.removeEventListener(Event.TRIGGERED, colorIndicator_triggeredHandler);
 			this.colorPickerElement.removeEventListener(Event.CHANGE, colorPickerElement_changeHandler);
+			this.colorNumber.removeEventListener(FeathersEventType.ENTER, colorNumber_enterHandler);
 			super.dispose();
 		}
 	}

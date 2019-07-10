@@ -83,7 +83,11 @@ package starling.extensions
 
         public function toString():String
         {
-            return "(" + red*255 + "," + green*255 + "," + blue*255 + ":" + Math.round(alpha * 100)/100 + ")";
+            var redStr:String = int(red*255).toString(16).length == 2 ? int(red*255).toString(16) : "0" + int(red*255).toString(16);  
+            var greenStr:String = int(green*255).toString(16).length == 2 ? int(green*255).toString(16) : "0" + int(green*255).toString(16);  
+            var blueStr:String = int(blue*255).toString(16).length == 2 ? int(blue*255).toString(16) : "0" + int(blue*255).toString(16);  
+            var alphaStr:String = int(alpha*255).toString(16).length == 2 ? int(alpha*255).toString(16) : "0" + int(alpha*255).toString(16);  
+            return "#" + redStr + greenStr + blueStr + alphaStr;
         }
     }
 }

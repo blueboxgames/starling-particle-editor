@@ -25,8 +25,8 @@ package feathers.controls
 		private var bitmapData:BitmapData;
 
 		private var colorPalette:Image;
-		private var alphaSlider:Slider;
-		private var colorIndicator:Quad;
+		//private var alphaSlider:Slider;
+		//public var colorIndicator:Quad;
 
 		private var _red:int;
 		
@@ -74,6 +74,8 @@ package feathers.controls
 		public function set a(value:Number):void
 		{
 			_alpha = value;
+			//if(alphaSlider)
+			// 	this.alphaSlider.value = value;
 		}
 
 		private var _data:ColorArgb;
@@ -134,7 +136,7 @@ package feathers.controls
 			this.y = this.y;
 			this.addChild(colorPalette);
 
-			this.alphaSlider = new Slider();
+			/* this.alphaSlider = new Slider();
 			this.alphaSlider.minimum = 0;
 			this.alphaSlider.maximum = 255;
 			this.alphaSlider.value = this.a;
@@ -161,13 +163,13 @@ package feathers.controls
 			};
 			this.alphaSlider.addEventListener(Event.CHANGE, alphaSlider_changeHandler);
 			
-			this.addChild(alphaSlider);
+			this.addChild(alphaSlider); */
 
-			this.colorIndicator = new Quad(20,20, toArgb());
+			/* this.colorIndicator = new Quad(20,20, toArgb());
 			this.colorIndicator.x = colorPalette.width - this.colorIndicator.width;
 			this.colorIndicator.y = colorPalette.height + this.gap;
 
-			this.addChild(this.colorIndicator);
+			this.addChild(this.colorIndicator); */
 		}
 
 		public function toArgb():uint
@@ -181,12 +183,12 @@ package feathers.controls
 			return colorARGB.toArgb();
 		}
 
-		protected function alphaSlider_changeHandler(e:Event):void
+		/* protected function alphaSlider_changeHandler(e:Event):void
 		{
 			this.a = this.alphaSlider.value;
 			this.colorIndicator.alpha = this.a/255;
 			this.dispatchEventWith(Event.CHANGE, false, {red: this.r, green: this.g, blue: this.b, alpha:this.a });
-		}
+		} */
 
 		protected function palette_touchHandler(e:TouchEvent):void
 		{
@@ -198,14 +200,14 @@ package feathers.controls
 				if (touch.phase == TouchPhase.BEGAN)
 				{
 					touch.getLocation(this.colorPalette, m_TouchEndedPoint);
-					this.colorIndicator.color = this.bitmapData.getPixel(m_TouchEndedPoint.x, m_TouchEndedPoint.y);
+					// this.colorIndicator.color = this.bitmapData.getPixel(m_TouchEndedPoint.x, m_TouchEndedPoint.y);
 				}
 
 				if (touch.phase == TouchPhase.MOVED){
 					if (stage.hitTest(m_TouchEndedPoint) == touch.target)
 					{
 						touch.getLocation(this.colorPalette, m_TouchEndedPoint);
-						this.colorIndicator.color = this.bitmapData.getPixel(m_TouchEndedPoint.x, m_TouchEndedPoint.y);
+						// this.colorIndicator.color = this.bitmapData.getPixel(m_TouchEndedPoint.x, m_TouchEndedPoint.y);
 					}
 				}
 
@@ -214,7 +216,7 @@ package feathers.controls
 					{
 						touch.getLocation(this.colorPalette, m_TouchEndedPoint);
 						var currentColor:uint = this.bitmapData.getPixel(m_TouchEndedPoint.x, m_TouchEndedPoint.y)
-						this.colorIndicator.color = currentColor;
+						// this.colorIndicator.color = currentColor;
 						var newColor:ColorArgb = ColorArgb.fromArgb(currentColor);
 						this.r = newColor.red * 255;
 						this.g = newColor.green * 255;
@@ -228,7 +230,7 @@ package feathers.controls
 		override public function dispose():void
 		{
 			this.colorPalette.removeEventListener(TouchEvent.TOUCH, palette_touchHandler);
-			this.alphaSlider.removeEventListener(Event.CHANGE, alphaSlider_changeHandler);
+			// this.alphaSlider.removeEventListener(Event.CHANGE, alphaSlider_changeHandler);
 			super.dispose();
 		}
 	}
