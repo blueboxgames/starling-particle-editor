@@ -8,6 +8,7 @@ package com.grantech.controls.items
 	import feathers.controls.EditableSlider;
 	import feathers.controls.Label;
 	import feathers.controls.PickerList;
+	import feathers.controls.popups.CalloutPopUpContentManager;
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.data.IListCollection;
@@ -148,6 +149,7 @@ package com.grantech.controls.items
 				}
 				this.dropDownDisplay.layoutData = new HorizontalLayoutData(50);
 			}
+			this.dropDownDisplay.popUpContentManager = new CalloutPopUpContentManager();
 			this.dropDownDisplay.addEventListener(Event.CHANGE, dropDownDisplay_changeHandler);
 			this.addChild(this.dropDownDisplay);
 		}
