@@ -283,6 +283,7 @@ package com.grantech.managers
 			higherLayer.order = tmp;
 			this._layers.refresh();
 			this._layers.updateAll();
+			DataManager.instance.dispatchEventWith("swap", false, {a: this.layers.getItemAt(index).id, b:this.layers.getItemAt(index-1).id});
 		}
 		
 		public function lowerLayerAt(index:int):void
@@ -299,6 +300,7 @@ package com.grantech.managers
 			layer.order = lowerLayer.order-1;
 			this._layers.refresh();
 			this._layers.updateAll();
+			DataManager.instance.dispatchEventWith("swap", false, {a: this.layers.getItemAt(index).id, b:this.layers.getItemAt(index+1).id});
 		}
 
 		/**

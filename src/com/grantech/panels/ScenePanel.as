@@ -31,6 +31,7 @@ package com.grantech.panels
 			DataManager.instance.addEventListener(Event.CHANGE, dataManager_changeHandler);
 			DataManager.instance.addEventListener(Event.SELECT, dataManager_selectHandler);
 			DataManager.instance.addEventListener(Event.REMOVED, dataManager_removedHandler);
+			DataManager.instance.addEventListener("swap", dataManager_swapHandler);
 
 			this._liveChangeEnabled = true;
 		}
@@ -94,12 +95,20 @@ package com.grantech.panels
 			particleSystem.dispose();
 		}
 
+		protected function dataManager_swapHandler(event:Event):void
+		{
+			var a:PDParticleSystem = SceneManager.instance.getParticleSystem(event.data.a);
+			var b:PDParticleSystem = SceneManager.instance.getParticleSystem(event.data.b);
+			this.swapChildren(a,b);
+		}
+
 		override public function dispose():void
 		{
 			DataManager.instance.removeEventListener(Event.ADDED, dataManager_addedHandler);
 			DataManager.instance.removeEventListener(Event.CHANGE, dataManager_changeHandler);
 			DataManager.instance.removeEventListener(Event.SELECT, dataManager_selectHandler);
 			DataManager.instance.removeEventListener(Event.REMOVED, dataManager_removedHandler);
+			DataManager.instance.removeEventListener("swap", dataManager_swapHandler);
 			super.dispose();
 		}
 	}
