@@ -10,7 +10,8 @@ package com.grantech.controls.items
 	import feathers.controls.PickerList;
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
-	import feathers.data.ArrayCollection;
+	import feathers.data.IListCollection;
+	import feathers.data.ListCollection;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.HorizontalLayoutData;
 
@@ -78,10 +79,10 @@ package com.grantech.controls.items
 
 		private function dropDownDisplay_changeHandler(e:Event):void
 		{
-			this.value = this.dropDownDisplay.selectedItem.data;
-			if(this.key == "blendFuncSource")
+			this.value = this.dropDownDisplay.selectedItem.text;
+			if(this.key == "blendFactorSource")
 				DataManager.instance.editCurrentLayerData("blendFactorSource", this.value);
-			if(this.key == "blendFuncDestination")
+			if(this.key == "blendFactorDestination")
 				DataManager.instance.editCurrentLayerData("blendFactorDestination", this.value);
 		}
 
@@ -105,42 +106,43 @@ package com.grantech.controls.items
 		private function createDropDown():void
 		{
 			// BUG: trace("?") creates double component.
-			if ( this.dropDownDisplay != null )
+			if( this.dropDownDisplay != null )
 			{
 				this.dropDownDisplay = null;
 			}
 			this.dropDownDisplay = new PickerList();
-			if (this.key == "blendFuncSource" || this.key == "blendFuncDestination")
+			if (this.key == "blendFactorSource" || this.key == "blendFactorDestination")
 			{
-				this.dropDownDisplay.dataProvider = new ArrayCollection(
+				var blendModes:IListCollection = new ListCollection(
 					[
-						{ text: "sourceAlpha", data: Context3DBlendFactor.SOURCE_ALPHA },
-						{ text: "zero", data: Context3DBlendFactor.ZERO },
-						{ text: "oneMinusDestinationAlpha", data: Context3DBlendFactor.ONE_MINUS_DESTINATION_ALPHA },
-						{ text: "oneMinusSourceColor", data: Context3DBlendFactor.ONE_MINUS_SOURCE_COLOR },
-						{ text: "destinationAlpha", data: Context3DBlendFactor.DESTINATION_ALPHA },
-						{ text: "one", data: Context3DBlendFactor.ONE },
-						{ text: "sourceColor", data: Context3DBlendFactor.SOURCE_COLOR },
-						{ text: "oneMinusDestinationColor", data: Context3DBlendFactor.ONE_MINUS_DESTINATION_COLOR },
-						{ text: "oneMinusSourceAlpha", data: Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA },
-						{ text: "destinationColor", data: Context3DBlendFactor.DESTINATION_COLOR }
+						{ text: Context3DBlendFactor.ZERO, value: 0 },
+						{ text: Context3DBlendFactor.ONE, value: 1 },
+						{ text: Context3DBlendFactor.SOURCE_COLOR, value: 0x300 },
+						{ text: Context3DBlendFactor.ONE_MINUS_SOURCE_COLOR, value: 0x301 },
+						{ text: Context3DBlendFactor.SOURCE_ALPHA, value: 0x302 },
+						{ text: Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA, value: 0x303 },
+						{ text: Context3DBlendFactor.DESTINATION_ALPHA, value: 0x304 },
+						{ text: Context3DBlendFactor.ONE_MINUS_DESTINATION_ALPHA, value: 0x305 },
+						{ text: Context3DBlendFactor.DESTINATION_COLOR, value: 0x306 },
+						{ text: Context3DBlendFactor.ONE_MINUS_DESTINATION_COLOR, value: 0x307 }
 					]
-				)
+				);
+				this.dropDownDisplay.dataProvider = blendModes;
+				this.dropDownDisplay.labelField = "text";
+				this.dropDownDisplay.prompt = this.value;
+				this.dropDownDisplay.selectedIndex = -1;
 				this.dropDownDisplay.itemRendererFactory = function():IListItemRenderer
 				{
 					var itemRenderer:DefaultListItemRenderer = new DefaultListItemRenderer();
 					itemRenderer.labelField = "text";
 					return itemRenderer;
 				}
-				this.dropDownDisplay.prompt = this.dropDownDisplay.selectedItem.text;
-				this.dropDownDisplay.labelField = "text";
-				this.dropDownDisplay.selectedIndex = -1;
 				this.dropDownDisplay.layoutData = new HorizontalLayoutData(50);
 			}
 			this.dropDownDisplay.addEventListener(Event.CHANGE, dropDownDisplay_changeHandler);
 			this.addChild(this.dropDownDisplay);
 		}
-
+		
 		private function createColorPicker():void
 		{
 			if( this.sliderDisplay !=null )

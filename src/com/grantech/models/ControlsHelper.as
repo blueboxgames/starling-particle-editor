@@ -284,8 +284,8 @@ package com.grantech.models
 				case "finishColorVariance":
 					return TYPE_COLOR_PICKER
 					break;
-				case "blendFuncSource":
-				case "blendFuncDestination":
+				case "blendFactorSource":
+				case "blendFactorDestination":
 					return TYPE_DROPDOWN
 					break;
 				default:

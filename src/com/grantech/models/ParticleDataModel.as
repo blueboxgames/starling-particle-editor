@@ -51,8 +51,8 @@ package com.grantech.models
 			this.startColorVariance = new ColorArgb(0,0,0,1);
 			this.finishColor = new ColorArgb(0,0,0,1);
 			this.finishColorVariance = new ColorArgb(0,0,0,1);
-			this.blendFuncSource = 770;
-			this.blendFuncDestination = 1;
+			this.blendFactorSource = 1;
+			this.blendFactorDestination = 1;
 			this.maxParticles = 300;
 			this.texture = null;
 		}
@@ -601,24 +601,24 @@ package com.grantech.models
 			this.setProperty("finishColorVariance", value);
 		}
 
-		public function get blendFuncSource():Number
+		public function get blendFactorSource():int
 		{
-			return this.getProperty("blendFuncSource");
+			return this.getProperty("blendFactorSource");
 		}
 
-		public function set blendFuncSource(value:Number):void
+		public function set blendFactorSource(value:int):void
 		{
-			this.setProperty("blendFuncSource", value);
+			this.setProperty("blendFactorSource", value);
 		}
 
-		public function get blendFuncDestination():Number
+		public function get blendFactorDestination():int
 		{
-			return this.getProperty("blendFuncDestination");
+			return this.getProperty("blendFactorDestination");
 		}
 
-		public function set blendFuncDestination(value:Number):void
+		public function set blendFactorDestination(value:int):void
 		{
-			this.setProperty("blendFuncDestination", value);
+			this.setProperty("blendFactorDestination", value);
 		}
 
 		public function get maxParticles():Number
