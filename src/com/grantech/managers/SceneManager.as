@@ -53,6 +53,16 @@ package com.grantech.managers
 
 		public function changeParticleSystem(id:int, key:String, value:*):void
 		{
+			if(key == "x")
+			{
+				this._particleSystems[id].x = value;
+				return;
+			}
+			if(key == "y")
+			{
+				this._particleSystems[id].y = value;
+				return;
+			}
 			this._particleSystems[id][key] = value;
 		}
 

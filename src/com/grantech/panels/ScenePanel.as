@@ -40,9 +40,6 @@ package com.grantech.panels
 		{
 			var blueTexture:Texture = Texture.fromEmbeddedAsset(BlueflameParticle);
 			var particleSystem:PDParticleSystem = new PDParticleSystem(config, blueTexture);
-			// TODO: Handle this when scene has cursor.
-			particleSystem.x = this.width/2;
-			particleSystem.y = this.height/2;
 			return particleSystem;
 		}
 
@@ -51,8 +48,8 @@ package com.grantech.panels
 			var reference:ParticleDataModel = event.data as ParticleDataModel;
 			var blueTexture:Texture = Texture.fromEmbeddedAsset(BlueflameParticle);
 			var particleSystem:PDParticleSystem = new PDParticleSystem(reference, blueTexture);
-			particleSystem.x = this.width/2;
-			particleSystem.y = this.height/2;
+			particleSystem.x = reference.x;
+			particleSystem.y = reference.y;
 			
 			particleSystem.start();
 			Starling.juggler.add(particleSystem);

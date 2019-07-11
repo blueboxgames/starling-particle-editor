@@ -95,10 +95,19 @@ package com.grantech.controls.items
 			this.sliderDisplay = new EditableSlider();
 			this.sliderDisplay.addEventListener(Event.CHANGE, sliderDisplay_changeHandler);
 			this.sliderDisplay.layoutData = new HorizontalLayoutData(50);
-			
-			this.sliderDisplay.step = ControlsHelper.instance.getStep(this.key);
-			this.sliderDisplay.minimum = ControlsHelper.instance.getMin(this.key);
-			this.sliderDisplay.maximum = ControlsHelper.instance.getMax(this.key);
+
+			if(key=="x" || key == "y")
+			{
+				this.sliderDisplay.step = 1;
+				this.sliderDisplay.minimum = int.MIN_VALUE;
+				this.sliderDisplay.maximum = int.MAX_VALUE;
+			}
+			else
+			{
+				this.sliderDisplay.step = ControlsHelper.instance.getStep(this.key);
+				this.sliderDisplay.minimum = ControlsHelper.instance.getMin(this.key);
+				this.sliderDisplay.maximum = ControlsHelper.instance.getMax(this.key);
+			}
 			this.sliderDisplay.value = this.value;
 			this.addChild(this.sliderDisplay);
 		}

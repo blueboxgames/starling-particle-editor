@@ -92,7 +92,7 @@ package com.grantech.managers
 				for(var key:String in layerProps.properties)
 				{
 					// TODO: do something about this
-					if(key != 'id' && key != 'name' && key != 'order' && key != 'x' && key != 'y' && key != 'maxParticles')
+					if(key != 'id' && key != 'name' && key != 'order' && key != 'maxParticles')
 					{
 						this.inspector.addItem({key:key , value:layerProps.properties[key]});
 					}
