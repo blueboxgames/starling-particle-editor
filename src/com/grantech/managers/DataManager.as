@@ -1,13 +1,16 @@
 package com.grantech.managers
 {
+	import com.grantech.models.LayerDataModel;
 	import com.grantech.models.ParticleDataModel;
+	import com.grantech.models.ParticleGroupCollectionModel;
 
 	import feathers.core.IFeathersEventDispatcher;
+	import feathers.data.ArrayHierarchicalCollection;
+	import feathers.data.IHierarchicalCollection;
 	import feathers.data.ListCollection;
 
 	import starling.events.Event;
 	import starling.events.EventDispatcher;
-	import com.grantech.models.LayerDataModel;
 
 	/**
 	 * Dispatched when a layer is added.
@@ -88,16 +91,10 @@ package com.grantech.managers
 			this._currentLayerIndex = index;
 			if(this._currentLayerIndex > -1)
 			{
-				var layerProps:ParticleDataModel = layers.getItemAt(index) as ParticleDataModel;
-				for(var key:String in layerProps.properties)
-				{
-					// TODO: do something about this
-					if(key != 'id' && key != 'name' && key != 'order' && key != 'maxParticles')
-					{
-						this.inspector.addItem({key:key , value:layerProps.properties[key]});
-					}
-				}
+				var layerGroup:ParticleGroupCollectionModel = new ParticleGroupCollectionModel(layers.getItemAt(index) as ParticleDataModel);
+				this._inspectorGroup.arrayData = layerGroup.groupModel.arrayData;
 			}
+			this.inspector.updateAll();
 		}
 
 		private var _layerCount:int;
@@ -247,11 +244,16 @@ package com.grantech.managers
 		private var _inspector:ListCollection;
 
 		/**
+		 * @private Inspector Hierarircial Collection.
+		 */
+		private var _inspectorGroup:ArrayHierarchicalCollection;
+
+		/**
 		 * Avilable inspectors data structure.
 		 */
-		public function get inspector():ListCollection
+		public function get inspector():IHierarchicalCollection
 		{
-			return _inspector;
+			return _inspectorGroup;
 		}
 
 		public function orderFunction(a:Object, b:Object):int
@@ -315,6 +317,7 @@ package com.grantech.managers
 			this._currentLayerIndex = -1;
 			this._layers = new ListCollection(); 
 			this._inspector = new ListCollection();
+			this._inspectorGroup = new ArrayHierarchicalCollection();
 
 			this._layers.sortCompareFunction = orderFunction;
 		}

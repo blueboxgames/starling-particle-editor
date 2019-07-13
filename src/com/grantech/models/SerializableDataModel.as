@@ -1,5 +1,7 @@
 package com.grantech.models
 {
+	import feathers.data.ArrayHierarchicalCollection;
+
 	import flash.utils.Dictionary;
 
 	import starling.events.EventDispatcher;
@@ -13,6 +15,8 @@ package com.grantech.models
 		 * @private
 		 */
 		private var _properties:Dictionary;
+
+		protected var _groups:ArrayHierarchicalCollection;
 
 		/**
 		 * Returns current properties dictionary.
@@ -30,12 +34,25 @@ package com.grantech.models
 			this._properties = value;
 		}
 
+		public function get groups():ArrayHierarchicalCollection
+		{
+			return this._groups;
+		}
+
+		public function set groups(value:ArrayHierarchicalCollection):void
+		{
+			if(this._groups == value)
+				return;
+			this._groups = value;
+		}
+
 		/**
 		 * Constructor
 		 */
 		public function SerializableDataModel()
 		{
 			this._properties = new Dictionary();
+			this._groups = new ArrayHierarchicalCollection();
 		}
 
 		/**

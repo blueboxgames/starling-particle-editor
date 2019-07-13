@@ -2,7 +2,6 @@ package com.grantech.controls.items
 {
 	import com.grantech.managers.DataManager;
 	import com.grantech.models.ControlsHelper;
-	import com.grantech.utils.Localizations;
 
 	import feathers.controls.ColorPicker;
 	import feathers.controls.EditableSlider;
@@ -10,7 +9,9 @@ package com.grantech.controls.items
 	import feathers.controls.PickerList;
 	import feathers.controls.popups.CalloutPopUpContentManager;
 	import feathers.controls.renderers.DefaultListItemRenderer;
+	import feathers.controls.renderers.IGroupedListItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
+	import feathers.controls.renderers.LayoutGroupGroupedListItemRenderer;
 	import feathers.data.IListCollection;
 	import feathers.data.ListCollection;
 	import feathers.layout.HorizontalLayout;
@@ -20,7 +21,7 @@ package com.grantech.controls.items
 
 	import starling.events.Event;
 
-	public class InspectorListItemRenderer extends AbstractTouchableListItemRenderer
+	public class InspectorListItemRenderer extends LayoutGroupGroupedListItemRenderer implements IGroupedListItemRenderer
 	{
 		private var key:String;
 		private var value:*;
@@ -29,6 +30,7 @@ package com.grantech.controls.items
 		private var sliderDisplay:EditableSlider;
 		private var colorPickerDisplay:ColorPicker;
 		private var dropDownDisplay:PickerList;
+		
 		public function InspectorListItemRenderer()
 		{
 			super();
@@ -37,6 +39,7 @@ package com.grantech.controls.items
 		override protected function initialize():void
 		{
 			super.initialize();
+			this.removeChildren();
 
 			var hLayout:HorizontalLayout = new HorizontalLayout();
 			hLayout.gap = 5;
@@ -44,7 +47,6 @@ package com.grantech.controls.items
 
 			this.labelDisplay = new Label();
 			this.labelDisplay.layoutData = new HorizontalLayoutData(50);
-			this.addChild(this.labelDisplay);
 		}
 
 		override protected function commitData():void
@@ -54,9 +56,9 @@ package com.grantech.controls.items
 				return;
 			this.removeChildren();
 			this.key = this._data.key as String;
-			
-			this.value = DataManager.instance.layers.getItemAt(DataManager.instance.currentLayerIndex).getProperty(this.key);
-			this.labelDisplay.text = Localizations.instance.get(this.key);
+
+			this.value = this._data.value;
+			this.labelDisplay.text = this._data.text;
 			this.addChild(this.labelDisplay);
 			if( ControlsHelper.instance.getType(this.key) == ControlsHelper.TYPE_COLOR_PICKER )
 				createColorPicker();
@@ -89,7 +91,7 @@ package com.grantech.controls.items
 
 		private function createSlider():void
 		{
-			if( this.colorPickerDisplay !=null )
+			if( this.colorPickerDisplay != null )
 			{
 				this.colorPickerDisplay = null;
 			}
@@ -97,7 +99,7 @@ package com.grantech.controls.items
 			this.sliderDisplay.addEventListener(Event.CHANGE, sliderDisplay_changeHandler);
 			this.sliderDisplay.layoutData = new HorizontalLayoutData(50);
 
-			if(key=="x" || key == "y")
+			if(this.key == "x" || this.key == "y")
 			{
 				this.sliderDisplay.step = 1;
 				this.sliderDisplay.minimum = int.MIN_VALUE;
@@ -139,6 +141,8 @@ package com.grantech.controls.items
 				);
 				this.dropDownDisplay.dataProvider = blendModes;
 				this.dropDownDisplay.labelField = "text";
+				// TODO: Write a workaround for prompt showing text instead of
+				// value.
 				this.dropDownDisplay.prompt = this.value;
 				this.dropDownDisplay.selectedIndex = -1;
 				this.dropDownDisplay.itemRendererFactory = function():IListItemRenderer

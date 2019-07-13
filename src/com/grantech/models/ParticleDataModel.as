@@ -17,10 +17,10 @@ package com.grantech.models
 		{
 			this.emitterType = 0;
 			this.duration = -1;
-			this.emitterXVariance = 15;
-			this.emitterYVariance = -20;
-			this.gravityX = -1000;
-			this.gravityY = -740;
+			this.emitterXVariance = 0;
+			this.emitterYVariance = 0;
+			this.gravityX = 0;
+			this.gravityY = 0;
 			this.lifespan = 1.1;
 			this.lifespanVariance = 0.4;
 			this.startSize = 111;

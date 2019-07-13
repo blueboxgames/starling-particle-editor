@@ -61,13 +61,13 @@ package com.grantech.models
 			"lifespan": {
 				min: 0,
 				max: 10000,
-				step: 1
+				step: 0.1
 			},
 
 			"lifespanVariance": {
 				min: 0,
 				max: 10000,
-				step: 1
+				step: 0.1
 			},
 			
 			"startSize": {
