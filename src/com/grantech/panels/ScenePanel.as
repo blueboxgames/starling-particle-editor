@@ -60,10 +60,11 @@ package com.grantech.panels
 		protected function dataManager_changeHandler(event:Event):void
 		{
 			var index:int = DataManager.instance.currentLayerIndex;
-			var key:String = event.data.key;
-			var value:* = event.data.value;
+			var key:String = event.data == null ? null : event.data.key;
+			var value:* = event.data == null ? null : event.data.value;
 			var particleModel:ParticleDataModel = DataManager.instance.layers.getItemAt(index) as ParticleDataModel;
-			SceneManager.instance.changeParticleSystem(particleModel.id, key, value);
+			if (key != null)
+				SceneManager.instance.changeParticleSystem(particleModel.id, key, value);
 		}
 
 		/**

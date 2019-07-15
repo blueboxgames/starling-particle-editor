@@ -11,6 +11,8 @@ package com.grantech.managers
 
 	import starling.events.Event;
 	import starling.events.EventDispatcher;
+	import flash.filesystem.File;
+	import flash.net.FileReference;
 
 	/**
 	 * Dispatched when a layer is added.
@@ -303,6 +305,12 @@ package com.grantech.managers
 			this._layers.refresh();
 			this._layers.updateAll();
 			DataManager.instance.dispatchEventWith("swap", false, {a: this.layers.getItemAt(index).id, b:this.layers.getItemAt(index+1).id});
+		}
+
+		public function editLayerDataFile(file:FileReference):void
+		{
+			layers.getItemAt(currentLayerIndex).parseDataFromFile(file);
+			DataManager.instance.dispatchEventWith(Event.CHANGE);
 		}
 
 		/**
