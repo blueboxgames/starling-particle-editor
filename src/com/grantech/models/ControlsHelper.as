@@ -1,5 +1,10 @@
 package com.grantech.models
 {
+	import flash.filesystem.File;
+	import flash.events.Event;
+	import flash.filesystem.FileStream;
+	import flash.filesystem.FileMode;
+
 	public class ControlsHelper
 	{
 		static public const TYPE_SLIDER:int = 0;
@@ -17,261 +22,33 @@ package com.grantech.models
 		public static function get instance() : ControlsHelper
 		{
 			if( _instance == null )
+			{
 				_instance = new ControlsHelper();
-				return _instance;
+				_propertyList = new Object();
+				init();
+			}
+			
+			return _instance;
 		}
 
-		private var propertyList:Object = {
-			"emitterType": {
-				min: 0,
-				max: 1,
-				step: 1
-			},
-			
-			"defaultDuration": {
-				min: -1,
-				max: 10000,
-				step: 1
-			},
+		private static var _propertyList:Object;
 
-			"emitterXVariance": {
-				min: -10000,
-				max: 10000,
-				step: 1
-			},
+		public static function get propertyList() : Object
+		{
+			return _propertyList;
+		}
 
-			"emitterYVariance": {
-				min: -10000,
-				max: 10000,
-				step: 1
-			},
-			
-			"gravityX": {
-				min: -10000,
-				max: 10000,
-				step: 1
-			},
-			
-			"gravityY": {
-				min: -10000,
-				max: 10000,
-				step: 1
-			},
+		public static function set propertyList(value:Object):void
+		{
+			_propertyList = value;
+		}
 
-			"lifespan": {
-				min: 0,
-				max: 10000,
-				step: 0.1
-			},
-
-			"lifespanVariance": {
-				min: 0,
-				max: 10000,
-				step: 0.1
-			},
-			
-			"startSize": {
-				min: 0,
-				max: 10000,
-				step: 1
-			},
-
-			"startSizeVariance": {
-				min: 0,
-				max: 10000,
-				step: 1
-			},
-
-			"endSize": {
-				min: 0,
-				max: 10000,
-				step: 1
-			},
-
-			"endSizeVariance": {
-				min: 0,
-				max: 10000,
-				step: 1
-			},
-
-			"emitAngle": {
-				min: 0,
-				max: 180,
-				step: 1
-			},
-
-			"emitAngleVariance": {
-				min: 0,
-				max: 180,
-				step: 1
-			},
-
-			"startRotation": {
-				min: -10000,
-				max: 10000,
-				step: 1
-			},
-
-			"startRotationVariance": {
-				min: -10000,
-				max: 10000,
-				step: 1
-			},
-
-			"endRotation": {
-				min: -10000,
-				max: 10000,
-				step: 1
-			},
-
-			"endRotationVariance": {
-				min: -10000,
-				max: 10000,
-				step: 1
-			},
-
-			"speed": {
-				min: 0,
-				max: 10000,
-				step: 1
-			},
-
-			"speedVariance": {
-				min: 0,
-				max: 10000,
-				step: 1
-			},
-
-			"radialAcceleration": {
-				min: -10000,
-				max: 10000,
-				step: 1
-			},
-			"radialAccelerationVariance": {
-				min: 0,
-				max: 10000,
-				step: 1
-			},
-
-			"tangentialAcceleration": {
-				min: -10000,
-				max: 10000,
-				step: 1
-			},
-
-			"tangentialAccelerationVariance": {
-				min: 0,
-				max: 10000,
-				step: 1
-			},
-
-			"maxRadius": {
-				min: 0,
-				max: 10000,
-				step: 1
-			},
-			
-			"maxRadiusVariance": {
-				min: 0,
-				max: 10000,
-				step: 1
-			},
-			
-			"minRadius": {
-				min: 0,
-				max: 10000,
-				step: 1
-			},
-			
-			"minRadiusVariance": {
-				min: 0,
-				max: 10000,
-				step: 1
-			},
-			
-			"rotatePerSecond": {
-				min: -360,
-				max: 360,
-				step: 1
-			},
-			
-			"rotatePerSecondVariance": {
-				min: 0,
-				max: 360,
-				step: 1
-			},
-			
-			"startColorRed": {
-				min: 0,
-				max: 255,
-				step: 1
-			},
-			
-			"startColorGreen": {
-				min: 0,
-				max: 255,
-				step: 1
-			},
-			
-			"startColorBlue": {	
-				min: 0,
-				max: 255,
-				step: 1
-			},
-			
-			"startColorVarianceRed": {
-				min: 0,
-				max: 255,
-				step: 1
-			},
-			
-			"startColorVarianceGreen": {
-				min: 0,
-				max: 255,
-				step: 1
-			},
-			
-			"startColorVarianceBlue": {
-				min: 0,
-				max: 255,
-				step: 1
-			},
-			
-			"endColorRed": {
-				min: 0,
-				max: 255,
-				step: 1
-			},
-			
-			"endColorGreen": {
-				min: 0,
-				max: 255,
-				step: 1
-			},
-			
-			"endColorBlue": {
-				min: 0,
-				max: 255,
-				step: 1
-			},
-			
-			"endColorVarianceRed": {
-				min: 0,
-				max: 255,
-				step: 1
-			},
-			
-			"endColorVarianceGreen": {
-				min: 0,
-				max: 255,
-				step: 1
-			},
-			
-			"endColorVarianceBlue": {
-				min: 0,
-				max: 255,
-				step: 1
-			}
+		private static function init():void
+		{
+			var propFile:File = File.applicationDirectory.resolvePath("config/particle_info.json");
+			var propFileStream:FileStream = new FileStream();
+			propFileStream.open(propFile, FileMode.READ);
+			propertyList = JSON.parse(propFileStream.readUTFBytes(propFileStream.bytesAvailable));
 		}
 
 		public function getType(property:String):int
@@ -296,21 +73,21 @@ package com.grantech.models
 		public function getMin(property:String):Number
 		{
 			var value:Number = -10000;			
-			value = this.propertyList[property] ? this.propertyList[property].min : NaN;
+			value = propertyList[property] ? propertyList[property].min : NaN;
 			return value;
 		}
 
 		public function getMax(property:String):Number
 		{
 			var value:Number = -10000;			
-			value = this.propertyList[property] ? this.propertyList[property].max : NaN;
+			value = propertyList[property] ? propertyList[property].max : NaN;
 			return value;
 		}
 
 		public function getStep(property:String):Number
 		{
 			var value:Number = -10000;			
-			value = this.propertyList[property] ? this.propertyList[property].step : NaN;
+			value = propertyList[property] ? propertyList[property].step : NaN;
 			return value;
 		}
 	}
