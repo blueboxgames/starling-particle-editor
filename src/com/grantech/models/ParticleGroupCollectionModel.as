@@ -16,6 +16,12 @@ package com.grantech.models
 			this._groupModel = new ArrayHierarchicalCollection(
 				[
 					{
+						header: "Image",
+						children: [
+							{key: "texture", text: "Texture", value: particleData.texture}
+						]
+					},
+					{
 						header: "Position", 
 						children: [
 							{key: "x", text: "X", value:particleData.x},

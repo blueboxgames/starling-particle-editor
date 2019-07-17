@@ -3,6 +3,7 @@ package com.grantech.controls.items
 	import com.grantech.managers.DataManager;
 	import com.grantech.models.ControlsHelper;
 
+	import feathers.controls.Button;
 	import feathers.controls.ColorPicker;
 	import feathers.controls.EditableSlider;
 	import feathers.controls.Label;
@@ -18,6 +19,7 @@ package com.grantech.controls.items
 	import feathers.layout.HorizontalLayoutData;
 
 	import flash.display3D.Context3DBlendFactor;
+	import flash.filesystem.File;
 
 	import starling.events.Event;
 
@@ -30,6 +32,7 @@ package com.grantech.controls.items
 		private var sliderDisplay:EditableSlider;
 		private var colorPickerDisplay:ColorPicker;
 		private var dropDownDisplay:PickerList;
+		private var browseDisplay:Button;
 		
 		public function InspectorListItemRenderer()
 		{
@@ -64,6 +67,8 @@ package com.grantech.controls.items
 				createColorPicker();
 			else if( ControlsHelper.instance.getType(this.key) == ControlsHelper.TYPE_DROPDOWN )
 				createDropDown();
+			else if ( ControlsHelper.instance.getType(this.key) == ControlsHelper.TYPE_BROWSE )
+				createBrowse();
 			else
 				createSlider();
 		}
@@ -71,13 +76,13 @@ package com.grantech.controls.items
 		private function sliderDisplay_changeHandler(e:Event):void
 		{
 			this.value = this.sliderDisplay.value;
-			DataManager.instance.editCurrentLayerData(this.key, this.value);			
+			DataManager.instance.editCurrentLayerData(this.key, this.value);
 		}
 
 		private function colorPickerDisplay_changeHandler(e:Event):void
 		{
 			this.value = this.colorPickerDisplay.data;
-			DataManager.instance.editCurrentLayerData(this.key, this.value);			
+			DataManager.instance.editCurrentLayerData(this.key, this.value);
 		}
 
 		private function dropDownDisplay_changeHandler(e:Event):void
@@ -170,6 +175,31 @@ package com.grantech.controls.items
 			
 			this.colorPickerDisplay.data = this.value;
 			this.addChild(this.colorPickerDisplay);
+		}
+
+		private function createBrowse():void
+		{
+			if (this.browseDisplay != null)
+				this.browseDisplay = null;
+			
+			this.browseDisplay = new Button();
+			this.browseDisplay.label = "Browse";
+			this.browseDisplay.addEventListener(Event.TRIGGERED, browseDisplay_triggeredHandler);
+			this.browseDisplay.layoutData = new HorizontalLayoutData(50);
+			this.addChild(this.browseDisplay);
+		}
+
+		protected function browseDisplay_triggeredHandler(e:Event):void
+		{
+			this.value = new File();
+			this.value.addEventListener(Event.SELECT, file_SelectHandler);
+			this.value.browse();
+		}
+
+		protected function file_SelectHandler(e:*):void
+		{
+			this.value = this.value.nativePath;
+			DataManager.instance.editCurrentLayerData(this.key, this.value);
 		}
 	}
 }

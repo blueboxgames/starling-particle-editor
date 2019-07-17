@@ -1,10 +1,7 @@
 package com.grantech.models
 {
 	import starling.extensions.ColorArgb;
-	import starling.textures.Texture;
-	import flash.filesystem.File;
 	import starling.utils.deg2rad;
-	import starling.extensions.PDParticleSystem;
 	import flash.net.FileReference;
 
 	public class ParticleDataModel extends LayerDataModel
@@ -635,12 +632,12 @@ package com.grantech.models
 			this.setProperty("maxParticles", value);
 		}
 
-		public function get texture():Texture
+		public function get texture():String
 		{
 			return this.getProperty("texture");
 		}
 
-		public function set texture(value:Texture):void
+		public function set texture(value:String):void
 		{
 			this.setProperty("texture", value);
 		}

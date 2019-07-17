@@ -11,7 +11,6 @@ package com.grantech.managers
 
 	import starling.events.Event;
 	import starling.events.EventDispatcher;
-	import flash.filesystem.File;
 	import flash.net.FileReference;
 
 	/**

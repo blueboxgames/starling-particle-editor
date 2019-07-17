@@ -2,11 +2,17 @@ package com.grantech.managers
 {
 	import feathers.core.IFeathersEventDispatcher;
 
+	import flash.display.Bitmap;
+	import flash.display.Loader;
+	import flash.display.LoaderInfo;
+	import flash.events.Event;
+	import flash.net.URLRequest;
 	import flash.utils.Dictionary;
 
 	import starling.display.Sprite;
 	import starling.events.EventDispatcher;
 	import starling.extensions.PDParticleSystem;
+	import starling.textures.Texture;
 
 	public class SceneManager extends EventDispatcher implements IFeathersEventDispatcher
 	{
@@ -61,6 +67,17 @@ package com.grantech.managers
 			if(key == "y")
 			{
 				this._particleSystems[id].y = value;
+				return;
+			}
+			if(key == "texture")
+			{
+				var loader:Loader = new Loader();
+				var textureDisplay:Texture;
+				loader.contentLoaderInfo.addEventListener(Event.COMPLETE, function(e:*):void {
+					textureDisplay = Texture.fromBitmap(Bitmap(LoaderInfo(e.target).content));
+				});
+				loader.load(new URLRequest(value));	
+				this._particleSystems[id].texture = textureDisplay;
 				return;
 			}
 			this._particleSystems[id][key] = value;
