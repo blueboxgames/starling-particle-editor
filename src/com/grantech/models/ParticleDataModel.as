@@ -9,6 +9,7 @@ package com.grantech.models
 	{
 		public function ParticleDataModel()
 		{
+			super();
 			this.initialize();
 		}
 
