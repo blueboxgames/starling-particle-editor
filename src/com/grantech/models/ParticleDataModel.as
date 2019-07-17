@@ -3,6 +3,7 @@ package com.grantech.models
 	import starling.extensions.ColorArgb;
 	import starling.utils.deg2rad;
 	import flash.net.FileReference;
+	import flash.filesystem.File;
 
 	public class ParticleDataModel extends LayerDataModel
 	{
@@ -55,7 +56,7 @@ package com.grantech.models
 			this.blendFactorSource = 1;
 			this.blendFactorDestination = 1;
 			this.maxParticles = 300;
-			this.texture = null;
+			this.texture = File.applicationDirectory.resolvePath("/media/default.png").nativePath;
 		}
 
 		public function get emitterType():int
@@ -642,7 +643,7 @@ package com.grantech.models
 			this.setProperty("texture", value);
 		}
 
-		public function parseDataFromFile(value:FileReference):void
+		public function parseDataFromFile(value:File):void
 		{
 			var extension:String = value.extension;
 			extension.toLowerCase() == "xml" ? parseConfig(value.data.readUTFBytes(value.data.length) as XML) : parseJsonConfig(value.data.readUTFBytes(value.data.length));
@@ -717,8 +718,8 @@ package com.grantech.models
 		private function parseJsonConfig(xconfig:String):void 
 		{
 			var config:Object = JSON.parse(xconfig)
-			this.emitterXVariance =config.sourcePositionVariancex;
-			this.emitterYVariance =config.sourcePositionVariancey;
+			this.emitterXVariance = config.sourcePositionVariancex;
+			this.emitterYVariance = config.sourcePositionVariancey;
 			this.gravityX =config.gravityX;
 			this.gravityY =config.gravityY;
 			this.emitterType =config.emitterType;

@@ -12,6 +12,7 @@ package com.grantech.managers
 	import starling.events.Event;
 	import starling.events.EventDispatcher;
 	import flash.net.FileReference;
+	import flash.filesystem.File;
 
 	/**
 	 * Dispatched when a layer is added.
@@ -273,8 +274,6 @@ package com.grantech.managers
 			}
 		}
 
-		private var _zIndex:Number;
-
 		public function raiseLayerAt(index:int):void
 		{
 			var layer:LayerDataModel = this.layers.getItemAt(index) as LayerDataModel;
@@ -306,10 +305,11 @@ package com.grantech.managers
 			DataManager.instance.dispatchEventWith("swap", false, {a: this.layers.getItemAt(index).id, b:this.layers.getItemAt(index+1).id});
 		}
 
-		public function editLayerDataFile(file:FileReference):void
+		public function editLayerDataFile(file:File):void
 		{
-			layers.getItemAt(currentLayerIndex).parseDataFromFile(file);
-			DataManager.instance.dispatchEventWith(Event.CHANGE);
+			var dataModel:ParticleDataModel = layers.getItemAt(currentLayerIndex) as ParticleDataModel;
+			dataModel.parseDataFromFile(file);
+			// DataManager.instance.dispatchEventWith(Event.CHANGE);
 		}
 
 		/**
@@ -320,10 +320,8 @@ package com.grantech.managers
 			super();
 			this._idHolder = -1;
 			this._layerCount = 0;
-			this._zIndex = 0;
 			this._currentLayerIndex = -1;
-			this._layers = new ListCollection(); 
-			this._inspector = new ListCollection();
+			this._layers = new ListCollection();
 			this._inspectorGroup = new ArrayHierarchicalCollection();
 
 			this._layers.sortCompareFunction = orderFunction;

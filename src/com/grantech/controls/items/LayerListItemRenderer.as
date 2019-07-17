@@ -16,6 +16,7 @@ package com.grantech.controls.items
 	import feathers.data.ArrayCollection;
 	import feathers.layout.Direction;
 	import flash.utils.Dictionary;
+	import com.grantech.managers.SceneManager;
 
 	public class LayerListItemRenderer extends AbstractTouchableListItemRenderer
 	{
@@ -77,13 +78,13 @@ package com.grantech.controls.items
 
 		protected function loadButton_triggeredHandler(event:Event):void
 		{
-			var fileREF:FileReference = new FileReference();
-			fileREF.browse();
-			fileREF.addEventListener(Event.SELECT, function(e:*):void{
-				fileREF.load();
-				fileREF.addEventListener(Event.COMPLETE, function(e:*):void{
-					var particleModel:ParticleDataModel = new ParticleDataModel();
-					DataManager.instance.editLayerDataFile(fileREF)
+			var configFile:File = new File();
+			var configFileExtension:FileFilter = new FileFilter("Data Config", "*.json;*.xml");
+			configFile.browse([configFileExtension]);
+			configFile.addEventListener(Event.SELECT, function(e:*):void {
+				configFile.load();
+				configFile.addEventListener(Event.COMPLETE, function(e:*):void {
+					DataManager.instance.editLayerDataFile(e.currentTarget);
 				});
 			});
 		}

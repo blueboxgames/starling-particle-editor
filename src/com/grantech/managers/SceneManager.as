@@ -3,9 +3,11 @@ package com.grantech.managers
 	import feathers.core.IFeathersEventDispatcher;
 
 	import flash.display.Bitmap;
+	import flash.display.BitmapData;
 	import flash.display.Loader;
 	import flash.display.LoaderInfo;
 	import flash.events.Event;
+	import flash.events.IOErrorEvent;
 	import flash.net.URLRequest;
 	import flash.utils.Dictionary;
 
@@ -13,6 +15,7 @@ package com.grantech.managers
 	import starling.events.EventDispatcher;
 	import starling.extensions.PDParticleSystem;
 	import starling.textures.Texture;
+	import starling.extensions.ParticleSystem;
 
 	public class SceneManager extends EventDispatcher implements IFeathersEventDispatcher
 	{
@@ -20,6 +23,7 @@ package com.grantech.managers
 		 * @private Variable which contains SceneManager singleton.
 		 */
 		private static var _instance:SceneManager;
+		private var _currentID:int;
 
 		public static function get instance():SceneManager
 		{
@@ -59,6 +63,7 @@ package com.grantech.managers
 
 		public function changeParticleSystem(id:int, key:String, value:*):void
 		{
+			this._currentID = id;
 			if(key == "x")
 			{
 				this._particleSystems[id].x = value;
@@ -72,12 +77,14 @@ package com.grantech.managers
 			if(key == "texture")
 			{
 				var loader:Loader = new Loader();
-				var textureDisplay:Texture;
-				loader.contentLoaderInfo.addEventListener(Event.COMPLETE, function(e:*):void {
-					textureDisplay = Texture.fromBitmap(Bitmap(LoaderInfo(e.target).content));
-				});
-				loader.load(new URLRequest(value));	
-				this._particleSystems[id].texture = textureDisplay;
+				loader.contentLoaderInfo.addEventListener(Event.COMPLETE, textureLoader_completeHandler);
+				try {
+					loader.load(new URLRequest(value));
+				}
+				catch(e:Error)
+				{
+					this._particleSystems[this._currentID].texture = null;
+				}
 				return;
 			}
 			this._particleSystems[id][key] = value;
@@ -86,6 +93,24 @@ package com.grantech.managers
 		public function removeParticleSystem(id:int):void
 		{
 			this._particleSystems[id] = null;
+		}
+
+		public function reloadParticleSystem(id:int):void
+		{
+			this.changeParticleSystem(id, "texture", this._particleSystems[id].texture);
+			this._particleSystems[id] = new PDParticleSystem(this._particleSystems[id],null);
+		}
+
+		protected function textureLoader_completeHandler(e:*):void
+		{
+			try{
+				var bitmap:Bitmap = LoaderInfo(e.target).content as Bitmap;
+			}
+			catch(e:Error)
+			{
+					this._particleSystems[this._currentID].texture = null;
+			}
+			this._particleSystems[this._currentID].texture = Texture.fromBitmap(bitmap) ;
 		}
 
 		public function SceneManager()

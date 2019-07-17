@@ -15,8 +15,8 @@ package com.grantech.panels
 	{
 		private var _liveChangeEnabled:Boolean;
 
-		[Embed(source="/test.png")]
-		private static const BlueflameParticle:Class;
+		[Embed(source="/media/default.png")]
+		private static const Default:Class;
 
 		public function ScenePanel()
 		{
@@ -38,7 +38,7 @@ package com.grantech.panels
 
 		protected function particleFromDataModel(config:ParticleDataModel):PDParticleSystem
 		{
-			var blueTexture:Texture = Texture.fromEmbeddedAsset(BlueflameParticle);
+			var blueTexture:Texture = Texture.fromEmbeddedAsset(Default);
 			var particleSystem:PDParticleSystem = new PDParticleSystem(config, blueTexture);
 			return particleSystem;
 		}
@@ -46,8 +46,8 @@ package com.grantech.panels
 		protected function dataManager_addedHandler(event:Event):void
 		{
 			var reference:ParticleDataModel = event.data as ParticleDataModel;
-			var blueTexture:Texture = Texture.fromEmbeddedAsset(BlueflameParticle);
-			var particleSystem:PDParticleSystem = new PDParticleSystem(reference, blueTexture);
+			var texture:Texture = Texture.fromEmbeddedAsset(Default);
+			var particleSystem:PDParticleSystem = new PDParticleSystem(reference, texture);
 			particleSystem.x = reference.x;
 			particleSystem.y = reference.y;
 			
@@ -63,7 +63,7 @@ package com.grantech.panels
 			var key:String = event.data == null ? null : event.data.key;
 			var value:* = event.data == null ? null : event.data.value;
 			var particleModel:ParticleDataModel = DataManager.instance.layers.getItemAt(index) as ParticleDataModel;
-			if (key != null)
+			if (key != null && particleModel != null)
 				SceneManager.instance.changeParticleSystem(particleModel.id, key, value);
 		}
 
