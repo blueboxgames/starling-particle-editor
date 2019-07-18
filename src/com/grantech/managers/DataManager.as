@@ -39,6 +39,12 @@ package com.grantech.managers
 	[Event(name="change",type="starling.events.Event")]
 
 	/**
+	 * Dispatched when a two layers are swaped.
+	 * @eventType "swap"
+	 */
+	[Event(name="swap",type="starling.events.Event")]
+
+	/**
 	 * Manager for layers data.
 	 */
 	public class DataManager extends EventDispatcher implements IFeathersEventDispatcher
@@ -91,9 +97,11 @@ package com.grantech.managers
 				return;
 
 			this._currentLayerIndex = index;
+			var itemAtCurrent:Object = layers.getItemAt(index);
+
 			if(this._currentLayerIndex > -1)
 			{
-				var layerGroup:ParticleGroupCollectionModel = new ParticleGroupCollectionModel(layers.getItemAt(index) as ParticleDataModel);
+				var layerGroup:ParticleGroupCollectionModel = new ParticleGroupCollectionModel(itemAtCurrent as ParticleDataModel);
 				this._inspectorGroup.arrayData = layerGroup.groupModel.arrayData;
 			}
 			this.inspector.updateAll();
@@ -162,6 +170,8 @@ package com.grantech.managers
 			particleModel.x = x;
 			particleModel.y = y;
 			particleModel.order = _layers.length == 0 ? 0 : this._layers.getItemAt(0).order+1;
+			particleModel.blendFactorSource = "one";
+			particleModel.blendFactorDestination = "one";
 
 			// Add model to list.
 			this.layers.addItemAt(particleModel, this.currentLayerIndex+1);
@@ -237,7 +247,7 @@ package com.grantech.managers
 		public function editCurrentLayerData(key:String, value:*):void
 		{
 			layerAt(currentLayerIndex).setProperty(key, value);
-			DataManager.instance.dispatchEventWith(Event.CHANGE, false, { key: key, value: value });
+			// DataManager.instance.dispatchEventWith(Event.CHANGE, false, { key: key, value: value });
 		}
 
 		/**
@@ -309,7 +319,6 @@ package com.grantech.managers
 		{
 			var dataModel:ParticleDataModel = layers.getItemAt(currentLayerIndex) as ParticleDataModel;
 			dataModel.parseDataFromFile(file);
-			// DataManager.instance.dispatchEventWith(Event.CHANGE);
 		}
 
 		/**

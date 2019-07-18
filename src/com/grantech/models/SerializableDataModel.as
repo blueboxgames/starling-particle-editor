@@ -89,8 +89,7 @@ package com.grantech.models
 				return;
 			}
 			this._properties[key] = value;
-			
-			// DataManager.instance.dispatchEventWith(Event.CHANGE, false, {key: key, value: value});
+			DataManager.instance.dispatchEventWith(Event.CHANGE, false, {key: key, value: value});
 		}
 
 

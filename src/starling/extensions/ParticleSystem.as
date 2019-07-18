@@ -122,6 +122,7 @@ package starling.extensions
             }
             else
             {
+                trace(_blendFactorSource + ", " + _blendFactorDestination);
                 blendMode = _blendFactorSource + ", " + _blendFactorDestination;
                 BlendMode.register(blendMode, _blendFactorSource, _blendFactorDestination);
             }

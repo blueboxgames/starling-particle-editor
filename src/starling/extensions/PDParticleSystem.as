@@ -253,8 +253,8 @@ package starling.extensions
             _startColorVariance = new ColorArgb(config.startColorVarianceRed, config.startColorVarianceGreen, config.startColorVarianceBlue, config.startColorVarianceAlpha);
             _endColor = new ColorArgb(config.finishColorRed, config.finishColorGreen, config.finishColorBlue, config.finishColorAlpha);
             _endColorVariance = new ColorArgb(config.finishColorVarianceRed, config.finishColorVarianceGreen, config.finishColorVarianceBlue, config.finishColorVarianceAlpha);
-            blendFactorSource = getBlendFunc(config.blendFactorSource);
-            blendFactorDestination = getBlendFunc(config.blendFactorDestination);
+            blendFactorSource = config.blendFactorSource;
+            blendFactorDestination = config.blendFactorDestination;
             defaultDuration = config.duration;
             capacity = config.maxParticles;
 
@@ -308,8 +308,8 @@ package starling.extensions
             _startColorVariance = getColor(config.startColorVariance);
             _endColor = getColor(config.finishColor);
             _endColorVariance = getColor(config.finishColorVariance);
-            blendFactorSource = getBlendFunc(getIntValue(config.blendFactorSource));
-            blendFactorDestination = getBlendFunc(getIntValue(config.blendFactorDestination));
+            blendFactorSource = config.blendFactorSource;
+            blendFactorDestination = config.blendFactorDestination;
             defaultDuration = getFloatValue(config.duration);
             capacity = getIntValue(config.maxParticles);
 

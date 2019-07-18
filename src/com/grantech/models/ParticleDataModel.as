@@ -1,9 +1,10 @@
 package com.grantech.models
 {
+	import flash.display3D.Context3DBlendFactor;
+	import flash.filesystem.File;
+
 	import starling.extensions.ColorArgb;
 	import starling.utils.deg2rad;
-	import flash.net.FileReference;
-	import flash.filesystem.File;
 
 	public class ParticleDataModel extends LayerDataModel
 	{
@@ -54,8 +55,8 @@ package com.grantech.models
 			this.startColorVariance = new ColorArgb(0,0,0,1);
 			this.finishColor = new ColorArgb(0,0,0,1);
 			this.finishColorVariance = new ColorArgb(0,0,0,1);
-			this.blendFactorSource = 1;
-			this.blendFactorDestination = 1;
+			this.blendFactorSource = Context3DBlendFactor.ONE;
+			this.blendFactorDestination = Context3DBlendFactor.ONE;
 			this.maxParticles = 300;
 			this.texture = File.applicationDirectory.resolvePath("/media/default.png").nativePath;
 		}
@@ -604,22 +605,22 @@ package com.grantech.models
 			this.setProperty("finishColorVariance", value);
 		}
 
-		public function get blendFactorSource():int
+		public function get blendFactorSource():String
 		{
 			return this.getProperty("blendFactorSource");
 		}
 
-		public function set blendFactorSource(value:int):void
-		{
+		public function set blendFactorSource(value:String):void
+		{	
 			this.setProperty("blendFactorSource", value);
 		}
 
-		public function get blendFactorDestination():int
+		public function get blendFactorDestination():String
 		{
 			return this.getProperty("blendFactorDestination");
 		}
 
-		public function set blendFactorDestination(value:int):void
+		public function set blendFactorDestination(value:String):void
 		{
 			this.setProperty("blendFactorDestination", value);
 		}
@@ -686,8 +687,8 @@ package com.grantech.models
 			this.startColorVariance =  getColor(config.startColorVariance);
 			this.finishColor =  getColor(config.finishColor);
 			this.finishColorVariance =  getColor(config.finishColorVariance);
-			this.blendFactorSource = getIntValue(config.blendFactorSource);
-			this.blendFactorDestination = getIntValue(config.blendFactorDestination);
+			this.blendFactorSource = getBlendFunc(getIntValue(config.blendFactorSource));
+			this.blendFactorDestination = getBlendFunc(getIntValue(config.blendFactorDestination));
 			this.duration = getFloatValue(config.duration);
 			this.maxParticles = getIntValue(config.maxParticles);
 
@@ -721,28 +722,28 @@ package com.grantech.models
 			var config:Object = JSON.parse(xconfig)
 			this.emitterXVariance = config.sourcePositionVariancex;
 			this.emitterYVariance = config.sourcePositionVariancey;
-			this.gravityX =config.gravityX;
-			this.gravityY =config.gravityY;
-			this.emitterType =config.emitterType;
+			this.gravityX = config.gravityx;
+			this.gravityY = config.gravityy;
+			this.emitterType = config.emitterType;
 			this.lifespan =Math.max(0.01, config.particleLifespan);
 			this.lifespanVariance =config.particleLifespanVariance;
-			this.startSize =config.startSize;
-			this.startSizeVariance =config.startSizeVariance;
-			this.endSize =config.endSize;
-			this.endSizeVariance =config.endSizeVariance;
-			this.emitAngle =deg2rad(config.emitAngle);
-			this.emitAngleVariance =deg2rad(config.emitAngleVariance);
-			this.startRotation =deg2rad(config.startRotation);
-			this.startRotationVariance =deg2rad(config.startRotationVariance);
-			this.endRotation =deg2rad(config.endRotation);
-			this.endRotationVariance =deg2rad(config.endRotationVariance);
-			this.speed =config.speed;
+			this.startSize = config.startParticleSize;
+			this.startSizeVariance = config.startParticleSizeVariance;
+			this.endSize = config.finishParticleSize;
+			this.endSizeVariance =config.finishParticleSizeVariance;
+			this.emitAngle =deg2rad(config.angle);
+			this.emitAngleVariance =deg2rad(config.angleVariance);
+			this.startRotation =deg2rad(config.rotationStart);
+			this.startRotationVariance =deg2rad(config.rotationStartVariance);
+			this.endRotation =deg2rad(config.rotationEnd);
+			this.endRotationVariance =deg2rad(config.rotationEndVariance);
+			this.speed = config.speed;
 			this.speedVariance =config.speedVariance;
 			this.radialAcceleration =config.radialAcceleration;
-			this.radialAccelerationVariance =config.radialAccelerationVariance;
+			this.radialAccelerationVariance = config.radialAccelVariance;
 			this.tangentialAcceleration =config.tangentialAcceleration;
-			this.tangentialAccelerationVariance =config.tangentialAccelerationVariance;
-			this.maxRadius =config.maxRadius;
+			this.tangentialAccelerationVariance =config.tangentialAccelVariance;
+			this.maxRadius = config.maxRadius;
 			this.maxRadiusVariance =config.maxRadiusVariance;
 			this.minRadius =config.minRadius;
 			this.minRadiusVariance =config.minRadiusVariance;
@@ -752,14 +753,48 @@ package com.grantech.models
 			this.startColorVariance =new ColorArgb(config.startColorVarianceRed, config.startColorVarianceGreen, config.startColorVarianceBlue, config.startColorVarianceAlpha);
 			this.finishColor =new ColorArgb(config.finishColorRed, config.finishColorGreen, config.finishColorBlue, config.finishColorAlpha);
 			this.finishColorVariance =new ColorArgb(config.finishColorVarianceRed, config.finishColorVarianceGreen, config.finishColorVarianceBlue, config.finishColorVarianceAlpha);
-			this.blendFactorSource = config.blendFactorSource;
-			this.blendFactorDestination = config.blendFactorDestination;
+			this.blendFactorSource = getBlendFunc(config.blendFuncSource);
+			this.blendFactorDestination = getBlendFunc(config.blendFuncDestination);
 			this.duration = config.duration;
 			this.maxParticles = config.maxParticles;
 			this.lifespan =  Math.max(0.01, config.particleLifespan);
-			this.lifespanVariance = config.particleLifeSpanVariance;
 			this.endSizeVariance = config.finishParticleSizeVariance;
 			this.minRadiusVariance = 0.0;
+		}
+
+		private function getBlendFunc(value:int):String
+		{
+			switch (value)
+			{
+				case 0:     return Context3DBlendFactor.ZERO;
+				case 1:     return Context3DBlendFactor.ONE;
+				case 0x300: return Context3DBlendFactor.SOURCE_COLOR;
+				case 0x301: return Context3DBlendFactor.ONE_MINUS_SOURCE_COLOR;
+				case 0x302: return Context3DBlendFactor.SOURCE_ALPHA;
+				case 0x303: return Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA;
+				case 0x304: return Context3DBlendFactor.DESTINATION_ALPHA;
+				case 0x305: return Context3DBlendFactor.ONE_MINUS_DESTINATION_ALPHA;
+				case 0x306: return Context3DBlendFactor.DESTINATION_COLOR;
+				case 0x307: return Context3DBlendFactor.ONE_MINUS_DESTINATION_COLOR;
+				default:    throw new ArgumentError("unsupported blending function: " + value);
+			}
+		}
+		private function convertBlendFunc(value:String):int
+		{
+			switch (value)
+			{
+				case Context3DBlendFactor.ZERO: return 0;
+				case Context3DBlendFactor.ONE: return 1;
+				case Context3DBlendFactor.SOURCE_COLOR: return 0x300;
+				case Context3DBlendFactor.ONE_MINUS_SOURCE_COLOR: return 0x301;
+				case Context3DBlendFactor.SOURCE_ALPHA: return 0x302;
+				case Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA: return 0x303;
+				case Context3DBlendFactor.DESTINATION_ALPHA: return 0x304;
+				case Context3DBlendFactor.ONE_MINUS_DESTINATION_ALPHA: return 0x305;
+				case Context3DBlendFactor.DESTINATION_COLOR: return 0x306;
+				case Context3DBlendFactor.ONE_MINUS_DESTINATION_COLOR: return 0x307;
+				default:    throw new ArgumentError("unsupported blending function: " + value);
+			}
 		}
 	}
 }

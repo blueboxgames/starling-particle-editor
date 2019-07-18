@@ -87,6 +87,15 @@ package com.grantech.managers
 				}
 				return;
 			}
+			if(key == "maxParticles")
+			{
+				this._particleSystems[id].capacity = value;
+				return;
+			}
+			if(key == "id" || key == "order")
+			{
+				return;
+			}
 			this._particleSystems[id][key] = value;
 		}
 
