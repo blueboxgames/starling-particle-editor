@@ -96,9 +96,9 @@ package com.grantech.controls.items
 
 		private function createSlider():void
 		{
-			if( this.colorPickerDisplay != null )
+			if( this.sliderDisplay != null )
 			{
-				this.colorPickerDisplay = null;
+				this.sliderDisplay = null;
 			}
 			this.sliderDisplay = new EditableSlider();
 			this.sliderDisplay.addEventListener(Event.CHANGE, sliderDisplay_changeHandler);
@@ -171,9 +171,9 @@ package com.grantech.controls.items
 		
 		private function createColorPicker():void
 		{
-			if( this.sliderDisplay !=null )
+			if( this.colorPickerDisplay !=null )
 			{
-				this.sliderDisplay = null;
+				this.colorPickerDisplay = null;
 			}
 			this.colorPickerDisplay = new ColorPicker();
 			this.colorPickerDisplay.addEventListener(Event.CHANGE, colorPickerDisplay_changeHandler);

@@ -84,10 +84,10 @@ package com.grantech.models
 		 */
 		public function setProperty(key:String, value:*) : void
 		{
-			if(this.getProperty(key) == value)
-			{
-				return;
-			}
+			// if(this.getProperty(key) == value)
+			// {
+			// 	return;
+			// }
 			this._properties[key] = value;
 			DataManager.instance.dispatchEventWith(Event.CHANGE, false, {key: key, value: value});
 		}

@@ -244,7 +244,8 @@ package com.grantech.managers
 
 		public function editCurrentLayerData(key:String, value:*):void
 		{
-			layerAt(currentLayerIndex).setProperty(key, value);
+			layerAt(this.currentLayerIndex).setProperty(key, value);
+			//trace(JSON.stringify(layerAt(this.currentLayerIndex)));
 			// DataManager.instance.dispatchEventWith(Event.CHANGE, false, { key: key, value: value });
 		}
 
