@@ -61,16 +61,6 @@ package com.grantech.managers
 		public function changeParticleSystem(id:int, key:String, value:*):void
 		{
 			this._currentID = id;
-			if(key == "x")
-			{
-				this._particleSystems[id].x = value;
-				return;
-			}
-			if(key == "y")
-			{
-				this._particleSystems[id].y = value;
-				return;
-			}
 			if(key == "texture")
 			{
 				var loader:Loader = new Loader();
@@ -80,7 +70,7 @@ package com.grantech.managers
 				}
 				catch(e:Error)
 				{
-					this._particleSystems[this._currentID].texture = null;
+					this._particleSystems[id].texture = null;
 				}
 				return;
 			}
@@ -90,12 +80,6 @@ package com.grantech.managers
 		public function removeParticleSystem(id:int):void
 		{
 			this._particleSystems[id] = null;
-		}
-
-		public function reloadParticleSystem(id:int):void
-		{
-			this.changeParticleSystem(id, "texture", this._particleSystems[id].texture);
-			this._particleSystems[id] = new PDParticleSystem(this._particleSystems[id],null);
 		}
 
 		protected function textureLoader_completeHandler(e:*):void

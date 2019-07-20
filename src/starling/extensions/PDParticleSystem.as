@@ -14,6 +14,7 @@ package starling.extensions
 
     import starling.textures.Texture;
     import starling.utils.deg2rad;
+    import starling.utils.rad2deg;
 
     public class PDParticleSystem extends ParticleSystem
     {
@@ -231,10 +232,10 @@ package starling.extensions
 			this.startParticleSizeVariance = config.startParticleSizeVariance;
 			this.finishParticleSize = config.finishParticleSize;
 			this.finishParticleSizeVariance =config.finishParticleSizeVariance;
-			this.angle =deg2rad(config.angle);
-			this.angleVariance =deg2rad(config.angleVariance);
-			this.rotationStart =deg2rad(config.rotationStart);
-			this.rotationStartVariance =deg2rad(config.rotationStartVariance);
+			this.angle = config.angle;
+			this.angleVariance = config.angleVariance;
+			this.rotationStart = deg2rad(config.rotationStart);
+			this.rotationStartVariance = deg2rad(config.rotationStartVariance);
 			this.rotationEnd = deg2rad(config.rotationEnd);
 			this.rotationEndVariance = deg2rad(config.rotationEndVariance);
 			this.speed = config.speed;
@@ -413,10 +414,10 @@ package starling.extensions
         public function set finishParticleSizeVariance(value:Number):void { _endSizeVariance = value; }
 
         public function get angle():Number { return _emitAngle; }
-        public function set angle(value:Number):void { _emitAngle = value; }
+        public function set angle(value:Number):void { _emitAngle = rad2deg(value); }
 
         public function get angleVariance():Number { return _emitAngleVariance; }
-        public function set angleVariance(value:Number):void { _emitAngleVariance = value; }
+        public function set angleVariance(value:Number):void { _emitAngleVariance = rad2deg(value); }
 
         public function get rotationStart():Number { return _startRotation; }
         public function set rotationStart(value:Number):void { _startRotation = value; }

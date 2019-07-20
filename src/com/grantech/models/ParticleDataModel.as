@@ -5,6 +5,7 @@ package com.grantech.models
 
 	import starling.extensions.ColorArgb;
 	import starling.utils.deg2rad;
+	import starling.utils.rad2deg;
 
 	public class ParticleDataModel extends LayerDataModel
 	{
@@ -167,22 +168,22 @@ package com.grantech.models
 
 		public function get angle():Number
 		{
-			return this.getProperty("angle");
+			return deg2rad(this.getProperty("angle"));
 		}
 
 		public function set angle(value:Number):void
 		{
-			this.setProperty("angle", value);
+			this.setProperty("angle", rad2deg(value));
 		}
 
 		public function get angleVariance():Number
 		{
-			return this.getProperty("angleVariance");
+			return deg2rad(this.getProperty("angleVariance"));
 		}
 
 		public function set angleVariance(value:Number):void
 		{
-			this.setProperty("angleVariance", value);
+			this.setProperty("angleVariance", rad2deg(value));
 		}
 
 		public function get rotationStart():Number

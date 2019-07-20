@@ -27,7 +27,7 @@ package com.grantech.panels
 			this.name = "ScenePanel";
 			DataManager.instance.addEventListener(Event.ADDED, dataManager_addedHandler);
 			DataManager.instance.addEventListener(Event.CHANGE, dataManager_changeHandler);
-			DataManager.instance.addEventListener(Event.SELECT, dataManager_selectHandler);
+			// DataManager.instance.addEventListener(Event.SELECT, dataManager_selectHandler);
 			DataManager.instance.addEventListener(Event.REMOVED, dataManager_removedHandler);
 			DataManager.instance.addEventListener("swap", dataManager_swapHandler);
 		}
@@ -48,11 +48,13 @@ package com.grantech.panels
 			particleSystem.y = reference.y;
 			particleSystem.blendFuncSource = ParticleDataModel.getBlendFunc(reference.blendFuncSource);
 			particleSystem.blendFuncDestination = ParticleDataModel.getBlendFunc(reference.blendFuncDestination);
+			// particleSystem.angle = reference.angle;
+			// particleSystem.angleVariance = reference.angleVariance;
 			
-			particleSystem.start();
 			Starling.juggler.add(particleSystem);
-			SceneManager.instance.addParticleSystem(reference.id, particleSystem);
+			particleSystem.start();
 			this.addChild(particleSystem);
+			SceneManager.instance.addParticleSystem(reference.id, particleSystem);
 		}
 
 		protected function dataManager_changeHandler(event:Event):void
@@ -63,24 +65,24 @@ package com.grantech.panels
 			var particleModel:ParticleDataModel = DataManager.instance.layers.getItemAt(index) as ParticleDataModel;
 			if(key == "blendFuncSource" || key == "blendFuncDestination")
 				value = ParticleDataModel.getBlendFunc(value);
-			if (key != null && particleModel != null)
+			if (key != null && key != "id" && particleModel != null)
 				SceneManager.instance.changeParticleSystem(particleModel.id, key, value);
 		}
 
 		/**
 		 * Not implemented
 		 */
-		protected function dataManager_selectHandler(event:Event):void
-		{
-			if (!event.data) 
-				return;
-			var index:int = event.data.index;
-			var particleModel:ParticleDataModel = DataManager.instance.layers.getItemAt(index) as ParticleDataModel;
-			if(particleModel != null)
-			{
-				var particleSystem:PDParticleSystem = SceneManager.instance.getParticleSystem(particleModel.id);
-			}
-		}
+		// protected function dataManager_selectHandler(event:Event):void
+		// {
+		// 	if (!event.data) 
+		// 		return;
+		// 	var index:int = event.data.index;
+		// 	var particleModel:ParticleDataModel = DataManager.instance.layers.getItemAt(index) as ParticleDataModel;
+		// 	if(particleModel != null)
+		// 	{
+		// 		var particleSystem:PDParticleSystem = SceneManager.instance.getParticleSystem(particleModel.id);
+		// 	}
+		// }
 
 		protected function dataManager_removedHandler(event:Event):void
 		{
@@ -104,7 +106,7 @@ package com.grantech.panels
 		{
 			DataManager.instance.removeEventListener(Event.ADDED, dataManager_addedHandler);
 			DataManager.instance.removeEventListener(Event.CHANGE, dataManager_changeHandler);
-			DataManager.instance.removeEventListener(Event.SELECT, dataManager_selectHandler);
+			// DataManager.instance.removeEventListener(Event.SELECT, dataManager_selectHandler);
 			DataManager.instance.removeEventListener(Event.REMOVED, dataManager_removedHandler);
 			DataManager.instance.removeEventListener("swap", dataManager_swapHandler);
 			super.dispose();

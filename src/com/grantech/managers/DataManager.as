@@ -175,6 +175,8 @@ package com.grantech.managers
 			this.layers.addItemAt(particleModel, this.currentLayerIndex+1);
 			// Increment layer count.
 			this._layerCount += 1;
+			this._layers.updateAll();
+			this._inspectorGroup.updateAll();
 			// Dispatch Event.
 			DataManager.instance.dispatchEventWith(Event.ADDED, false, particleModel);
 
