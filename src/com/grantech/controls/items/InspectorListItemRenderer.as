@@ -13,8 +13,8 @@ package com.grantech.controls.items
 	import feathers.controls.renderers.IGroupedListItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.controls.renderers.LayoutGroupGroupedListItemRenderer;
+	import feathers.data.ArrayCollection;
 	import feathers.data.IListCollection;
-	import feathers.data.ListCollection;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.HorizontalLayoutData;
 
@@ -87,7 +87,7 @@ package com.grantech.controls.items
 
 		private function dropDownDisplay_changeHandler(e:Event):void
 		{
-			this.value = this.dropDownDisplay.selectedItem.text;
+			this.value = this.dropDownDisplay.selectedItem.value;
 			if(this.key == "blendFuncSource")
 				DataManager.instance.editCurrentLayerData("blendFuncSource", this.value);
 			if(this.key == "blendFuncDestination")
@@ -130,7 +130,7 @@ package com.grantech.controls.items
 			this.dropDownDisplay = new PickerList();
 			if (this.key == "blendFuncSource" || this.key == "blendFuncDestination")
 			{
-				var blendModes:IListCollection = new ListCollection(
+				var blendModes:IListCollection = new ArrayCollection(
 					[
 						{ text: Context3DBlendFactor.ZERO, value: 0 },
 						{ text: Context3DBlendFactor.ONE, value: 1 },
@@ -144,12 +144,18 @@ package com.grantech.controls.items
 						{ text: Context3DBlendFactor.ONE_MINUS_DESTINATION_COLOR, value: 0x307 }
 					]
 				);
+				
 				this.dropDownDisplay.dataProvider = blendModes;
 				this.dropDownDisplay.labelField = "text";
-				// TODO: Write a workaround for prompt showing text instead of
-				// value.
-				this.dropDownDisplay.prompt = this.value;
-				this.dropDownDisplay.selectedIndex = -1;
+
+				for(var i:int; i < blendModes.length; i++)
+				{
+					if (blendModes.getItemAt(i).value == this.value) 
+					{
+						this.dropDownDisplay.selectedIndex = i;
+					}
+				}
+				this.dropDownDisplay.prompt = blendModes.getItemAt(this.dropDownDisplay.selectedIndex).text;
 				this.dropDownDisplay.itemRendererFactory = function():IListItemRenderer
 				{
 					var itemRenderer:DefaultListItemRenderer = new DefaultListItemRenderer();

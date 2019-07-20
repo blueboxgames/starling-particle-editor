@@ -13,8 +13,6 @@ package com.grantech.panels
 
 	public class ScenePanel extends Screen
 	{
-		private var _liveChangeEnabled:Boolean;
-
 		[Embed(source="/media/default.png")]
 		private static const Default:Class;
 
@@ -32,8 +30,6 @@ package com.grantech.panels
 			DataManager.instance.addEventListener(Event.SELECT, dataManager_selectHandler);
 			DataManager.instance.addEventListener(Event.REMOVED, dataManager_removedHandler);
 			DataManager.instance.addEventListener("swap", dataManager_swapHandler);
-
-			this._liveChangeEnabled = true;
 		}
 
 		protected function particleFromDataModel(config:ParticleDataModel):PDParticleSystem
@@ -50,6 +46,8 @@ package com.grantech.panels
 			var particleSystem:PDParticleSystem = new PDParticleSystem(reference, texture);
 			particleSystem.x = reference.x;
 			particleSystem.y = reference.y;
+			particleSystem.blendFuncSource = ParticleDataModel.getBlendFunc(reference.blendFuncSource);
+			particleSystem.blendFuncDestination = ParticleDataModel.getBlendFunc(reference.blendFuncDestination);
 			
 			particleSystem.start();
 			Starling.juggler.add(particleSystem);
@@ -63,6 +61,8 @@ package com.grantech.panels
 			var key:String = event.data == null ? null : event.data.key;
 			var value:* = event.data == null ? null : event.data.value;
 			var particleModel:ParticleDataModel = DataManager.instance.layers.getItemAt(index) as ParticleDataModel;
+			if(key == "blendFuncSource" || key == "blendFuncDestination")
+				value = ParticleDataModel.getBlendFunc(value);
 			if (key != null && particleModel != null)
 				SceneManager.instance.changeParticleSystem(particleModel.id, key, value);
 		}

@@ -4,8 +4,6 @@ package com.grantech.models
 	import flash.filesystem.File;
 
 	import starling.extensions.ColorArgb;
-	import starling.extensions.PDParticleSystem;
-	import starling.extensions.ParticleSystem;
 	import starling.utils.deg2rad;
 
 	public class ParticleDataModel extends LayerDataModel
@@ -59,8 +57,8 @@ package com.grantech.models
 			this.startColorVariance = new ColorArgb(0,0,0,1);
 			this.finishColor = new ColorArgb(0,0,0,1);
 			this.finishColorVariance = new ColorArgb(0,0,0,1);
-			this.blendFuncSource = Context3DBlendFactor.ONE;
-			this.blendFuncDestination = Context3DBlendFactor.ONE;
+			this.blendFuncSource = 1;
+			this.blendFuncDestination = 1;
 			this.maxParticles = 300;
 			this.texture = File.applicationDirectory.resolvePath("/media/default.png").nativePath;
 		}
@@ -588,22 +586,22 @@ package com.grantech.models
 			this.setProperty("finishColorVariance", value);
 		}
 
-		public function get blendFuncSource():String
+		public function get blendFuncSource():int
 		{
 			return this.getProperty("blendFuncSource");
 		}
 
-		public function set blendFuncSource(value:String):void
+		public function set blendFuncSource(value:int):void
 		{	
 			this.setProperty("blendFuncSource", value);
 		}
 
-		public function get blendFuncDestination():String
+		public function get blendFuncDestination():int
 		{
 			return this.getProperty("blendFuncDestination");
 		}
 
-		public function set blendFuncDestination(value:String):void
+		public function set blendFuncDestination(value:int):void
 		{
 			this.setProperty("blendFuncDestination", value);
 		}
@@ -670,8 +668,8 @@ package com.grantech.models
 			this.startColorVariance =new ColorArgb(config.startColorVarianceRed, config.startColorVarianceGreen, config.startColorVarianceBlue, config.startColorVarianceAlpha);
 			this.finishColor =new ColorArgb(config.finishColorRed, config.finishColorGreen, config.finishColorBlue, config.finishColorAlpha);
 			this.finishColorVariance =new ColorArgb(config.finishColorVarianceRed, config.finishColorVarianceGreen, config.finishColorVarianceBlue, config.finishColorVarianceAlpha);
-			this.blendFuncSource = getBlendFunc(config.blendFuncSource);
-			this.blendFuncDestination = getBlendFunc(config.blendFuncDestination);
+			this.blendFuncSource = config.blendFuncSource;
+			this.blendFuncDestination = config.blendFuncDestination;
 			this.duration = config.duration;
 			this.maxParticles = config.maxParticles;
 			this.particleLifespan =  Math.max(0.01, config.particleLifespan);
@@ -679,7 +677,7 @@ package com.grantech.models
 			this.minRadiusVariance = 0.0;
 		}
 
-		private function getBlendFunc(value:int):String
+		public static function getBlendFunc(value:int):String
 		{
 			switch (value)
 			{
@@ -696,22 +694,22 @@ package com.grantech.models
 				default:    throw new ArgumentError("unsupported blending function: " + value);
 			}
 		}
-		private function convertBlendFunc(value:String):int
-		{
-			switch (value)
-			{
-				case Context3DBlendFactor.ZERO: return 0;
-				case Context3DBlendFactor.ONE: return 1;
-				case Context3DBlendFactor.SOURCE_COLOR: return 0x300;
-				case Context3DBlendFactor.ONE_MINUS_SOURCE_COLOR: return 0x301;
-				case Context3DBlendFactor.SOURCE_ALPHA: return 0x302;
-				case Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA: return 0x303;
-				case Context3DBlendFactor.DESTINATION_ALPHA: return 0x304;
-				case Context3DBlendFactor.ONE_MINUS_DESTINATION_ALPHA: return 0x305;
-				case Context3DBlendFactor.DESTINATION_COLOR: return 0x306;
-				case Context3DBlendFactor.ONE_MINUS_DESTINATION_COLOR: return 0x307;
-				default:    throw new ArgumentError("unsupported blending function: " + value);
-			}
-		}
+		// private function convertBlendFunc(value:String):int
+		// {
+		// 	switch (value)
+		// 	{
+		// 		case Context3DBlendFactor.ZERO: return 0;
+		// 		case Context3DBlendFactor.ONE: return 1;
+		// 		case Context3DBlendFactor.SOURCE_COLOR: return 0x300;
+		// 		case Context3DBlendFactor.ONE_MINUS_SOURCE_COLOR: return 0x301;
+		// 		case Context3DBlendFactor.SOURCE_ALPHA: return 0x302;
+		// 		case Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA: return 0x303;
+		// 		case Context3DBlendFactor.DESTINATION_ALPHA: return 0x304;
+		// 		case Context3DBlendFactor.ONE_MINUS_DESTINATION_ALPHA: return 0x305;
+		// 		case Context3DBlendFactor.DESTINATION_COLOR: return 0x306;
+		// 		case Context3DBlendFactor.ONE_MINUS_DESTINATION_COLOR: return 0x307;
+		// 		default:    throw new ArgumentError("unsupported blending function: " + value);
+		// 	}
+		// }
 	}
 }

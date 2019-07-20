@@ -1,9 +1,8 @@
 package com.grantech.models
 {
 	import flash.filesystem.File;
-	import flash.events.Event;
-	import flash.filesystem.FileStream;
 	import flash.filesystem.FileMode;
+	import flash.filesystem.FileStream;
 
 	public class ControlsHelper
 	{
@@ -50,7 +49,6 @@ package com.grantech.models
 			var propFileStream:FileStream = new FileStream();
 			propFileStream.open(propFile, FileMode.READ);
 			propertyList = JSON.parse(propFileStream.readUTFBytes(propFileStream.bytesAvailable));
-			trace(propertyList);
 		}
 
 		public function getType(property:String):int

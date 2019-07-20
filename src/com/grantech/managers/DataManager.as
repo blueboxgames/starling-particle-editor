@@ -9,10 +9,10 @@ package com.grantech.managers
 	import feathers.data.IHierarchicalCollection;
 	import feathers.data.ListCollection;
 
+	import flash.filesystem.File;
+
 	import starling.events.Event;
 	import starling.events.EventDispatcher;
-	import flash.net.FileReference;
-	import flash.filesystem.File;
 
 	/**
 	 * Dispatched when a layer is added.
@@ -170,8 +170,6 @@ package com.grantech.managers
 			particleModel.x = x;
 			particleModel.y = y;
 			particleModel.order = _layers.length == 0 ? 0 : this._layers.getItemAt(0).order+1;
-			particleModel.blendFuncSource = "one";
-			particleModel.blendFuncDestination = "one";
 
 			// Add model to list.
 			this.layers.addItemAt(particleModel, this.currentLayerIndex+1);
@@ -234,7 +232,7 @@ package com.grantech.managers
 			if (this.layerCount == 0)
 				return;
 
-			DataManager.instance.dispatchEventWith(Event.REMOVED, false, { index: index });
+			DataManager.instance.dispatchEventWith(Event.REMOVED, true, { index: index });
 			this.layers.removeItemAt(index);
 			this._layerCount -= 1;
 			// Must handle this at both list and it's collection.

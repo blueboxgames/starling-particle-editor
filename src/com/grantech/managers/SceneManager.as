@@ -3,11 +3,9 @@ package com.grantech.managers
 	import feathers.core.IFeathersEventDispatcher;
 
 	import flash.display.Bitmap;
-	import flash.display.BitmapData;
 	import flash.display.Loader;
 	import flash.display.LoaderInfo;
 	import flash.events.Event;
-	import flash.events.IOErrorEvent;
 	import flash.net.URLRequest;
 	import flash.utils.Dictionary;
 
@@ -15,7 +13,6 @@ package com.grantech.managers
 	import starling.events.EventDispatcher;
 	import starling.extensions.PDParticleSystem;
 	import starling.textures.Texture;
-	import starling.extensions.ParticleSystem;
 
 	public class SceneManager extends EventDispatcher implements IFeathersEventDispatcher
 	{
@@ -54,7 +51,6 @@ package com.grantech.managers
 		public function addParticleSystem(id:int, particleSystem:PDParticleSystem):void
 		{
 			this._particleSystems[id] = particleSystem;
-			trace(particleSystem);
 		}
 
 		public function getParticleSystem(id:int):PDParticleSystem
