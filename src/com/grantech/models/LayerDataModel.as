@@ -2,6 +2,12 @@ package com.grantech.models
 {
 	public class LayerDataModel extends SerializableDataModel
 	{
+		private var _id:int;
+		private var _name:String;
+		private var _x:Number;
+		private var _y:Number;
+		private var _order:Number;
+
 		public function LayerDataModel()
 		{
 			super();
@@ -12,7 +18,7 @@ package com.grantech.models
 		 */
 		public function get id():int
 		{
-			return this.getProperty("id");
+			return this._id;
 		}
 
 		/**
@@ -23,47 +29,47 @@ package com.grantech.models
 		 */
 		public function set id(value:int):void
 		{
-			return this.setProperty("id", value);
+			this._id = value;
 		}
 
 		public function get name():String
 		{
-			return this.getProperty("name");
+			return this._name;
 		}
 
 		public function set name(value:String):void
 		{
-			this.setProperty("name", value);
+			this._name = value;
 		}
 
 		public function get x():Number
 		{
-			return this.getProperty("x");
+			return this._x;
 		}
 
 		public function set x(value:Number):void
 		{
-			return this.setProperty("x", value);
+			this._x = value;
 		}
 
 		public function get y():Number
 		{
-			return this.getProperty("y");
+			return this._y;
 		}
 
 		public function set y(value:Number):void
 		{
-			return this.setProperty("y", value);
+			this._y = value;
 		}
 
 		public function get order():Number
 		{
-			return this.getProperty("order");
+			return this._order;
 		}
 
 		public function set order(value:Number):void
 		{
-			this.setProperty("order", value);
+			this._order = value;
 		}
 	}
 }
