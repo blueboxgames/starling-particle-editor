@@ -4,10 +4,14 @@ package com.grantech.models
 	import flash.filesystem.File;
 
 	import starling.extensions.ColorArgb;
+	import starling.extensions.PDParticleSystem;
+	import starling.extensions.ParticleSystem;
 	import starling.utils.deg2rad;
 
 	public class ParticleDataModel extends LayerDataModel
 	{
+		private var _texture:String;
+		
 		public function ParticleDataModel()
 		{
 			super();
@@ -20,29 +24,29 @@ package com.grantech.models
 		protected function initialize():void
 		{
 			this.emitterType = 0;
-			this.duration = -1;
-			this.emitterXVariance = 0;
-			this.emitterYVariance = 0;
-			this.gravityX = 0;
-			this.gravityY = 0;
-			this.lifespan = 1.1;
-			this.lifespanVariance = 0.4;
-			this.startSize = 111;
-			this.startSizeVariance = 10;
-			this.endSize = 40;
-			this.endSizeVariance = 0;
-			this.emitAngle = -146;
-			this.emitAngleVariance = 50;
-			this.startRotation = 720;
-			this.startRotationVariance = 0;
-			this.endRotation = 0;
-			this.endRotationVariance = 0;
+			this.duration = -1.00;
+			this.sourcePositionVariancex = 0;
+			this.sourcePositionVariancey = 0;
+			this.gravityx = 0;
+			this.gravityy = 0;
+			this.particleLifespan = 1.1;
+			this.particleLifespanVariance = 0.4;
+			this.startParticleSize = 111;
+			this.startParticleSizeVariance = 10;
+			this.finishParticleSize = 40;
+			this.finishParticleSizeVariance = 0;
+			this.angle = -146;
+			this.angleVariance = 50;
+			this.rotationStart = 720;
+			this.rotationStartVariance = 0;
+			this.rotationEnd = 0;
+			this.rotationEndVariance = 0;
 			this.speed = 244;
 			this.speedVariance = 5;
 			this.radialAcceleration = 0;
-			this.radialAccelerationVariance = 0;
+			this.radialAccelVariance = 0;
 			this.tangentialAcceleration = 0;
-			this.tangentialAccelerationVariance = 0;
+			this.tangentialAccelVariance = 0;
 			// Radial Emitter
 			this.maxRadius = 0;
 			this.maxRadiusVariance = 0;
@@ -55,8 +59,8 @@ package com.grantech.models
 			this.startColorVariance = new ColorArgb(0,0,0,1);
 			this.finishColor = new ColorArgb(0,0,0,1);
 			this.finishColorVariance = new ColorArgb(0,0,0,1);
-			this.blendFactorSource = Context3DBlendFactor.ONE;
-			this.blendFactorDestination = Context3DBlendFactor.ONE;
+			this.blendFuncSource = Context3DBlendFactor.ONE;
+			this.blendFuncDestination = Context3DBlendFactor.ONE;
 			this.maxParticles = 300;
 			this.texture = File.applicationDirectory.resolvePath("/media/default.png").nativePath;
 		}
@@ -81,169 +85,148 @@ package com.grantech.models
 			this.setProperty("defaultDuration", value);
 		}
 
-		public function get emitterXVariance():Number
-		{
-			return this.getProperty("emitterXVariance");
-		}
-
 		public function get sourcePositionVariancex():Number
 		{
-			return this.getProperty("emitterXVariance");
+			return this.getProperty("sourcePositionVariancex");
 		}
 
-		public function set emitterXVariance(value:Number):void
+		public function set sourcePositionVariancex(value:Number):void
 		{
-			this.setProperty("emitterXVariance", value);
-		}
-
-		public function get emitterYVariance():Number
-		{
-			return this.getProperty("emitterYVariance");
+			this.setProperty("sourcePositionVariancex", value);
 		}
 
 		public function get sourcePositionVariancey():Number
 		{
-			return this.getProperty("emitterYVariance");
+			return this.getProperty("sourcePositionVariancey");
 		}
 
-		public function set emitterYVariance(value:Number):void
+		public function set sourcePositionVariancey(value:Number):void
 		{
-			this.setProperty("emitterYVariance", value);
+			this.setProperty("sourcePositionVariancey", value);
 		}
 
-		
 		// particle configuration
-		public function get lifespan():Number
-		{
-			return this.getProperty("lifespan");
-		}
-
 		public function get particleLifespan():Number
 		{
-			return this.getProperty("lifespan");
+			return this.getProperty("particleLifespan");
 		}
 
-		public function set lifespan(value:Number):void
+		public function set particleLifespan(value:Number):void
 		{
-			this.setProperty("lifespan", value);
+			this.setProperty("particleLifespan", value);
 		}
+
 
 		public function get particleLifespanVariance():Number
 		{
-			return this.getProperty("lifespanVariance");
+			return this.getProperty("particleLifespanVariance");
 		}
 
-		public function get lifespanVariance():Number
+		public function set particleLifespanVariance(value:Number):void
 		{
-			return this.getProperty("lifespanVariance");
+			this.setProperty("particleLifespanVariance", value);
 		}
 
-		public function set lifespanVariance(value:Number):void
+		public function get startParticleSize():Number
 		{
-			this.setProperty("lifespanVariance", value);
+			return this.getProperty("startParticleSize");
 		}
 
-		public function get startSize():Number
+		public function set startParticleSize(value:Number):void
 		{
-			return this.getProperty("startSize");
+			this.setProperty("startParticleSize", value);
 		}
 
-		public function set startSize(value:Number):void
+		public function get startParticleSizeVariance():Number
 		{
-			this.setProperty("startSize", value);
+			return this.getProperty("startParticleSizeVariance");
 		}
 
-		public function get startSizeVariance():Number
+		public function set startParticleSizeVariance(value:Number):void
 		{
-			return this.getProperty("startSizeVariance");
+			this.setProperty("startParticleSizeVariance", value);
 		}
 
-		public function set startSizeVariance(value:Number):void
+		public function get finishParticleSize():Number
 		{
-			this.setProperty("startSizeVariance", value);
+			return this.getProperty("finishParticleSize");
 		}
 
-		public function get endSize():Number
+		public function set finishParticleSize(value:Number):void
 		{
-			return this.getProperty("endSize");
+			this.setProperty("finishParticleSize", value);
 		}
 
-		public function set endSize(value:Number):void
+		public function get finishParticleSizeVariance():Number
 		{
-			this.setProperty("endSize", value);
+			return this.getProperty("finishParticleSizeVariance");
 		}
 
-		public function get endSizeVariance():Number
+		public function set finishParticleSizeVariance(value:Number):void
 		{
-			return this.getProperty("endSizeVariance");
+			this.setProperty("finishParticleSizeVariance", value);
 		}
 
-		public function set endSizeVariance(value:Number):void
+		public function get angle():Number
 		{
-			this.setProperty("endSizeVariance", value);
+			return this.getProperty("angle");
 		}
 
-		public function get emitAngle():Number
+		public function set angle(value:Number):void
 		{
-			return this.getProperty("emitAngle");
+			this.setProperty("angle", value);
 		}
 
-		public function set emitAngle(value:Number):void
+		public function get angleVariance():Number
 		{
-			this.setProperty("emitAngle", value);
+			return this.getProperty("angleVariance");
 		}
 
-		public function get emitAngleVariance():Number
+		public function set angleVariance(value:Number):void
 		{
-			return this.getProperty("emitAngleVariance");
+			this.setProperty("angleVariance", value);
 		}
 
-		public function set emitAngleVariance(value:Number):void
+		public function get rotationStart():Number
 		{
-			this.setProperty("emitAngleVariance", value);
+			return this.getProperty("rotationStart");
 		}
 
-		public function get startRotation():Number
+		public function set rotationStart(value:Number):void
 		{
-			return this.getProperty("startRotation");
+			this.setProperty("rotationStart", value);
 		}
 
-		public function set startRotation(value:Number):void
+		public function get rotationStartVariance():Number
 		{
-			this.setProperty("startRotation", value);
+			return this.getProperty("rotationStartVariance");
 		}
 
-		public function get startRotationVariance():Number
+		public function set rotationStartVariance(value:Number):void
 		{
-			return this.getProperty("startRotationVariance");
+			this.setProperty("rotationStartVariance", value);
 		}
 
-		public function set startRotationVariance(value:Number):void
+		public function get rotationEnd():Number
 		{
-			this.setProperty("startRotationVariance", value);
+			return this.getProperty("rotationEnd");
 		}
 
-		public function get endRotation():Number
+		public function set rotationEnd(value:Number):void
 		{
-			return this.getProperty("endRotation");
+			this.setProperty("rotationEnd", value);
 		}
 
-		public function set endRotation(value:Number):void
+		public function get rotationEndVariance():Number
 		{
-			this.setProperty("endRotation", value);
+			return this.getProperty("rotationEndVariance");
 		}
 
-		public function get endRotationVariance():Number
+		public function set rotationEndVariance(value:Number):void
 		{
-			return this.getProperty("endRotationVariance");
+			this.setProperty("rotationEndVariance", value);
 		}
 
-		public function set endRotationVariance(value:Number):void
-		{
-			this.setProperty("endRotationVariance", value);
-		}
-
-		
 		// gravity configuration
 		public function get speed():Number
 		{
@@ -265,24 +248,24 @@ package com.grantech.models
 			this.setProperty("speedVariance", value);
 		}
 
-		public function get gravityX():Number
+		public function get gravityx():Number
 		{
-			return this.getProperty("gravityX");
+			return this.getProperty("gravityx");
 		}
 
-		public function set gravityX(value:Number):void
+		public function set gravityx(value:Number):void
 		{
-			this.setProperty("gravityX", value);
+			this.setProperty("gravityx", value);
 		}
 
-		public function get gravityY():Number
+		public function get gravityy():Number
 		{
-			return this.getProperty("gravityY");
+			return this.getProperty("gravityy");
 		}
 
-		public function set gravityY(value:Number):void
+		public function set gravityy(value:Number):void
 		{
-			this.setProperty("gravityY", value);
+			this.setProperty("gravityy", value);
 		}
 
 		public function get radialAcceleration():Number
@@ -295,14 +278,14 @@ package com.grantech.models
 			this.setProperty("radialAcceleration", value);
 		}
 
-		public function get radialAccelerationVariance():Number
+		public function get radialAccelVariance():Number
 		{
-			return this.getProperty("radialAccelerationVariance");
+			return this.getProperty("radialAccelVariance");
 		}
 
-		public function set radialAccelerationVariance(value:Number):void
+		public function set radialAccelVariance(value:Number):void
 		{
-			this.setProperty("radialAccelerationVariance", value);
+			this.setProperty("radialAccelVariance", value);
 		}
 
 		public function get tangentialAcceleration():Number
@@ -315,14 +298,14 @@ package com.grantech.models
 			this.setProperty("tangentialAcceleration", value);
 		}
 
-		public function get tangentialAccelerationVariance():Number
+		public function get tangentialAccelVariance():Number
 		{
-			return this.getProperty("tangentialAccelerationVariance");
+			return this.getProperty("tangentialAccelVariance");
 		}
 
-		public function set tangentialAccelerationVariance(value:Number):void
+		public function set tangentialAccelVariance(value:Number):void
 		{
-			this.setProperty("tangentialAccelerationVariance", value);
+			this.setProperty("tangentialAccelVariance", value);
 		}
 
 		
@@ -605,24 +588,24 @@ package com.grantech.models
 			this.setProperty("finishColorVariance", value);
 		}
 
-		public function get blendFactorSource():String
+		public function get blendFuncSource():String
 		{
-			return this.getProperty("blendFactorSource");
+			return this.getProperty("blendFuncSource");
 		}
 
-		public function set blendFactorSource(value:String):void
+		public function set blendFuncSource(value:String):void
 		{	
-			this.setProperty("blendFactorSource", value);
+			this.setProperty("blendFuncSource", value);
 		}
 
-		public function get blendFactorDestination():String
+		public function get blendFuncDestination():String
 		{
-			return this.getProperty("blendFactorDestination");
+			return this.getProperty("blendFuncDestination");
 		}
 
-		public function set blendFactorDestination(value:String):void
+		public function set blendFuncDestination(value:String):void
 		{
-			this.setProperty("blendFactorDestination", value);
+			this.setProperty("blendFuncDestination", value);
 		}
 
 		public function get maxParticles():Number
@@ -637,112 +620,46 @@ package com.grantech.models
 
 		public function get texture():String
 		{
-			return this.getProperty("texture");
+			return this._texture;
 		}
 
 		public function set texture(value:String):void
 		{
-			this.setProperty("texture", value);
+			this._texture = value;
 		}
 
 		public function parseDataFromFile(value:File):void
 		{
-			var extension:String = value.extension;
-			extension.toLowerCase() == "xml" ? parseConfig(value.data.readUTFBytes(value.data.length) as XML) : parseJsonConfig(value.data.readUTFBytes(value.data.length));
+			// var extension:String = value.extension;
+			parseJsonConfig(value.data.readUTFBytes(value.data.length));
 		}
 
-		private function parseConfig(xconfig:String):void
-		{
-			var config:XML = XML ( xconfig );
-			this.emitterXVariance = parseFloat(config.sourcePositionVariance.attribute("x"));
-			this.emitterYVariance = parseFloat(config.sourcePositionVariance.attribute("y"));
-			this.gravityX =  parseFloat(config.gravity.attribute("x"));
-			this.gravityY =  parseFloat(config.gravity.attribute("y"));
-			this.emitterType =  getIntValue(config.emitterType);
-			this.lifespan =  Math.max(0.01, getFloatValue(config.particleLifeSpan));
-			this.lifespanVariance =  getFloatValue(config.particleLifespanVariance);
-			this.startSize =  getFloatValue(config.startParticleSize);
-			this.startSizeVariance =  getFloatValue(config.startParticleSizeVariance);
-			this.endSize =  getFloatValue(config.finishParticleSize);
-			this.endSizeVariance =  getFloatValue(config.FinishParticleSizeVariance);
-			this.emitAngle =  deg2rad(getFloatValue(config.angle));
-			this.emitAngleVariance =  deg2rad(getFloatValue(config.angleVariance));
-			this.startRotation =  deg2rad(getFloatValue(config.rotationStart));
-			this.startRotationVariance =  deg2rad(getFloatValue(config.rotationStartVariance));
-			this.endRotation =  deg2rad(getFloatValue(config.rotationEnd));
-			this.endRotationVariance =  deg2rad(getFloatValue(config.rotationEndVariance));
-			this.speed =  getFloatValue(config.speed);
-			this.speedVariance =  getFloatValue(config.speedVariance);
-			this.radialAcceleration =  getFloatValue(config.radialAcceleration);
-			this.radialAccelerationVariance =  getFloatValue(config.radialAccelVariance);
-			this.tangentialAcceleration =  getFloatValue(config.tangentialAcceleration);
-			this.tangentialAccelerationVariance =  getFloatValue(config.tangentialAccelVariance);
-			this.maxRadius =  getFloatValue(config.maxRadius);
-			this.maxRadiusVariance =  getFloatValue(config.maxRadiusVariance);
-			this.minRadius =  getFloatValue(config.minRadius);
-			this.minRadiusVariance =  getFloatValue(config.minRadiusVariance);
-			this.rotatePerSecond =  deg2rad(getFloatValue(config.rotatePerSecond));
-			this.rotatePerSecondVariance =  deg2rad(getFloatValue(config.rotatePerSecondVariance));
-			this.startColor =  getColor(config.startColor);
-			this.startColorVariance =  getColor(config.startColorVariance);
-			this.finishColor =  getColor(config.finishColor);
-			this.finishColorVariance =  getColor(config.finishColorVariance);
-			this.blendFactorSource = getBlendFunc(getIntValue(config.blendFactorSource));
-			this.blendFactorDestination = getBlendFunc(getIntValue(config.blendFactorDestination));
-			this.duration = getFloatValue(config.duration);
-			this.maxParticles = getIntValue(config.maxParticles);
-
-			this.lifespan =  Math.max(0.01, getFloatValue(config.particleLifespan));
-			this.lifespanVariance = getFloatValue(config.particleLifeSpanVariance);
-			this.endSizeVariance = getFloatValue(config.finishParticleSizeVariance);
-			this.minRadiusVariance = 0.0;
-
-			function getIntValue(element:XMLList):int
-			{
-					return parseInt(element.attribute("value"));
-			}
-			
-			function getFloatValue(element:XMLList):Number
-			{
-					return parseFloat(element.attribute("value"));
-			}
-			
-			function getColor(element:XMLList):ColorArgb
-			{
-					var color:ColorArgb = new ColorArgb();
-					color.red   = parseFloat(element.attribute("red"));
-					color.green = parseFloat(element.attribute("green"));
-					color.blue  = parseFloat(element.attribute("blue"));
-					color.alpha = parseFloat(element.attribute("alpha"));
-					return color;
-			}
-		}
 		private function parseJsonConfig(xconfig:String):void 
 		{
 			var config:Object = JSON.parse(xconfig)
-			this.emitterXVariance = config.sourcePositionVariancex;
-			this.emitterYVariance = config.sourcePositionVariancey;
-			this.gravityX = config.gravityx;
-			this.gravityY = config.gravityy;
+			this.sourcePositionVariancex = config.sourcePositionVariancex;
+			this.sourcePositionVariancey = config.sourcePositionVariancey;
+			this.gravityx = config.gravityx;
+			this.gravityy = config.gravityy;
 			this.emitterType = config.emitterType;
-			this.lifespan =Math.max(0.01, config.particleLifespan);
-			this.lifespanVariance =config.particleLifespanVariance;
-			this.startSize = config.startParticleSize;
-			this.startSizeVariance = config.startParticleSizeVariance;
-			this.endSize = config.finishParticleSize;
-			this.endSizeVariance =config.finishParticleSizeVariance;
-			this.emitAngle =deg2rad(config.angle);
-			this.emitAngleVariance =deg2rad(config.angleVariance);
-			this.startRotation =deg2rad(config.rotationStart);
-			this.startRotationVariance =deg2rad(config.rotationStartVariance);
-			this.endRotation =deg2rad(config.rotationEnd);
-			this.endRotationVariance =deg2rad(config.rotationEndVariance);
+			this.particleLifespan =Math.max(0.01, config.particleLifespan);
+			this.particleLifespanVariance =config.particleLifespanVariance;
+			this.startParticleSize = config.startParticleSize;
+			this.startParticleSizeVariance = config.startParticleSizeVariance;
+			this.finishParticleSize = config.finishParticleSize;
+			this.finishParticleSizeVariance =config.finishParticleSizeVariance;
+			this.angle =deg2rad(config.angle);
+			this.angleVariance =deg2rad(config.angleVariance);
+			this.rotationStart =deg2rad(config.rotationStart);
+			this.rotationStartVariance =deg2rad(config.rotationStartVariance);
+			this.rotationEnd = deg2rad(config.rotationEnd);
+			this.rotationEndVariance = deg2rad(config.rotationEndVariance);
 			this.speed = config.speed;
 			this.speedVariance =config.speedVariance;
 			this.radialAcceleration =config.radialAcceleration;
-			this.radialAccelerationVariance = config.radialAccelVariance;
+			this.radialAccelVariance = config.radialAccelVariance;
 			this.tangentialAcceleration =config.tangentialAcceleration;
-			this.tangentialAccelerationVariance =config.tangentialAccelVariance;
+			this.tangentialAccelVariance =config.tangentialAccelVariance;
 			this.maxRadius = config.maxRadius;
 			this.maxRadiusVariance =config.maxRadiusVariance;
 			this.minRadius =config.minRadius;
@@ -753,12 +670,12 @@ package com.grantech.models
 			this.startColorVariance =new ColorArgb(config.startColorVarianceRed, config.startColorVarianceGreen, config.startColorVarianceBlue, config.startColorVarianceAlpha);
 			this.finishColor =new ColorArgb(config.finishColorRed, config.finishColorGreen, config.finishColorBlue, config.finishColorAlpha);
 			this.finishColorVariance =new ColorArgb(config.finishColorVarianceRed, config.finishColorVarianceGreen, config.finishColorVarianceBlue, config.finishColorVarianceAlpha);
-			this.blendFactorSource = getBlendFunc(config.blendFuncSource);
-			this.blendFactorDestination = getBlendFunc(config.blendFuncDestination);
+			this.blendFuncSource = getBlendFunc(config.blendFuncSource);
+			this.blendFuncDestination = getBlendFunc(config.blendFuncDestination);
 			this.duration = config.duration;
 			this.maxParticles = config.maxParticles;
-			this.lifespan =  Math.max(0.01, config.particleLifespan);
-			this.endSizeVariance = config.finishParticleSizeVariance;
+			this.particleLifespan =  Math.max(0.01, config.particleLifespan);
+			this.finishParticleSizeVariance = config.finishParticleSizeVariance;
 			this.minRadiusVariance = 0.0;
 		}
 

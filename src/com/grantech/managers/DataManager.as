@@ -170,8 +170,8 @@ package com.grantech.managers
 			particleModel.x = x;
 			particleModel.y = y;
 			particleModel.order = _layers.length == 0 ? 0 : this._layers.getItemAt(0).order+1;
-			particleModel.blendFactorSource = "one";
-			particleModel.blendFactorDestination = "one";
+			particleModel.blendFuncSource = "one";
+			particleModel.blendFuncDestination = "one";
 
 			// Add model to list.
 			this.layers.addItemAt(particleModel, this.currentLayerIndex+1);

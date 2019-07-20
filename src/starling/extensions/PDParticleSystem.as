@@ -215,48 +215,51 @@ package starling.extensions
         
         private function updateEmissionRate():void
         {
-            emissionRate = (capacity - 1) / _lifespan;
+            emissionRate = (maxParticles - 1) / _lifespan;
         }
         
 		private function parseJsonConfig(config:Object):void 
 		{
-            _emitterXVariance = config.sourcePositionVariancex;
-            _emitterYVariance = config.sourcePositionVariancey;
-            _gravityX = config.gravityX;
-            _gravityY = config.gravityY;
-            _emitterType = config.emitterType;
-            _lifespan = Math.max(0.01, config.particleLifespan);
-            _lifespanVariance = config.particleLifespanVariance;
-            _startSize = config.startSize;
-            _startSizeVariance = config.startSizeVariance;
-            _endSize = config.endSize;
-            _endSizeVariance = config.endSizeVariance;
-            _emitAngle = deg2rad(config.emitAngle);
-            _emitAngleVariance = deg2rad(config.emitAngleVariance);
-            _startRotation = deg2rad(config.startRotation);
-            _startRotationVariance = deg2rad(config.startRotationVariance);
-            _endRotation = deg2rad(config.endRotation);
-            _endRotationVariance = deg2rad(config.endRotationVariance);
-            _speed = config.speed;
-            _speedVariance = config.speedVariance;
-            _radialAcceleration = config.radialAcceleration;
-            _radialAccelerationVariance = config.radialAccelerationVariance;
-            _tangentialAcceleration = config.tangentialAcceleration;
-            _tangentialAccelerationVariance = config.tangentialAccelerationVariance;
-            _maxRadius = config.maxRadius;
-            _maxRadiusVariance = config.maxRadiusVariance;
-            _minRadius = config.minRadius;
-            _minRadiusVariance = config.minRadiusVariance;
-            _rotatePerSecond = deg2rad(config.rotatePerSecond);
-            _rotatePerSecondVariance = deg2rad(config.rotatePerSecondVariance);
-            _startColor = new ColorArgb(config.startColorRed, config.startColorGreen, config.startColorBlue, config.startColorAlpha);
-            _startColorVariance = new ColorArgb(config.startColorVarianceRed, config.startColorVarianceGreen, config.startColorVarianceBlue, config.startColorVarianceAlpha);
-            _endColor = new ColorArgb(config.finishColorRed, config.finishColorGreen, config.finishColorBlue, config.finishColorAlpha);
-            _endColorVariance = new ColorArgb(config.finishColorVarianceRed, config.finishColorVarianceGreen, config.finishColorVarianceBlue, config.finishColorVarianceAlpha);
-            blendFactorSource = config.blendFactorSource;
-            blendFactorDestination = config.blendFactorDestination;
-            defaultDuration = config.duration;
-            capacity = config.maxParticles;
+			this.sourcePositionVariancex = config.sourcePositionVariancex;
+			this.sourcePositionVariancey = config.sourcePositionVariancey;
+			this.gravityx = config.gravityx;
+			this.gravityy = config.gravityy;
+			this.emitterType = config.emitterType;
+			this.particleLifespan =Math.max(0.01, config.particleLifespan);
+			this.particleLifespanVariance =config.particleLifespanVariance;
+			this.startParticleSize = config.startParticleSize;
+			this.startParticleSizeVariance = config.startParticleSizeVariance;
+			this.finishParticleSize = config.finishParticleSize;
+			this.finishParticleSizeVariance =config.finishParticleSizeVariance;
+			this.angle =deg2rad(config.angle);
+			this.angleVariance =deg2rad(config.angleVariance);
+			this.rotationStart =deg2rad(config.rotationStart);
+			this.rotationStartVariance =deg2rad(config.rotationStartVariance);
+			this.rotationEnd = deg2rad(config.rotationEnd);
+			this.rotationEndVariance = deg2rad(config.rotationEndVariance);
+			this.speed = config.speed;
+			this.speedVariance =config.speedVariance;
+			this.radialAcceleration =config.radialAcceleration;
+			this.radialAccelVariance = config.radialAccelVariance;
+			this.tangentialAcceleration =config.tangentialAcceleration;
+			this.tangentialAccelVariance =config.tangentialAccelVariance;
+			this.maxRadius = config.maxRadius;
+			this.maxRadiusVariance =config.maxRadiusVariance;
+			this.minRadius =config.minRadius;
+			this.minRadiusVariance =config.minRadiusVariance;
+			this.rotatePerSecond =deg2rad(config.rotatePerSecond);
+			this.rotatePerSecondVariance =deg2rad(config.rotatePerSecondVariance);
+			this.startColor =new ColorArgb(config.startColorRed, config.startColorGreen, config.startColorBlue, config.startColorAlpha);
+			this.startColorVariance =new ColorArgb(config.startColorVarianceRed, config.startColorVarianceGreen, config.startColorVarianceBlue, config.startColorVarianceAlpha);
+			this.finishColor =new ColorArgb(config.finishColorRed, config.finishColorGreen, config.finishColorBlue, config.finishColorAlpha);
+			this.finishColorVariance =new ColorArgb(config.finishColorVarianceRed, config.finishColorVarianceGreen, config.finishColorVarianceBlue, config.finishColorVarianceAlpha);
+			this.blendFuncSource = getBlendFunc(config.blendFuncSource);
+			this.blendFuncDestination = getBlendFunc(config.blendFuncDestination);
+			this.defaultDuration = config.duration;
+			this.maxParticles = config.maxParticles;
+			this.particleLifespan =  Math.max(0.01, config.particleLifespan);
+			this.finishParticleSizeVariance = config.finishParticleSizeVariance;
+			this.minRadiusVariance = 0.0;
 
             // compatibility with future Particle Designer versions
             // (might fix some of the uppercase/lowercase typos)
@@ -308,10 +311,10 @@ package starling.extensions
             _startColorVariance = getColor(config.startColorVariance);
             _endColor = getColor(config.finishColor);
             _endColorVariance = getColor(config.finishColorVariance);
-            blendFactorSource = config.blendFactorSource;
-            blendFactorDestination = config.blendFactorDestination;
+            blendFuncSource = config.blendFactorSource;
+            blendFuncDestination = config.blendFactorDestination;
             defaultDuration = getFloatValue(config.duration);
-            capacity = getIntValue(config.maxParticles);
+            maxParticles = getIntValue(config.maxParticles);
 
             // compatibility with future Particle Designer versions
             // (might fix some of the uppercase/lowercase typos)
@@ -369,11 +372,11 @@ package starling.extensions
         public function get emitterType():int { return _emitterType; }
         public function set emitterType(value:int):void { _emitterType = value; }
 
-        public function get emitterXVariance():Number { return _emitterXVariance; }
-        public function set emitterXVariance(value:Number):void { _emitterXVariance = value; }
+        public function get sourcePositionVariancex():Number { return _emitterXVariance; }
+        public function set sourcePositionVariancex(value:Number):void { _emitterXVariance = value; }
 
-        public function get emitterYVariance():Number { return _emitterYVariance; }
-        public function set emitterYVariance(value:Number):void { _emitterYVariance = value; }
+        public function get sourcePositionVariancey():Number { return _emitterYVariance; }
+        public function set sourcePositionVariancey(value:Number):void { _emitterYVariance = value; }
 
         public function get defaultDuration():Number { return _defaultDuration; }
         public function set defaultDuration(value:Number):void
@@ -381,51 +384,51 @@ package starling.extensions
             _defaultDuration = value < 0 ? Number.MAX_VALUE : value;
         }
 
-        override public function set capacity(value:int):void
+        override public function set maxParticles(value:int):void
         {
-            super.capacity = value;
+            super.maxParticles = value;
             updateEmissionRate();
         }
 
-        public function get lifespan():Number { return _lifespan; }
-        public function set lifespan(value:Number):void 
+        public function get particleLifespan():Number { return _lifespan; }
+        public function set particleLifespan(value:Number):void 
         { 
             _lifespan = Math.max(0.01, value);
             updateEmissionRate();
         }
 
-        public function get lifespanVariance():Number { return _lifespanVariance; }
-        public function set lifespanVariance(value:Number):void { _lifespanVariance = value; }
+        public function get particleLifespanVariance():Number { return _lifespanVariance; }
+        public function set particleLifespanVariance(value:Number):void { _lifespanVariance = value; }
 
-        public function get startSize():Number { return _startSize; }
-        public function set startSize(value:Number):void { _startSize = value; }
+        public function get startParticleSize():Number { return _startSize; }
+        public function set startParticleSize(value:Number):void { _startSize = value; }
 
-        public function get startSizeVariance():Number { return _startSizeVariance; }
-        public function set startSizeVariance(value:Number):void { _startSizeVariance = value; }
+        public function get startParticleSizeVariance():Number { return _startSizeVariance; }
+        public function set startParticleSizeVariance(value:Number):void { _startSizeVariance = value; }
 
-        public function get endSize():Number { return _endSize; }
-        public function set endSize(value:Number):void { _endSize = value; }
+        public function get finishParticleSize():Number { return _endSize; }
+        public function set finishParticleSize(value:Number):void { _endSize = value; }
 
-        public function get endSizeVariance():Number { return _endSizeVariance; }
-        public function set endSizeVariance(value:Number):void { _endSizeVariance = value; }
+        public function get finishParticleSizeVariance():Number { return _endSizeVariance; }
+        public function set finishParticleSizeVariance(value:Number):void { _endSizeVariance = value; }
 
-        public function get emitAngle():Number { return _emitAngle; }
-        public function set emitAngle(value:Number):void { _emitAngle = value; }
+        public function get angle():Number { return _emitAngle; }
+        public function set angle(value:Number):void { _emitAngle = value; }
 
-        public function get emitAngleVariance():Number { return _emitAngleVariance; }
-        public function set emitAngleVariance(value:Number):void { _emitAngleVariance = value; }
+        public function get angleVariance():Number { return _emitAngleVariance; }
+        public function set angleVariance(value:Number):void { _emitAngleVariance = value; }
 
-        public function get startRotation():Number { return _startRotation; }
-        public function set startRotation(value:Number):void { _startRotation = value; }
+        public function get rotationStart():Number { return _startRotation; }
+        public function set rotationStart(value:Number):void { _startRotation = value; }
         
-        public function get startRotationVariance():Number { return _startRotationVariance; }
-        public function set startRotationVariance(value:Number):void { _startRotationVariance = value; }
+        public function get rotationStartVariance():Number { return _startRotationVariance; }
+        public function set rotationStartVariance(value:Number):void { _startRotationVariance = value; }
         
-        public function get endRotation():Number { return _endRotation; }
-        public function set endRotation(value:Number):void { _endRotation = value; }
+        public function get rotationEnd():Number { return _endRotation; }
+        public function set rotationEnd(value:Number):void { _endRotation = value; }
         
-        public function get endRotationVariance():Number { return _endRotationVariance; }
-        public function set endRotationVariance(value:Number):void { _endRotationVariance = value; }
+        public function get rotationEndVariance():Number { return _endRotationVariance; }
+        public function set rotationEndVariance(value:Number):void { _endRotationVariance = value; }
         
         public function get speed():Number { return _speed; }
         public function set speed(value:Number):void { _speed = value; }
@@ -433,23 +436,23 @@ package starling.extensions
         public function get speedVariance():Number { return _speedVariance; }
         public function set speedVariance(value:Number):void { _speedVariance = value; }
 
-        public function get gravityX():Number { return _gravityX; }
-        public function set gravityX(value:Number):void { _gravityX = value; }
+        public function get gravityx():Number { return _gravityX; }
+        public function set gravityx(value:Number):void { _gravityX = value; }
 
-        public function get gravityY():Number { return _gravityY; }
-        public function set gravityY(value:Number):void { _gravityY = value; }
+        public function get gravityy():Number { return _gravityY; }
+        public function set gravityy(value:Number):void { _gravityY = value; }
 
         public function get radialAcceleration():Number { return _radialAcceleration; }
         public function set radialAcceleration(value:Number):void { _radialAcceleration = value; }
 
-        public function get radialAccelerationVariance():Number { return _radialAccelerationVariance; }
-        public function set radialAccelerationVariance(value:Number):void { _radialAccelerationVariance = value; }
+        public function get radialAccelVariance():Number { return _radialAccelerationVariance; }
+        public function set radialAccelVariance(value:Number):void { _radialAccelerationVariance = value; }
 
         public function get tangentialAcceleration():Number { return _tangentialAcceleration; }
         public function set tangentialAcceleration(value:Number):void { _tangentialAcceleration = value; }
 
-        public function get tangentialAccelerationVariance():Number { return _tangentialAccelerationVariance; }
-        public function set tangentialAccelerationVariance(value:Number):void { _tangentialAccelerationVariance = value; }
+        public function get tangentialAccelVariance():Number { return _tangentialAccelerationVariance; }
+        public function set tangentialAccelVariance(value:Number):void { _tangentialAccelerationVariance = value; }
 
         public function get maxRadius():Number { return _maxRadius; }
         public function set maxRadius(value:Number):void { _maxRadius = value; }

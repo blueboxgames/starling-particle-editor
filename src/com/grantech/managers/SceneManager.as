@@ -54,6 +54,7 @@ package com.grantech.managers
 		public function addParticleSystem(id:int, particleSystem:PDParticleSystem):void
 		{
 			this._particleSystems[id] = particleSystem;
+			trace(particleSystem);
 		}
 
 		public function getParticleSystem(id:int):PDParticleSystem
@@ -85,15 +86,6 @@ package com.grantech.managers
 				{
 					this._particleSystems[this._currentID].texture = null;
 				}
-				return;
-			}
-			if(key == "maxParticles")
-			{
-				this._particleSystems[id].capacity = value;
-				return;
-			}
-			if(key == "id" || key == "order")
-			{
 				return;
 			}
 			this._particleSystems[id][key] = value;

@@ -50,6 +50,7 @@ package com.grantech.models
 			var propFileStream:FileStream = new FileStream();
 			propFileStream.open(propFile, FileMode.READ);
 			propertyList = JSON.parse(propFileStream.readUTFBytes(propFileStream.bytesAvailable));
+			trace(propertyList);
 		}
 
 		public function getType(property:String):int
@@ -62,8 +63,8 @@ package com.grantech.models
 				case "finishColorVariance":
 					return TYPE_COLOR_PICKER;
 					break;
-				case "blendFactorSource":
-				case "blendFactorDestination":
+				case "blendFuncSource":
+				case "blendFuncDestination":
 					return TYPE_DROPDOWN;
 					break;
 				case "texture":

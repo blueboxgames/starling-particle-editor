@@ -81,7 +81,7 @@ package com.grantech.controls.items
 		protected function loadButton_triggeredHandler(event:Event):void
 		{
 			var configFile:File = new File();
-			var configFileExtension:FileFilter = new FileFilter("Data Config", "*.json;*.xml");
+			var configFileExtension:FileFilter = new FileFilter("Data Config", "*.json;*.pex");
 			configFile.browse([configFileExtension]);
 			configFile.addEventListener(Event.SELECT, configFile_selectHandler);
 		}

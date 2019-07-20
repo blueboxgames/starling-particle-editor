@@ -88,10 +88,10 @@ package com.grantech.controls.items
 		private function dropDownDisplay_changeHandler(e:Event):void
 		{
 			this.value = this.dropDownDisplay.selectedItem.text;
-			if(this.key == "blendFactorSource")
-				DataManager.instance.editCurrentLayerData("blendFactorSource", this.value);
-			if(this.key == "blendFactorDestination")
-				DataManager.instance.editCurrentLayerData("blendFactorDestination", this.value);
+			if(this.key == "blendFuncSource")
+				DataManager.instance.editCurrentLayerData("blendFuncSource", this.value);
+			if(this.key == "blendFuncDestination")
+				DataManager.instance.editCurrentLayerData("blendFuncDestination", this.value);
 		}
 
 		private function createSlider():void
@@ -128,7 +128,7 @@ package com.grantech.controls.items
 				this.dropDownDisplay = null;
 			}
 			this.dropDownDisplay = new PickerList();
-			if (this.key == "blendFactorSource" || this.key == "blendFactorDestination")
+			if (this.key == "blendFuncSource" || this.key == "blendFuncDestination")
 			{
 				var blendModes:IListCollection = new ListCollection(
 					[

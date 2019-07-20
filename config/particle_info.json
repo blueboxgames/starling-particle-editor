@@ -11,97 +11,97 @@
 		"step": 1
 	},
 
-	"emitterXVariance": {
+	"sourcePositionVariancex": {
 		"min": -10000,
 		"max": 10000,
 		"step": 1
 	},
 
-	"emitterYVariance": {
+	"sourcePositionVariancey": {
 		"min": -10000,
 		"max": 10000,
 		"step": 1
 	},
 	
-	"gravityX": {
+	"gravityx": {
 		"min": -10000,
 		"max": 10000,
 		"step": 1
 	},
 	
-	"gravityY": {
+	"gravityy": {
 		"min": -10000,
 		"max": 10000,
 		"step": 1
 	},
 
-	"lifespan": {
+	"particleLifespan": {
 		"min": 0,
 		"max": 10000,
 		"step": 0.1
 	},
 
-	"lifespanVariance": {
+	"particleLifespanVariance": {
 		"min": 0,
 		"max": 10000,
 		"step": 0.1
 	},
 	
-	"startSize": {
+	"startParticleSize": {
 		"min": 0,
 		"max": 10000,
 		"step": 1
 	},
 
-	"startSizeVariance": {
+	"startParticleSizeVariance": {
 		"min": 0,
 		"max": 10000,
 		"step": 1
 	},
 
-	"endSize": {
+	"finishParticleSize": {
 		"min": 0,
 		"max": 10000,
 		"step": 1
 	},
 
-	"endSizeVariance": {
+	"finishParticleSizeVariance": {
 		"min": 0,
 		"max": 10000,
 		"step": 1
 	},
 
-	"emitAngle": {
-		"min": 0,
-		"max": 180,
-		"step": 1
-	},
-
-	"emitAngleVariance": {
+	"angle": {
 		"min": 0,
 		"max": 180,
 		"step": 1
 	},
 
-	"startRotation": {
+	"angleVariance": {
+		"min": 0,
+		"max": 180,
+		"step": 1
+	},
+
+	"rotationStart": {
 		"min": -10000,
 		"max": 10000,
 		"step": 1
 	},
 
-	"startRotationVariance": {
+	"rotationStartVariance": {
 		"min": -10000,
 		"max": 10000,
 		"step": 1
 	},
 
-	"endRotation": {
+	"rotationEnd": {
 		"min": -10000,
 		"max": 10000,
 		"step": 1
 	},
 
-	"endRotationVariance": {
+	"rotationEndVariance": {
 		"min": -10000,
 		"max": 10000,
 		"step": 1
@@ -124,7 +124,7 @@
 		"max": 10000,
 		"step": 1
 	},
-	"radialAccelerationVariance": {
+	"radialAccelVariance": {
 		"min": 0,
 		"max": 10000,
 		"step": 1
@@ -136,7 +136,7 @@
 		"step": 1
 	},
 
-	"tangentialAccelerationVariance": {
+	"tangentialAccelVariance": {
 		"min": 0,
 		"max": 10000,
 		"step": 1
