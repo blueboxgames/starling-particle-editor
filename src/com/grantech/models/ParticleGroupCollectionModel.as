@@ -49,7 +49,7 @@ package com.grantech.models
 						header: "Blending",
 						children: [
 							{key: "blendFuncSource", text: "Start", value: particleData.blendFuncSource},
-							{key: "blendFuncSource", text: "End", value: particleData.blendFuncSource}
+							{key: "blendFuncDestination", text: "End", value: particleData.blendFuncDestination}
 						]
 					},
 					{

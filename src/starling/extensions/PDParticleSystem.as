@@ -311,8 +311,8 @@ package starling.extensions
             _startColorVariance = getColor(config.startColorVariance);
             _endColor = getColor(config.finishColor);
             _endColorVariance = getColor(config.finishColorVariance);
-            blendFuncSource = config.blendFactorSource;
-            blendFuncDestination = config.blendFactorDestination;
+            blendFuncSource = getBlendFunc(config.blendFactorSource);
+            blendFuncDestination = getBlendFunc(config.blendFactorDestination);
             defaultDuration = getFloatValue(config.duration);
             maxParticles = getIntValue(config.maxParticles);
 
