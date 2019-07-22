@@ -22,17 +22,85 @@ package com.grantech.controls.items
 	import flash.filesystem.File;
 
 	import starling.events.Event;
+	import starling.display.DisplayObject;
+	import feathers.controls.LayoutGroup;
+	import feathers.layout.AnchorLayoutData;
+	import feathers.layout.AnchorLayout;
 
+	/**
+	 * InspectorListItemRenderer is a view which renders information from DataModels.
+	 */
 	public class InspectorListItemRenderer extends LayoutGroupGroupedListItemRenderer implements IGroupedListItemRenderer
 	{
-		private var key:String;
-		private var value:*;
+		protected static const INVALIDATION_FLAG_LABEL:String = "label";
 
+		// Data from `AbstractGroupCollectionModel`
+		// ---------------------------------------
+		private var _key:String;
+		private var _label:String;
+		private var _value:*;
+		// ---------------------------------------
+
+		public function get key():String
+		{
+			return _key;
+		}
+		
+		public function set key(value:String):void
+		{
+			if(this._key == value)
+				return;
+
+			this._key = value;
+		}
+
+		public function get label():String
+		{
+			return _label;
+		}
+		
+		public function set label(value:String):void
+		{
+			if(this._label == value)
+				return;
+			this._label = value;
+			this.invalidate(INVALIDATION_FLAG_LABEL);
+		}
+
+		public function get value():*
+		{
+			return _value;
+		}
+		
+		public function set value(value:*):void
+		{
+			this._value = value;
+		}
+
+		private var _controlType:int;
+		
+		public function get controlType():int
+		{
+			return _controlType;
+		}
+		
+		public function set controlType(value:int):void
+		{
+			if(this._controlType == value)
+				return;
+			this._controlType = value;
+		}
+		
+
+		// DisplayObjects
+		// ---------------------------------------
 		private var labelDisplay:Label;
 		private var sliderDisplay:EditableSlider;
 		private var colorPickerDisplay:ColorPicker;
 		private var dropDownDisplay:PickerList;
 		private var browseDisplay:Button;
+		private var valueHolderDisplay:LayoutGroup;
+		// ---------------------------------------
 		
 		public function InspectorListItemRenderer()
 		{
@@ -42,14 +110,9 @@ package com.grantech.controls.items
 		override protected function initialize():void
 		{
 			super.initialize();
-			this.removeChildren();
 
-			var hLayout:HorizontalLayout = new HorizontalLayout();
-			hLayout.gap = 5;
-			this.layout = hLayout;
-
-			this.labelDisplay = new Label();
-			this.labelDisplay.layoutData = new HorizontalLayoutData(50);
+			var inspectorItemLayout:AnchorLayout = new AnchorLayout();
+			this.layout = inspectorItemLayout;
 		}
 
 		override protected function commitData():void
@@ -57,52 +120,73 @@ package com.grantech.controls.items
 			super.commitData();
 			if( this._data == null || this._owner == null )
 				return;
-			this.removeChildren();
-			this.key = this._data.key as String;
 
-			this.value = this._data.value;
-			this.labelDisplay.text = this._data.text;
-			this.addChild(this.labelDisplay);
-			if( ControlsHelper.instance.getType(this.key) == ControlsHelper.TYPE_COLOR_PICKER )
-				createColorPicker();
-			else if( ControlsHelper.instance.getType(this.key) == ControlsHelper.TYPE_DROPDOWN )
-				createDropDown();
-			else if ( ControlsHelper.instance.getType(this.key) == ControlsHelper.TYPE_BROWSE )
-				createBrowse();
-			else
-				createSlider();
+			this.key = this.data.key as String;
+			this.label = this.data.label as String;
+			this._value = this.data.value;
+			redrawControls();
 		}
 
-		private function sliderDisplay_changeHandler(e:Event):void
+		override protected function draw():void
 		{
-			this.value = this.sliderDisplay.value;
-			DataManager.instance.editCurrentLayerData(this.key, this.value);
+			super.draw();
+			var labelInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LABEL);
+			
+			if(labelInvalid) redrawLabel();
 		}
 
-		private function colorPickerDisplay_changeHandler(e:Event):void
+		protected function redrawLabel():void
 		{
-			this.value = this.colorPickerDisplay.data;
-			DataManager.instance.editCurrentLayerData(this.key, this.value);
-		}
-
-		private function dropDownDisplay_changeHandler(e:Event):void
-		{
-			this.value = this.dropDownDisplay.selectedItem.value;
-			if(this.key == "blendFuncSource")
-				DataManager.instance.editCurrentLayerData("blendFuncSource", this.value);
-			if(this.key == "blendFuncDestination")
-				DataManager.instance.editCurrentLayerData("blendFuncDestination", this.value);
-		}
-
-		private function createSlider():void
-		{
-			if( this.sliderDisplay != null )
+			if(this.labelDisplay == null)
 			{
-				this.sliderDisplay = null;
+				this.labelDisplay = new Label();
+				this.labelDisplay.layoutData = new AnchorLayoutData(NaN,150,NaN,0);
+				this.addChild(labelDisplay);
 			}
-			this.sliderDisplay = new EditableSlider();
-			this.sliderDisplay.addEventListener(Event.CHANGE, sliderDisplay_changeHandler);
-			this.sliderDisplay.layoutData = new HorizontalLayoutData(50);
+			this.labelDisplay.text = this.label;
+		}
+
+		protected function redrawControls():void
+		{
+			if(this.valueHolderDisplay == null)
+			{
+				this.valueHolderDisplay = new LayoutGroup();
+				this.valueHolderDisplay.layout = new AnchorLayout();
+				this.valueHolderDisplay.layoutData = new AnchorLayoutData(NaN,0,NaN,150);
+			}
+
+			if(this.valueHolderDisplay.numChildren != 0 && this.controlType != ControlsHelper.instance.getType(this.key))
+			{
+				this.valueHolderDisplay.getChildAt(0).removeEventListeners();
+				this.valueHolderDisplay.removeChildren();
+			}
+
+			switch(ControlsHelper.instance.getType(this.key))
+			{
+				case ControlsHelper.TYPE_COLOR_PICKER:
+					drawColorPicker();
+					break;
+				case ControlsHelper.TYPE_DROPDOWN:
+					drawDropDown();
+					break;
+				case ControlsHelper.TYPE_BROWSE:
+					drawBrowseButton();
+					break;
+				default:
+					drawSlider();
+					break;
+			}
+			this.addChild(this.valueHolderDisplay);
+		}
+
+		protected function drawSlider():void
+		{
+			if(this.sliderDisplay == null)
+			{
+				this.sliderDisplay = new EditableSlider();
+				this.sliderDisplay.layoutData = new AnchorLayoutData(0,0,0,0);
+				this.sliderDisplay.addEventListener(Event.CHANGE, sliderDisplay_changeHandler);
+			}
 
 			if(this.key == "x" || this.key == "y")
 			{
@@ -116,83 +200,85 @@ package com.grantech.controls.items
 				this.sliderDisplay.minimum = ControlsHelper.instance.getMin(this.key);
 				this.sliderDisplay.maximum = ControlsHelper.instance.getMax(this.key);
 			}
+			
 			this.sliderDisplay.value = this.value;
-			this.addChild(this.sliderDisplay);
+			this.valueHolderDisplay.addChild(this.sliderDisplay);
+			this.controlType = ControlsHelper.TYPE_SLIDER;
 		}
 
-		private function createDropDown():void
+		private function drawDropDown():void
 		{
-			// BUG: trace("?") creates double component.
-			if( this.dropDownDisplay != null )
+			if(this.dropDownDisplay == null)
 			{
-				this.dropDownDisplay = null;
-			}
-			this.dropDownDisplay = new PickerList();
-			if (this.key == "blendFuncSource" || this.key == "blendFuncDestination")
-			{
-				var blendModes:IListCollection = new ArrayCollection(
-					[
-						{ text: Context3DBlendFactor.ZERO, value: 0 },
-						{ text: Context3DBlendFactor.ONE, value: 1 },
-						{ text: Context3DBlendFactor.SOURCE_COLOR, value: 0x300 },
-						{ text: Context3DBlendFactor.ONE_MINUS_SOURCE_COLOR, value: 0x301 },
-						{ text: Context3DBlendFactor.SOURCE_ALPHA, value: 0x302 },
-						{ text: Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA, value: 0x303 },
-						{ text: Context3DBlendFactor.DESTINATION_ALPHA, value: 0x304 },
-						{ text: Context3DBlendFactor.ONE_MINUS_DESTINATION_ALPHA, value: 0x305 },
-						{ text: Context3DBlendFactor.DESTINATION_COLOR, value: 0x306 },
-						{ text: Context3DBlendFactor.ONE_MINUS_DESTINATION_COLOR, value: 0x307 }
-					]
-				);
-				
-				this.dropDownDisplay.dataProvider = blendModes;
-				this.dropDownDisplay.labelField = "text";
-
-				for(var i:int; i < blendModes.length; i++)
+				this.dropDownDisplay = new PickerList();
+				this.dropDownDisplay.layoutData = new AnchorLayoutData(0,0,0,0);
+				this.dropDownDisplay.addEventListener(Event.CHANGE, dropDownDisplay_changeHandler);
+				this.controlType = ControlsHelper.TYPE_DROPDOWN;
+				if (this.key == "blendFuncSource" || this.key == "blendFuncDestination")
 				{
-					if (blendModes.getItemAt(i).value == this.value) 
+					var blendModes:IListCollection = new ArrayCollection(
+						[
+							{ text: Context3DBlendFactor.ZERO, value: 0 },
+							{ text: Context3DBlendFactor.ONE, value: 1 },
+							{ text: Context3DBlendFactor.SOURCE_COLOR, value: 0x300 },
+							{ text: Context3DBlendFactor.ONE_MINUS_SOURCE_COLOR, value: 0x301 },
+							{ text: Context3DBlendFactor.SOURCE_ALPHA, value: 0x302 },
+							{ text: Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA, value: 0x303 },
+							{ text: Context3DBlendFactor.DESTINATION_ALPHA, value: 0x304 },
+							{ text: Context3DBlendFactor.ONE_MINUS_DESTINATION_ALPHA, value: 0x305 },
+							{ text: Context3DBlendFactor.DESTINATION_COLOR, value: 0x306 },
+							{ text: Context3DBlendFactor.ONE_MINUS_DESTINATION_COLOR, value: 0x307 }
+						]
+					);
+					
+					this.dropDownDisplay.dataProvider = blendModes;
+					this.dropDownDisplay.labelField = "text";
+
+					for(var i:int; i < blendModes.length; i++)
 					{
-						this.dropDownDisplay.selectedIndex = i;
+						if (blendModes.getItemAt(i).value == this._value) 
+						{
+							this.dropDownDisplay.selectedIndex = i;
+						}
+					}
+					this.dropDownDisplay.prompt = blendModes.getItemAt(this.dropDownDisplay.selectedIndex).text;
+					this.dropDownDisplay.itemRendererFactory = function():IListItemRenderer
+					{
+						var itemRenderer:DefaultListItemRenderer = new DefaultListItemRenderer();
+						itemRenderer.labelField = "text";
+						return itemRenderer;
 					}
 				}
-				this.dropDownDisplay.prompt = blendModes.getItemAt(this.dropDownDisplay.selectedIndex).text;
-				this.dropDownDisplay.itemRendererFactory = function():IListItemRenderer
-				{
-					var itemRenderer:DefaultListItemRenderer = new DefaultListItemRenderer();
-					itemRenderer.labelField = "text";
-					return itemRenderer;
-				}
-				this.dropDownDisplay.layoutData = new HorizontalLayoutData(50);
+				this.dropDownDisplay.popUpContentManager = new CalloutPopUpContentManager();
 			}
-			this.dropDownDisplay.popUpContentManager = new CalloutPopUpContentManager();
-			this.dropDownDisplay.addEventListener(Event.CHANGE, dropDownDisplay_changeHandler);
-			this.addChild(this.dropDownDisplay);
+			
+			this.valueHolderDisplay.addChild(this.dropDownDisplay);
 		}
 		
-		private function createColorPicker():void
+		protected function drawColorPicker():void
 		{
-			if( this.colorPickerDisplay !=null )
+			if(this.colorPickerDisplay == null)
 			{
-				this.colorPickerDisplay = null;
+				this.colorPickerDisplay = new ColorPicker();
+				this.colorPickerDisplay.layoutData = new AnchorLayoutData(0,0,0,0);
+				this.colorPickerDisplay.addEventListener(Event.CHANGE, colorPickerDisplay_changeHandler);
 			}
-			this.colorPickerDisplay = new ColorPicker();
-			this.colorPickerDisplay.addEventListener(Event.CHANGE, colorPickerDisplay_changeHandler);
-			this.colorPickerDisplay.layoutData = new HorizontalLayoutData(50);
-			
+			this.controlType = ControlsHelper.TYPE_COLOR_PICKER;
 			this.colorPickerDisplay.data = this.value;
-			this.addChild(this.colorPickerDisplay);
+			this.valueHolderDisplay.addChild(this.colorPickerDisplay);
 		}
 
-		private function createBrowse():void
+		private function drawBrowseButton():void
 		{
-			if (this.browseDisplay != null)
-				this.browseDisplay = null;
-			
-			this.browseDisplay = new Button();
-			this.browseDisplay.label = "Browse";
-			this.browseDisplay.addEventListener(Event.TRIGGERED, browseDisplay_triggeredHandler);
-			this.browseDisplay.layoutData = new HorizontalLayoutData(50);
-			this.addChild(this.browseDisplay);
+			if (this.browseDisplay == null)
+			{
+				this.browseDisplay = new Button();
+				this.browseDisplay.label = "Browse";
+				this.browseDisplay.layoutData = new AnchorLayoutData(0,0,0,0);
+				this.browseDisplay.addEventListener(Event.TRIGGERED, browseDisplay_triggeredHandler);
+			}
+			this.valueHolderDisplay.addChild(this.browseDisplay);
+			this.controlType = ControlsHelper.TYPE_BROWSE;
 		}
 
 		protected function browseDisplay_triggeredHandler(e:Event):void
@@ -204,8 +290,31 @@ package com.grantech.controls.items
 
 		protected function file_SelectHandler(e:*):void
 		{
-			this.value = this.value.nativePath;
-			DataManager.instance.editCurrentLayerData(this.key, this.value);
+			this.value = this._value.nativePath;
+			DataManager.instance.editCurrentLayerData(this.key, this._value);
+		}
+
+		private function sliderDisplay_changeHandler(e:Event):void
+		{
+			if(sliderDisplay == null)
+				return;
+			this.value = this.sliderDisplay.value;
+			DataManager.instance.editCurrentLayerData(this.key, this._value);
+		}
+
+		private function colorPickerDisplay_changeHandler(e:Event):void
+		{
+			this.value = this.colorPickerDisplay.data;
+			DataManager.instance.editCurrentLayerData(this.key, this._value);
+		}
+
+		private function dropDownDisplay_changeHandler(e:Event):void
+		{
+			this._value = this.dropDownDisplay.selectedItem.value;
+			if(this.key == "blendFuncSource")
+				DataManager.instance.editCurrentLayerData("blendFuncSource", this._value);
+			if(this.key == "blendFuncDestination")
+				DataManager.instance.editCurrentLayerData("blendFuncDestination", this._value);
 		}
 	}
 }

@@ -18,6 +18,12 @@ package com.grantech.panels
 	import starling.events.Event;
 	import starling.textures.Texture;
 
+	import com.grantech.models.ParticleDataModel;
+	import starling.display.Sprite;
+	import feathers.core.PopUpManager;
+	import feathers.controls.Panel;
+	import starling.display.DisplayObject;
+
 	public class LayersPanel extends PanelScreen
 	{
 		private var listDisplay:List;
@@ -110,9 +116,25 @@ package com.grantech.panels
 		
 		protected function addLayerButton_triggeredHandler(event:Event):void
 		{
-			DataManager.instance.addLayer();
 			// When a new layer is added we select it from list display too.
-			this.listDisplay.selectedIndex = DataManager.instance.currentLayerIndex;
+			// DataManager.instance.addLayer();
+			var popUp:Panel = new Panel();
+			popUp.layout = new AnchorLayout();
+			var particleButton:Button = new Button();
+			particleButton.label = "Particle";
+			particleButton.layoutData = new AnchorLayoutData(NaN,100,NaN,NaN);
+			popUp.addChild(particleButton);
+			particleButton.addEventListener(Event.TRIGGERED, function():void{
+				DataManager.instance.addLayer(DataManager.PARTICLE_LAYER);
+				popUp.removeFromParent();
+			});
+
+			var imageButton:Button = new Button();
+			imageButton.label = "Image";
+			imageButton.layoutData = new AnchorLayoutData(NaN,NaN,NaN,100);
+			popUp.addChild(imageButton);
+			this.stage.addChild( popUp );
+			PopUpManager.centerPopUp(popUp);
 		}
 		
 		private function removeLayerButton_triggeredHandler(event:Event):void
@@ -133,6 +155,23 @@ package com.grantech.panels
 		private function lowerLayerButton_triggeredHandler(event:Event):void
 		{
 			DataManager.instance.lowerLayerAt(listDisplay.selectedIndex);
+		}
+
+		public function LayersPanel()
+		{
+			super();
+			//DataManager.instance.addEventListener(Event.ADDED, dataManager_addedHandler);
+		
+		}
+		override public function dispose():void
+		{
+			super.dispose();
+			//DataManager.instance.removeEventListener(Event.ADDED, dataManager_addedHandler);
+		}
+
+		protected function dataManager_addedHandler(e:Event):void
+		{
+			this.listDisplay.selectedIndex = 0;
 		}
 	}
 }

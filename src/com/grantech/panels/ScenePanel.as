@@ -10,6 +10,10 @@ package com.grantech.panels
 	import starling.events.Event;
 	import starling.extensions.PDParticleSystem;
 	import starling.textures.Texture;
+	import flash.display.Loader;
+	import com.grantech.managers.AssetManager;
+	import starling.display.DisplayObject;
+	import starling.animation.IAnimatable;
 
 	public class ScenePanel extends Screen
 	{
@@ -26,35 +30,27 @@ package com.grantech.panels
 			super.initialize();
 			this.name = "ScenePanel";
 			DataManager.instance.addEventListener(Event.ADDED, dataManager_addedHandler);
-			DataManager.instance.addEventListener(Event.CHANGE, dataManager_changeHandler);
+			// DataManager.instance.addEventListener(Event.CHANGE, dataManager_changeHandler);
 			// DataManager.instance.addEventListener(Event.SELECT, dataManager_selectHandler);
 			DataManager.instance.addEventListener(Event.REMOVED, dataManager_removedHandler);
 			DataManager.instance.addEventListener("swap", dataManager_swapHandler);
-		}
 
-		protected function particleFromDataModel(config:ParticleDataModel):PDParticleSystem
-		{
-			var blueTexture:Texture = Texture.fromEmbeddedAsset(Default);
-			var particleSystem:PDParticleSystem = new PDParticleSystem(config, blueTexture);
-			return particleSystem;
+			SceneManager.instance.addEventListener(Event.ADDED, sceneManager_addedHandler);
+			SceneManager.instance.addEventListener(Event.CHANGE, sceneManager_changeHandler);
 		}
 
 		protected function dataManager_addedHandler(event:Event):void
 		{
-			var reference:ParticleDataModel = event.data as ParticleDataModel;
-			var texture:Texture = Texture.fromEmbeddedAsset(Default);
-			var particleSystem:PDParticleSystem = new PDParticleSystem(reference, texture);
-			particleSystem.x = reference.x;
-			particleSystem.y = reference.y;
-			particleSystem.blendFuncSource = ParticleDataModel.getBlendFunc(reference.blendFuncSource);
-			particleSystem.blendFuncDestination = ParticleDataModel.getBlendFunc(reference.blendFuncDestination);
-			// particleSystem.angle = reference.angle;
-			// particleSystem.angleVariance = reference.angleVariance;
-			
-			Starling.juggler.add(particleSystem);
-			particleSystem.start();
-			this.addChild(particleSystem);
-			SceneManager.instance.addParticleSystem(reference.id, particleSystem);
+			if(event.data == null)
+				return;
+			if(event.data.particle != null)
+			{
+				createParticleFromModel(event.data.particle);
+			}
+			if(event.data.image != null)
+			{
+				// createImage();
+			}
 		}
 
 		protected function dataManager_changeHandler(event:Event):void
@@ -102,14 +98,53 @@ package com.grantech.panels
 			this.swapChildren(a,b);
 		}
 
+		protected function sceneManager_addedHandler(event:Event):void
+		{
+			var newDisplayElement:DisplayObject;
+			if(event.data.type == SceneManager.TYPE_PARTCILE )
+			{
+				var particleSystem:PDParticleSystem = SceneManager.instance.getParticleSystem( event.data.id );
+				particleSystem.start();
+				Starling.juggler.add(particleSystem);
+				newDisplayElement = particleSystem;
+			}
+			else if(event.data.type == SceneManager.TYPE_IMAGE )
+				newDisplayElement = SceneManager.instance.getImage( event.data.id );
+			
+			if(newDisplayElement != null)
+				this.addChild(newDisplayElement);
+		}
+
+		protected function sceneManager_changeHandler(event:Event):void
+		{
+
+		}
+
 		override public function dispose():void
 		{
 			DataManager.instance.removeEventListener(Event.ADDED, dataManager_addedHandler);
-			DataManager.instance.removeEventListener(Event.CHANGE, dataManager_changeHandler);
 			// DataManager.instance.removeEventListener(Event.SELECT, dataManager_selectHandler);
 			DataManager.instance.removeEventListener(Event.REMOVED, dataManager_removedHandler);
 			DataManager.instance.removeEventListener("swap", dataManager_swapHandler);
+
+			SceneManager.instance.removeEventListener(Event.ADDED, sceneManager_addedHandler);
+			DataManager.instance.removeEventListener(Event.CHANGE, sceneManager_changeHandler);
 			super.dispose();
+		}
+
+		protected function createParticleFromModel(model:ParticleDataModel):void
+		{
+			AssetManager.instance.load(model.texture);
+			AssetManager.instance.addEventListener(Event.COMPLETE, function():void {
+				var texture:Texture = AssetManager.instance.getTexture(model.texture);
+				var particleSystem:PDParticleSystem = new PDParticleSystem(model, texture);
+
+				// Reload blendFuncSource and Destination.
+				particleSystem.blendFuncSource = ParticleDataModel.getBlendFunc(model.blendFuncSource);
+				particleSystem.blendFuncDestination = ParticleDataModel.getBlendFunc(model.blendFuncDestination);
+				
+				SceneManager.instance.addParticleSystem(model.id, particleSystem);
+			});	
 		}
 	}
 }

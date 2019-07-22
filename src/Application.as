@@ -22,7 +22,8 @@ package
 			this.stage.frameRate = 60;
 			this.stage.stageWidth = 800;
 			this.stage.stageHeight = 600;
-			this.stage.nativeWindow.addEventListener(Event.RESIZE, stage_resize);
+			this.stage.nativeWindow.addEventListener(Event.CLOSING, stage_closingHandler);
+			
 			this.loaderInfo.addEventListener(Event.COMPLETE, loaderInfo_completeHandler);
 		}
 
@@ -39,26 +40,26 @@ package
 
 		private function display_rootCreatedHandler(evnet:*):void
 		{
-			this.stage.addEventListener("deactivate", stage_deactivateHandler, false, 0, true);
+			this.stage.addEventListener(Event.DEACTIVATE, stage_deactivateHandler, false, 0, true);
 		}
 
 		private function stage_deactivateHandler(event:*):void
 		{
 			this._starling.stop(true);
 			this.stage.frameRate = 0;
-			this.stage.addEventListener("activate", stage_activateHandler, false, 0, true);
+			this.stage.addEventListener(Event.ACTIVATE, stage_activateHandler, false, 0, true);
 		}
 
 		private function stage_activateHandler(event:Event):void
     {
-      this.stage.removeEventListener("activate", stage_activateHandler);
-      this.stage.frameRate = 60;
+      this.stage.removeEventListener(Event.ACTIVATE, stage_activateHandler);
+      this.stage.frameRate = 24;
       this._starling.start();
     }
 
-		private function stage_resize(e:*):void
+		private function stage_closingHandler(event:Event):void
 		{
-			// _starling.
+			this.stage.removeEventListener(Event.DEACTIVATE, stage_deactivateHandler);
 		}
 	}
 }

@@ -22,7 +22,7 @@ package
     /**
      * Main stage viewport.
      */
-    private var viewPort:Rectangle =  Starling.current.viewPort;
+    private var viewPort:Rectangle = Starling.current.viewPort;
     /**
      *Navigator through the screens.
      */

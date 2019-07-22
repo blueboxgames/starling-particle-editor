@@ -2,11 +2,9 @@ package com.grantech.models
 {
 	public class LayerDataModel extends SerializableDataModel
 	{
-		// private var _id:int;
 		private var _name:String;
-		// private var _x:Number;
-		// private var _y:Number;
 		private var _order:Number;
+		private var _type:String;
 
 		public function LayerDataModel()
 		{
@@ -70,6 +68,16 @@ package com.grantech.models
 		public function set order(value:Number):void
 		{
 			this._order = value;
+		}
+
+		public function get type():String
+		{
+			return this._type;
+		}
+
+		public function set type(value:String):void
+		{
+			this._type = value;
 		}
 	}
 }

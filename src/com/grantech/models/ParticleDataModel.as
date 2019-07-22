@@ -61,7 +61,8 @@ package com.grantech.models
 			this.blendFuncSource = 1;
 			this.blendFuncDestination = 1;
 			this.maxParticles = 300;
-			this.texture = File.applicationDirectory.resolvePath("/media/default.png").nativePath;
+			var pathString:String = File.applicationDirectory.nativePath + "/media/default.png";
+			this.texture = File.applicationDirectory.resolvePath(pathString).url;
 		}
 
 		public function get emitterType():int

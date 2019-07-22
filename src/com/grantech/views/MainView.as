@@ -15,7 +15,7 @@ package com.grantech.views
 		static public const NAME:String = "mainView";
 
 		public var scenePanel:ScenePanel;
-		public var leftDock:SidebarPanel;
+		public var rightDock:SidebarPanel;
 
 		public function MainView()
 		{
@@ -40,9 +40,10 @@ package com.grantech.views
 			this.scenePanel.layoutData = new AnchorLayoutData(0,NaN,0,0);
 			this.addChild(scenePanel);
 
-			this.leftDock = new SidebarPanel();
-			this.leftDock.layoutData = new AnchorLayoutData(0,0,0);
-			this.addChild(leftDock);
+			this.rightDock = new SidebarPanel();
+			this.rightDock.layoutData = new AnchorLayoutData(0,0,0);
+			this.rightDock.width = 300;
+			this.addChild(rightDock);
 			
 			this.readjustLayout();
 		}
@@ -54,8 +55,7 @@ package com.grantech.views
 
 		private function readjustLayout():void
 		{
-			this.leftDock.width = stage.stageWidth * 0.4;
-			this.scenePanel.width = stage.stageWidth * 0.6;
+			this.scenePanel.width = stage.stageWidth - 400;
 		}
 	}
 }

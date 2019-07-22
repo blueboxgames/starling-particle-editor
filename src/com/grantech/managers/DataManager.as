@@ -1,5 +1,6 @@
 package com.grantech.managers
 {
+	import com.grantech.models.ImageDataModel;
 	import com.grantech.models.LayerDataModel;
 	import com.grantech.models.ParticleDataModel;
 	import com.grantech.models.ParticleGroupCollectionModel;
@@ -49,6 +50,8 @@ package com.grantech.managers
 	 */
 	public class DataManager extends EventDispatcher implements IFeathersEventDispatcher
 	{
+		public static const PARTICLE_LAYER:String = "particle";
+		public static const IMAGE_LAYER:String = "image";
 		/**
 		 * For sanity check only
 		 */
@@ -145,13 +148,14 @@ package com.grantech.managers
 		/**
 		 * Method to add new layer.
 		 */
-		public function addLayer(name:String=null, x:Number=0, y:Number=0, order:Number=0):void
+		public function addLayer(type:String, name:String=null, x:Number=0, y:Number=0, order:Number=0):void
 		{
 			/**
 			 * Algorithm addLayer:
 			 * if layersCount > maximumLayerCount then
 			 * 	throw range error
 			 * 
+			 * switch case (particle? image?)
 			 * -> create new `model`.
 			 * -> add model to a ListCollection.
 			 * -> incerement layercount.
@@ -162,26 +166,56 @@ package com.grantech.managers
 
 			if(this._layerCount > MAXIMUM_LAYER_COUNT)
 				throw new RangeError("New layer exceedes maximum layer count.");
+			
+			var model:LayerDataModel = new LayerDataModel();
+			model.id = genNewLayerId();
+			model.name = name ? name : "";
+			model.x = x;
+			model.y = y;
+			model.type = type;
+			model.order = _layers.length == 0 ? 0 : this._layers.getItemAt(0).order+1;
 
-			// Create new particle model.
-			var particleModel:ParticleDataModel = new ParticleDataModel();
-			particleModel.id = genNewLayerId();
-			particleModel.name = name ? name : "";
-			particleModel.x = x;
-			particleModel.y = y;
-			particleModel.order = _layers.length == 0 ? 0 : this._layers.getItemAt(0).order+1;
-
-			// Add model to list.
-			this.layers.addItemAt(particleModel, this.currentLayerIndex+1);
-			// Increment layer count.
-			this._layerCount += 1;
-			this._layers.updateAll();
-			this._inspectorGroup.updateAll();
-			// Dispatch Event.
-			DataManager.instance.dispatchEventWith(Event.ADDED, false, particleModel);
-
+			if (type == PARTICLE_LAYER)
+			{
+				// Create new particle model.
+				var pModel:ParticleDataModel = new ParticleDataModel();
+				pModel.id = model.id;
+				pModel.name = model.name;
+				pModel.x = model.x;
+				pModel.y = model.y;
+				pModel.order = model.order;
+				pModel.type = model.type;
+				// Add model to list.
+				this.layers.addItemAt(pModel, this.currentLayerIndex+1);
+				// Increment layer count.
+				this._layerCount += 1;
+				this._layers.updateAll();
+				this._inspectorGroup.updateAll();
+				// Dispatch Event.
+				
+				DataManager.instance.dispatchEventWith(Event.ADDED, false, { particle: pModel });
+			}
+			else if (type == IMAGE_LAYER)
+			{
+				var iModel:ImageDataModel = new ImageDataModel();
+				iModel.id = model.id;
+				iModel.name = model.name;
+				iModel.x = model.x;
+				iModel.y = model.y;
+				iModel.order = model.order;
+				iModel.type = model.type;
+				// Add model to list.	
+				this.layers.addItemAt(iModel, this.currentLayerIndex+1);
+				// Increment layer count.
+				this._layerCount += 1;
+				this._layers.updateAll();
+				this._inspectorGroup.updateAll();
+				// Dispatch Event.
+				
+				DataManager.instance.dispatchEventWith(Event.ADDED, false, { image: iModel });
+			}
 			// Call to select layer.
-			this.selectLayer(particleModel);
+			this.selectLayerAt(this.currentLayerIndex+1);
 		}
 
 		/**

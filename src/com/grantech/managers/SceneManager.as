@@ -13,12 +13,27 @@ package com.grantech.managers
 	import starling.events.EventDispatcher;
 	import starling.extensions.PDParticleSystem;
 	import starling.textures.Texture;
+	import starling.display.Image;
 
+	/**
+	 * Dispatched when a new `DisplayObject` is added to `SceneManager`.
+	 * @eventType starling.events.Event.ADDED
+	 */
+	[Event(name="added",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when a `DisplayObject` is changed.
+	 * @eventType starling.events.Event.CHANGE
+	 */
+	[Event(name="change",type="starling.events.Event")]
 	public class SceneManager extends EventDispatcher implements IFeathersEventDispatcher
 	{
 		/**
 		 * @private Variable which contains SceneManager singleton.
 		 */
+		public static const TYPE_PARTCILE:String = "particle";
+		public static const TYPE_IMAGE:String = "image";
+
 		private static var _instance:SceneManager;
 		private var _currentID:int;
 
@@ -30,27 +45,36 @@ package com.grantech.managers
 		}
 
 		// TODO: Write a better data structure than dictionary with remove ability.
-		private var _sprites:Dictionary;
+		private var _images:Dictionary;
 		private var _particleSystems:Dictionary;
 
-		public function addSprite(id:int, sprite:Sprite):void
+		public function addImage(id:int, image:Image):void
 		{
-			this._sprites[id] = sprite;
+			if(this._images[id] != null)
+				return;
+			
+			this._images[id] = image;
+			this.dispatchEventWith(Event.ADDED, false, {id: id, type: TYPE_IMAGE});
 		}
 
-		public function getSprite(id:int):Sprite
+		public function getImage(id:int):Image
 		{
-			return this._sprites[id];
+			return this._images[id];
 		}
 
-		public function removeSprite(id:int):void
+		public function removeImage(id:int):void
 		{
-			this._sprites[id] = null;
+			this._images[id] = null;
 		}
 
+		// [Event(name="added",type="starling.events.Event")]
 		public function addParticleSystem(id:int, particleSystem:PDParticleSystem):void
 		{
+			if(this._particleSystems[id] != null)
+				return;
+			
 			this._particleSystems[id] = particleSystem;
+			this.dispatchEventWith(Event.ADDED, false, {id: id, type: TYPE_PARTCILE});
 		}
 
 		public function getParticleSystem(id:int):PDParticleSystem
@@ -97,7 +121,7 @@ package com.grantech.managers
 		public function SceneManager()
 		{
 			super();
-			this._sprites = new Dictionary();
+			this._images = new Dictionary();
 			this._particleSystems = new Dictionary();
 		}
 	}

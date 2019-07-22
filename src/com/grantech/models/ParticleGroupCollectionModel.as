@@ -18,93 +18,93 @@ package com.grantech.models
 					{
 						header: "Image",
 						children: [
-							{key: "texture", text: "Texture", value: particleData.texture}
+							{key: "texture", label: "Texture", value: particleData.texture}
 						]
 					},
 					{
 						header: "Position", 
 						children: [
-							{key: "x", text: "X", value:particleData.x},
-							{key: "y", text: "Y", value:particleData.y}
+							{key: "x", label: "X", value:particleData.x},
+							{key: "y", label: "Y", value:particleData.y}
 						]
 					},
 					{
 						header: "Emitter",
 						children: [
-							{key: "emitterType", text: "Type", value: particleData.emitterType},
-							{key: "sourcePositionVariancex", text: "X Variance", value: particleData.sourcePositionVariancex},
-							{key: "sourcePositionVariancey", text: "Y Variance", value: particleData.sourcePositionVariancey},
+							{key: "emitterType", label: "Type", value: particleData.emitterType},
+							{key: "sourcePositionVariancex", label: "X Variance", value: particleData.sourcePositionVariancex},
+							{key: "sourcePositionVariancey", label: "Y Variance", value: particleData.sourcePositionVariancey},
 						]
 					},
 					{
 						header: "Colors",
 						children: [
-							{key: "startColor", text: "Start Color", value: particleData.startColor},
-							{key: "startColorVariance", text: "Start Color Variance", value: particleData.startColorVariance},
-							{key: "finishColor", text: "End Color", value: particleData.finishColor},
-							{key: "finishColorVariance", text: "End Color Variance", value: particleData.finishColorVariance}
+							{key: "startColor", label: "Start Color", value: particleData.startColor},
+							{key: "startColorVariance", label: "Start Color Variance", value: particleData.startColorVariance},
+							{key: "finishColor", label: "End Color", value: particleData.finishColor},
+							{key: "finishColorVariance", label: "End Color Variance", value: particleData.finishColorVariance}
 						]
 					},
 					{
 						header: "Blending",
 						children: [
-							{key: "blendFuncSource", text: "Start", value: particleData.blendFuncSource},
-							{key: "blendFuncDestination", text: "End", value: particleData.blendFuncDestination}
+							{key: "blendFuncSource", label: "Start", value: particleData.blendFuncSource},
+							{key: "blendFuncDestination", label: "End", value: particleData.blendFuncDestination}
 						]
 					},
 					{
 						header: "Gravity",
 						children: [
-							{key: "gravityx", text: "X Gravity", value: particleData.gravityx},
-							{key: "gravityy", text: "Y Gravity", value: particleData.gravityy}
+							{key: "gravityx", label: "X Gravity", value: particleData.gravityx},
+							{key: "gravityy", label: "Y Gravity", value: particleData.gravityy}
 						]
 					},
 					{
 						header: "Lifetime",
 						children: [
-							{key: "particleLifespan", text: "Lifespan", value: particleData.particleLifespan},
-							{key: "particleLifespanVariance", text: "Lifespan Variance", value: particleData.particleLifespanVariance}
+							{key: "particleLifespan", label: "Lifespan", value: particleData.particleLifespan},
+							{key: "particleLifespanVariance", label: "Lifespan Variance", value: particleData.particleLifespanVariance}
 						]
 					},
 					{
 						header: "Size",
 						children: [
-							{key: "startParticleSize", text: "Start", value: particleData.startParticleSize},
-							{key: "startParticleSizeVariance", text: "Start Variance", value: particleData.startParticleSizeVariance},
-							{key: "finishParticleSize", text: "End", value: particleData.finishParticleSize},
-							{key: "finishParticleSizeVariance", text: "End Variance", value: particleData.finishParticleSizeVariance},
+							{key: "startParticleSize", label: "Start", value: particleData.startParticleSize},
+							{key: "startParticleSizeVariance", label: "Start Variance", value: particleData.startParticleSizeVariance},
+							{key: "finishParticleSize", label: "End", value: particleData.finishParticleSize},
+							{key: "finishParticleSizeVariance", label: "End Variance", value: particleData.finishParticleSizeVariance},
 						]
 					},
 					{
 						header: "Angle",
 						children: [
-							{key: "angle", text: "Angle", value: particleData.angle},
-							{key: "angleVariance", text: "Angle Variance", value: particleData.angleVariance},
+							{key: "angle", label: "Angle", value: particleData.angle},
+							{key: "angleVariance", label: "Angle Variance", value: particleData.angleVariance},
 						]
 					},
 					{
 						header: "Rotation",
 						children: [
-							{key: "rotationStart", text: "Start", value: particleData.rotationStart},
-							{key: "rotationStartVariance", text: "Start Variance", value: particleData.rotationStartVariance},
-							{key: "rotationEnd", text: "End", value: particleData.rotationEnd},
-							{key: "rotationEndVariance", text: "End Variance", value: particleData.rotationEndVariance},
+							{key: "rotationStart", label: "Start", value: particleData.rotationStart},
+							{key: "rotationStartVariance", label: "Start Variance", value: particleData.rotationStartVariance},
+							{key: "rotationEnd", label: "End", value: particleData.rotationEnd},
+							{key: "rotationEndVariance", label: "End Variance", value: particleData.rotationEndVariance},
 						]
 					},
 					{
 						header: "Speed",
 						children: [
-							{key: "speed", text: "Speed", value: particleData.speed},
-							{key: "speedVariance", text: "Speed Variance", value: particleData.speedVariance},
+							{key: "speed", label: "Speed", value: particleData.speed},
+							{key: "speedVariance", label: "Speed Variance", value: particleData.speedVariance},
 						]
 					},
 					{
 						header: "Acceleration",
 						children: [
-							{key: "radialAcceleration", text: "Radial", value: particleData.radialAcceleration},
-							{key: "radialAccelVariance", text: "Radial Variance", value: particleData.radialAccelVariance},
-							{key: "tangentialAcceleration", text: "Tangential", value: particleData.tangentialAcceleration},
-							{key: "tangentialAccelVariance", text: "Tangential Variance", value: particleData.tangentialAccelVariance},
+							{key: "radialAcceleration", label: "Radial", value: particleData.radialAcceleration},
+							{key: "radialAccelVariance", label: "Radial Variance", value: particleData.radialAccelVariance},
+							{key: "tangentialAcceleration", label: "Tangential", value: particleData.tangentialAcceleration},
+							{key: "tangentialAccelVariance", label: "Tangential Variance", value: particleData.tangentialAccelVariance},
 						]
 					},
 				]
