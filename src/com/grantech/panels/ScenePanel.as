@@ -144,7 +144,7 @@ package com.grantech.panels
 				particleSystem.blendFuncDestination = ParticleDataModel.getBlendFunc(model.blendFuncDestination);
 				
 				SceneManager.instance.addParticleSystem(model.id, particleSystem);
-			});	
+			});
 		}
 	}
 }

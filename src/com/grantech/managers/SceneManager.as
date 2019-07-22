@@ -5,7 +5,7 @@ package com.grantech.managers
 	import flash.display.Bitmap;
 	import flash.display.Loader;
 	import flash.display.LoaderInfo;
-	import flash.events.Event;
+	import starling.events.Event;
 	import flash.net.URLRequest;
 	import flash.utils.Dictionary;
 
@@ -14,6 +14,7 @@ package com.grantech.managers
 	import starling.extensions.PDParticleSystem;
 	import starling.textures.Texture;
 	import starling.display.Image;
+	import com.grantech.models.ParticleDataModel;
 
 	/**
 	 * Dispatched when a new `DisplayObject` is added to `SceneManager`.
@@ -85,20 +86,35 @@ package com.grantech.managers
 		public function changeParticleSystem(id:int, key:String, value:*):void
 		{
 			this._currentID = id;
+			if(key == "id")
+				return;
+
 			if(key == "texture")
 			{
-				var loader:Loader = new Loader();
-				loader.contentLoaderInfo.addEventListener(Event.COMPLETE, textureLoader_completeHandler);
-				try {
-					loader.load(new URLRequest(value));
-				}
-				catch(e:Error)
+				var texture:Texture = AssetManager.instance.getTexture(value);
+				if(texture == null)
 				{
-					this._particleSystems[id].texture = null;
+					AssetManager.instance.load(value);
+					AssetManager.instance.addEventListener(Event.COMPLETE, function():void
+					{
+						texture = AssetManager.instance.getTexture(value);
+						this._particleSystems[id].texture = texture;
+					});
 				}
-				return;
+				else
+				{
+					this._particleSystems[id].texture = texture;
+				}
 			}
-			this._particleSystems[id][key] = value;
+			else if(key == "blendFuncSource" || key == "blendFuncDestination")
+			{
+				this._particleSystems[id][key] =  ParticleDataModel.getBlendFunc(value);
+			}
+			else
+			{
+				this._particleSystems[id][key] = value;
+			}
+			this.dispatchEventWith(Event.CHANGE, false, {id: id, type: TYPE_PARTCILE, key: key, value: value});
 		}
 
 		public function removeParticleSystem(id:int):void
@@ -118,11 +134,41 @@ package com.grantech.managers
 			this._particleSystems[this._currentID].texture = Texture.fromBitmap(bitmap) ;
 		}
 
+		protected function dataManager_changeHandler(event:Event):void
+		{
+			if(DataManager.instance.layerAt(DataManager.instance.currentLayerIndex) == null)
+				return;
+			
+			var id:int;
+			var key:String;
+			var value:*;
+			if(DataManager.instance.layerAt(DataManager.instance.currentLayerIndex).type == DataManager.PARTICLE_LAYER)
+			{
+				id = DataManager.instance.layerAt(DataManager.instance.currentLayerIndex).id;
+				key = event.data.key as String;
+				value = event.data.value;
+				changeParticleSystem(id, key, value);
+			}
+			if(DataManager.instance.layerAt(DataManager.instance.currentLayerIndex).type == DataManager.IMAGE_LAYER)
+			{
+				id = DataManager.instance.layerAt(DataManager.instance.currentLayerIndex).id;
+				key = event.data.key as String;
+				value = event.data.value;
+				// changeImage(id, key, value);
+			}
+		}
+
 		public function SceneManager()
 		{
 			super();
 			this._images = new Dictionary();
 			this._particleSystems = new Dictionary();
+			DataManager.instance.addEventListener(Event.CHANGE, dataManager_changeHandler);
+		}
+
+		public function dispose():void{
+			DataManager.instance.removeEventListener(Event.CHANGE, dataManager_changeHandler);
+			_instance = null;
 		}
 	}
 }

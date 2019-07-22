@@ -71,6 +71,13 @@ package com.grantech.managers
 				return _instance;
 		}
 
+		private var _layerGroup:ParticleGroupCollectionModel;
+		
+		public function get layerGroup():ParticleGroupCollectionModel
+		{
+			return _layerGroup;
+		}
+
 		/**
 		 * @private Variable which contains current layer index.
 		 */
@@ -104,7 +111,6 @@ package com.grantech.managers
 
 			if(this._currentLayerIndex > -1)
 			{
-				var layerGroup:ParticleGroupCollectionModel = new ParticleGroupCollectionModel(itemAtCurrent as ParticleDataModel);
 				this._inspectorGroup.arrayData = layerGroup.groupModel.arrayData;
 			}
 			this.inspector.updateAll();
@@ -192,7 +198,6 @@ package com.grantech.managers
 				this._layers.updateAll();
 				this._inspectorGroup.updateAll();
 				// Dispatch Event.
-				
 				DataManager.instance.dispatchEventWith(Event.ADDED, false, { particle: pModel });
 			}
 			else if (type == IMAGE_LAYER)
@@ -366,6 +371,7 @@ package com.grantech.managers
 			this._layerCount = 0;
 			this._currentLayerIndex = -1;
 			this._layers = new ListCollection();
+			this._layerGroup = new ParticleGroupCollectionModel();
 			this._inspectorGroup = new ArrayHierarchicalCollection();
 
 			this._layers.sortCompareFunction = orderFunction;

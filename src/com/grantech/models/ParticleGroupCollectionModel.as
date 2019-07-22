@@ -1,6 +1,7 @@
 package com.grantech.models
 {
 	import feathers.data.ArrayHierarchicalCollection;
+	import com.grantech.managers.DataManager;
 
 	public class ParticleGroupCollectionModel
 	{
@@ -8,107 +9,105 @@ package com.grantech.models
 
 		public function get groupModel():ArrayHierarchicalCollection
 		{
-			return this._groupModel;
-		}
-
-		public function ParticleGroupCollectionModel(particleData:ParticleDataModel)
-		{
-			this._groupModel = new ArrayHierarchicalCollection(
+			return new ArrayHierarchicalCollection(
 				[
 					{
 						header: "Image",
 						children: [
-							{key: "texture", label: "Texture", value: particleData.texture}
+							{key: "texture", label: "Texture", value:  DataManager.instance.layerAt(DataManager.instance.currentLayerIndex).texture}
 						]
 					},
 					{
 						header: "Position", 
 						children: [
-							{key: "x", label: "X", value:particleData.x},
-							{key: "y", label: "Y", value:particleData.y}
+							{key: "x", label: "X", value: DataManager.instance.layerAt(DataManager.instance.currentLayerIndex).x},
+							{key: "y", label: "Y", value: DataManager.instance.layerAt(DataManager.instance.currentLayerIndex).y}
 						]
 					},
 					{
 						header: "Emitter",
 						children: [
-							{key: "emitterType", label: "Type", value: particleData.emitterType},
-							{key: "sourcePositionVariancex", label: "X Variance", value: particleData.sourcePositionVariancex},
-							{key: "sourcePositionVariancey", label: "Y Variance", value: particleData.sourcePositionVariancey},
+							{key: "emitterType", label: "Type", value:  DataManager.instance.layerAt(DataManager.instance.currentLayerIndex).emitterType},
+							{key: "sourcePositionVariancex", label: "X Variance", value:  DataManager.instance.layerAt(DataManager.instance.currentLayerIndex).sourcePositionVariancex},
+							{key: "sourcePositionVariancey", label: "Y Variance", value:  DataManager.instance.layerAt(DataManager.instance.currentLayerIndex).sourcePositionVariancey},
 						]
 					},
 					{
 						header: "Colors",
 						children: [
-							{key: "startColor", label: "Start Color", value: particleData.startColor},
-							{key: "startColorVariance", label: "Start Color Variance", value: particleData.startColorVariance},
-							{key: "finishColor", label: "End Color", value: particleData.finishColor},
-							{key: "finishColorVariance", label: "End Color Variance", value: particleData.finishColorVariance}
+							{key: "startColor", label: "Start Color", value:  DataManager.instance.layerAt(DataManager.instance.currentLayerIndex).startColor},
+							{key: "startColorVariance", label: "Start Color Variance", value:  DataManager.instance.layerAt(DataManager.instance.currentLayerIndex).startColorVariance},
+							{key: "finishColor", label: "End Color", value:  DataManager.instance.layerAt(DataManager.instance.currentLayerIndex).finishColor},
+							{key: "finishColorVariance", label: "End Color Variance", value:  DataManager.instance.layerAt(DataManager.instance.currentLayerIndex).finishColorVariance}
 						]
 					},
 					{
 						header: "Blending",
 						children: [
-							{key: "blendFuncSource", label: "Start", value: particleData.blendFuncSource},
-							{key: "blendFuncDestination", label: "End", value: particleData.blendFuncDestination}
+							{key: "blendFuncSource", label: "Start", value:  DataManager.instance.layerAt(DataManager.instance.currentLayerIndex).blendFuncSource},
+							{key: "blendFuncDestination", label: "End", value:  DataManager.instance.layerAt(DataManager.instance.currentLayerIndex).blendFuncDestination}
 						]
 					},
 					{
 						header: "Gravity",
 						children: [
-							{key: "gravityx", label: "X Gravity", value: particleData.gravityx},
-							{key: "gravityy", label: "Y Gravity", value: particleData.gravityy}
+							{key: "gravityx", label: "X Gravity", value:  DataManager.instance.layerAt(DataManager.instance.currentLayerIndex).gravityx},
+							{key: "gravityy", label: "Y Gravity", value:  DataManager.instance.layerAt(DataManager.instance.currentLayerIndex).gravityy}
 						]
 					},
 					{
 						header: "Lifetime",
 						children: [
-							{key: "particleLifespan", label: "Lifespan", value: particleData.particleLifespan},
-							{key: "particleLifespanVariance", label: "Lifespan Variance", value: particleData.particleLifespanVariance}
+							{key: "particleLifespan", label: "Lifespan", value:  DataManager.instance.layerAt(DataManager.instance.currentLayerIndex).particleLifespan},
+							{key: "particleLifespanVariance", label: "Lifespan Variance", value:  DataManager.instance.layerAt(DataManager.instance.currentLayerIndex).particleLifespanVariance}
 						]
 					},
 					{
 						header: "Size",
 						children: [
-							{key: "startParticleSize", label: "Start", value: particleData.startParticleSize},
-							{key: "startParticleSizeVariance", label: "Start Variance", value: particleData.startParticleSizeVariance},
-							{key: "finishParticleSize", label: "End", value: particleData.finishParticleSize},
-							{key: "finishParticleSizeVariance", label: "End Variance", value: particleData.finishParticleSizeVariance},
+							{key: "startParticleSize", label: "Start", value:  DataManager.instance.layerAt(DataManager.instance.currentLayerIndex).startParticleSize},
+							{key: "startParticleSizeVariance", label: "Start Variance", value:  DataManager.instance.layerAt(DataManager.instance.currentLayerIndex).startParticleSizeVariance},
+							{key: "finishParticleSize", label: "End", value:  DataManager.instance.layerAt(DataManager.instance.currentLayerIndex).finishParticleSize},
+							{key: "finishParticleSizeVariance", label: "End Variance", value:  DataManager.instance.layerAt(DataManager.instance.currentLayerIndex).finishParticleSizeVariance},
 						]
 					},
 					{
 						header: "Angle",
 						children: [
-							{key: "angle", label: "Angle", value: particleData.angle},
-							{key: "angleVariance", label: "Angle Variance", value: particleData.angleVariance},
+							{key: "angle", label: "Angle", value:  DataManager.instance.layerAt(DataManager.instance.currentLayerIndex).angle},
+							{key: "angleVariance", label: "Angle Variance", value:  DataManager.instance.layerAt(DataManager.instance.currentLayerIndex).angleVariance},
 						]
 					},
 					{
 						header: "Rotation",
 						children: [
-							{key: "rotationStart", label: "Start", value: particleData.rotationStart},
-							{key: "rotationStartVariance", label: "Start Variance", value: particleData.rotationStartVariance},
-							{key: "rotationEnd", label: "End", value: particleData.rotationEnd},
-							{key: "rotationEndVariance", label: "End Variance", value: particleData.rotationEndVariance},
+							{key: "rotationStart", label: "Start", value:  DataManager.instance.layerAt(DataManager.instance.currentLayerIndex).rotationStart},
+							{key: "rotationStartVariance", label: "Start Variance", value:  DataManager.instance.layerAt(DataManager.instance.currentLayerIndex).rotationStartVariance},
+							{key: "rotationEnd", label: "End", value:  DataManager.instance.layerAt(DataManager.instance.currentLayerIndex).rotationEnd},
+							{key: "rotationEndVariance", label: "End Variance", value:  DataManager.instance.layerAt(DataManager.instance.currentLayerIndex).rotationEndVariance},
 						]
 					},
 					{
 						header: "Speed",
 						children: [
-							{key: "speed", label: "Speed", value: particleData.speed},
-							{key: "speedVariance", label: "Speed Variance", value: particleData.speedVariance},
+							{key: "speed", label: "Speed", value:  DataManager.instance.layerAt(DataManager.instance.currentLayerIndex).speed},
+							{key: "speedVariance", label: "Speed Variance", value:  DataManager.instance.layerAt(DataManager.instance.currentLayerIndex).speedVariance},
 						]
 					},
 					{
 						header: "Acceleration",
 						children: [
-							{key: "radialAcceleration", label: "Radial", value: particleData.radialAcceleration},
-							{key: "radialAccelVariance", label: "Radial Variance", value: particleData.radialAccelVariance},
-							{key: "tangentialAcceleration", label: "Tangential", value: particleData.tangentialAcceleration},
-							{key: "tangentialAccelVariance", label: "Tangential Variance", value: particleData.tangentialAccelVariance},
+							{key: "radialAcceleration", label: "Radial", value:  DataManager.instance.layerAt(DataManager.instance.currentLayerIndex).radialAcceleration},
+							{key: "radialAccelVariance", label: "Radial Variance", value:  DataManager.instance.layerAt(DataManager.instance.currentLayerIndex).radialAccelVariance},
+							{key: "tangentialAcceleration", label: "Tangential", value:  DataManager.instance.layerAt(DataManager.instance.currentLayerIndex).tangentialAcceleration},
+							{key: "tangentialAccelVariance", label: "Tangential Variance", value:  DataManager.instance.layerAt(DataManager.instance.currentLayerIndex).tangentialAccelVariance},
 						]
 					},
 				]
 			)
 		}
+
+		public function ParticleGroupCollectionModel();
+		{}
 	}
 }

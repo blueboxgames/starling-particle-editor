@@ -157,7 +157,6 @@ package com.grantech.controls.items
 
 			if(this.valueHolderDisplay.numChildren != 0 && this.controlType != ControlsHelper.instance.getType(this.key))
 			{
-				this.valueHolderDisplay.getChildAt(0).removeEventListeners();
 				this.valueHolderDisplay.removeChildren();
 			}
 
@@ -299,18 +298,21 @@ package com.grantech.controls.items
 			if(sliderDisplay == null)
 				return;
 			this.value = this.sliderDisplay.value;
+			this.data.value = this.sliderDisplay.value;
 			DataManager.instance.editCurrentLayerData(this.key, this._value);
 		}
 
 		private function colorPickerDisplay_changeHandler(e:Event):void
 		{
 			this.value = this.colorPickerDisplay.data;
+			this.data.value = this.colorPickerDisplay.data;
 			DataManager.instance.editCurrentLayerData(this.key, this._value);
 		}
 
 		private function dropDownDisplay_changeHandler(e:Event):void
 		{
 			this._value = this.dropDownDisplay.selectedItem.value;
+			this.data.value = this.dropDownDisplay.selectedItem.value;
 			if(this.key == "blendFuncSource")
 				DataManager.instance.editCurrentLayerData("blendFuncSource", this._value);
 			if(this.key == "blendFuncDestination")

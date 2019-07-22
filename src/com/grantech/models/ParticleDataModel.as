@@ -58,8 +58,8 @@ package com.grantech.models
 			this.startColorVariance = new ColorArgb(0,0,0,1);
 			this.finishColor = new ColorArgb(0,0,0,1);
 			this.finishColorVariance = new ColorArgb(0,0,0,1);
-			this.blendFuncSource = 1;
-			this.blendFuncDestination = 1;
+			// this.blendFuncSource = 1;
+			// this.blendFuncDestination = 1;
 			this.maxParticles = 300;
 			var pathString:String = File.applicationDirectory.nativePath + "/media/default.png";
 			this.texture = File.applicationDirectory.resolvePath(pathString).url;
