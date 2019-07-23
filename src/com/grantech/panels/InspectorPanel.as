@@ -33,7 +33,7 @@ package com.grantech.panels
 
 			this.groupedList = new GroupedList();
 			this.groupedList.layoutData = new AnchorLayoutData(0, 0, 0, 0);
-			this.groupedList.dataProvider = DataManager.instance.inspector;
+			this.groupedList.dataProvider = DataManager.instance.inspectorComponentCollection;
 			this.groupedList.itemRendererFactory = function() : IGroupedListItemRenderer
 			{
 				return new InspectorListItemRenderer();

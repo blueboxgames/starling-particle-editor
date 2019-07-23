@@ -123,7 +123,7 @@ package com.grantech.controls.items
 
 			this.key = this.data.key as String;
 			this.label = this.data.label as String;
-			this._value = this.data.value;
+			this._value = DataManager.instance.layerAt(DataManager.instance.currentLayerIndex).getProperty(this.key);
 			redrawControls();
 		}
 
@@ -304,8 +304,8 @@ package com.grantech.controls.items
 
 		private function colorPickerDisplay_changeHandler(e:Event):void
 		{
-			this.value = this.colorPickerDisplay.data;
 			this.data.value = this.colorPickerDisplay.data;
+			this.value = this.colorPickerDisplay.data;
 			DataManager.instance.editCurrentLayerData(this.key, this._value);
 		}
 

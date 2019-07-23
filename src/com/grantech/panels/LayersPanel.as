@@ -7,8 +7,10 @@ package com.grantech.panels
 	import feathers.controls.Button;
 	import feathers.controls.LayoutGroup;
 	import feathers.controls.List;
+	import feathers.controls.Panel;
 	import feathers.controls.PanelScreen;
 	import feathers.controls.renderers.IListItemRenderer;
+	import feathers.core.PopUpManager;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
 	import feathers.layout.HorizontalLayout;
@@ -17,12 +19,6 @@ package com.grantech.panels
 	import starling.display.Quad;
 	import starling.events.Event;
 	import starling.textures.Texture;
-
-	import com.grantech.models.ParticleDataModel;
-	import starling.display.Sprite;
-	import feathers.core.PopUpManager;
-	import feathers.controls.Panel;
-	import starling.display.DisplayObject;
 
 	public class LayersPanel extends PanelScreen
 	{
@@ -43,6 +39,7 @@ package com.grantech.panels
 		override protected function initialize():void
 		{
 			super.initialize();
+			DataManager.instance.addEventListener(Event.SELECT, dataManager_selectHandler)
 			this.title = Localizations.instance.get("layers_panel_title");
 			this.layout = new AnchorLayout();
 			
@@ -52,7 +49,7 @@ package com.grantech.panels
 			{
 				return new LayerListItemRenderer();
 			}
-			this.listDisplay.dataProvider = DataManager.instance.layers;
+			this.listDisplay.dataProvider = DataManager.instance.layerComponentCollection;
 			this.listDisplay.addEventListener(Event.CHANGE, listDisplay_changeHandler);
 			this.addChild(this.listDisplay);
 			
@@ -169,9 +166,9 @@ package com.grantech.panels
 			//DataManager.instance.removeEventListener(Event.ADDED, dataManager_addedHandler);
 		}
 
-		protected function dataManager_addedHandler(e:Event):void
+		protected function dataManager_selectHandler(e:Event):void
 		{
-			this.listDisplay.selectedIndex = 0;
+			this.listDisplay.selectedIndex = e.data.index;
 		}
 	}
 }

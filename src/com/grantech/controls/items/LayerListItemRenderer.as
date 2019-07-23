@@ -27,6 +27,7 @@ package com.grantech.controls.items
 		private var id:Number;
 		private var layerName:Label;
 		private var ioGroup:ButtonGroup;
+		private var l:Label;
 
 		override protected function initialize():void
 		{
@@ -43,14 +44,18 @@ package com.grantech.controls.items
 			this.layerName = new Label();
 			this.layerName.layoutData = new AnchorLayoutData(2, 0, 2, 4);
 			this.addChild(layerName);
+			
+			this.l = new Label();
+			this.l.layoutData = new AnchorLayoutData(2,0,2,40);
+			this.addChild(l)
 
 			this.ioGroup = new ButtonGroup();
-			this.ioGroup.dataProvider = new ArrayCollection(
-				[
-					{label: "Load", triggered: loadButton_triggeredHandler},
-					{label: "Save", triggered: saveButton_triggeredHandler}
-				]
-			);
+			// this.ioGroup.dataProvider = new ArrayCollection(
+			// 	[
+			// 		{label: "Load", triggered: loadButton_triggeredHandler},
+			// 		{label: "Save", triggered: saveButton_triggeredHandler}
+			// 	]
+			// );
 			this.ioGroup.direction = Direction.HORIZONTAL;
 			this.ioGroup.layoutData = new AnchorLayoutData(2, 4, 2, 200);
 			this.addChild(ioGroup);
@@ -68,8 +73,6 @@ package com.grantech.controls.items
 			// TODO: Should be layer name but now we only can differentiate using id.
 			this.layerName.text = "Id: " + id;
 			this.layerName.invalidate(INVALIDATION_FLAG_DATA);
-
-			// TODO: Don't load and save image layers.
 		}
 
 		override public function set isSelected(value:Boolean):void
@@ -78,37 +81,31 @@ package com.grantech.controls.items
 			this.backgroundSkin = value ? this.backgroundSelectedSkin : this.backgroundDisabledSkin;
 		}
 
-		protected function loadButton_triggeredHandler(event:Event):void
-		{
-			var configFile:File = new File();
-			var configFileExtension:FileFilter = new FileFilter("Data Config", "*.json;*.pex");
-			configFile.browse([configFileExtension]);
-			configFile.addEventListener(Event.SELECT, configFile_selectHandler);
-		}
+		// protected function loadButton_triggeredHandler(event:Event):void
+		// {
+		// 	var configFile:File = new File();
+		// 	var configFileExtension:FileFilter = new FileFilter("Data Config", "*.json;*.pex");
+		// 	configFile.browse([configFileExtension]);
+		// 	configFile.addEventListener(Event.SELECT, configFile_selectHandler);
+		// }
 
-		protected function saveButton_triggeredHandler(event:Event):void
-		{
-			var newFile:FileReference = new FileReference();
-			var particleData:ParticleDataModel = DataManager.instance.layerAt(DataManager.instance.currentLayerIndex) as ParticleDataModel;
-			
-			// TODO: Write IO Error handler when alert popup is written.
-			newFile.save(JSON.stringify(particleData));
-			// TODO: So for now we don't need to listen for our save to complete.
-			// newFile.addEventListener(Event.COMPLETE, function(e:*):void {
-			// 	trace("Complete")
-			// });
-		}
+		// protected function saveButton_triggeredHandler(event:Event):void
+		// {
+		// 	var newFile:FileReference = new FileReference();
+		// 	var particleData:ParticleDataModel = DataManager.instance.layerAt(DataManager.instance.currentLayerIndex) as ParticleDataModel;
+		// 	newFile.save(JSON.stringify(particleData));
+		// }
 
-		protected function configFile_selectHandler(event:*):void
-		{
-			event.currentTarget.load();
-			event.currentTarget.addEventListener(Event.COMPLETE, configFile_completeHandler);
-		}
+		// protected function configFile_selectHandler(event:*):void
+		// {
+		// 	event.currentTarget.load();
+		// 	event.currentTarget.addEventListener(Event.COMPLETE, configFile_completeHandler);
+		// }
 
-		protected function configFile_completeHandler(event:*):void
-		{
-			event.currentTarget.removeEventListener(Event.COMPLETE, configFile_completeHandler);
-			DataManager.instance.editLayerDataFile( event.currentTarget );
-		}
+		// protected function configFile_completeHandler(event:*):void
+		// {
+		// 	event.currentTarget.removeEventListener(Event.COMPLETE, configFile_completeHandler);
+		// 	DataManager.instance.editLayerDataFile( event.currentTarget );
+		// }
 	}
 }

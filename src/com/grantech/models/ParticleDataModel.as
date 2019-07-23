@@ -6,6 +6,8 @@ package com.grantech.models
 	import starling.extensions.ColorArgb;
 	import starling.utils.deg2rad;
 	import starling.utils.rad2deg;
+	import feathers.data.ArrayHierarchicalCollection;
+	import starling.extensions.PDParticleSystem;
 
 	public class ParticleDataModel extends LayerDataModel
 	{
@@ -15,6 +17,106 @@ package com.grantech.models
 		{
 			super();
 			this.initialize();
+		}
+
+		override protected function inspectorStructureFactory():ArrayHierarchicalCollection
+		{
+			return new ArrayHierarchicalCollection(
+				[
+					{
+						header: "Image",
+						children: [
+							{key: "texture", label: "Texture"}
+						]
+					},
+					{
+						header: "Position", 
+						children: [
+							{key: "x", label: "X"},
+							{key: "y", label: "Y"},
+						]
+					},
+					{
+						header: "Emitter",
+						children: [
+							{key: "emitterType", label: "Type"},
+							{key: "sourcePositionVariancex", label: "X Variance"},
+							{key: "sourcePositionVariancey", label: "Y Variance"},
+						]
+					},
+					{
+						header: "Colors",
+						children: [
+							{key: "startColor", label: "Start Color"},
+							{key: "startColorVariance", label: "Start Color Variance"},
+							{key: "finishColor", label: "End Color"},
+							{key: "finishColorVariance", label: "End Color Variance"},
+						]
+					},
+					{
+						header: "Blending",
+						children: [
+							{key: "blendFuncSource", label: "Start"},
+							{key: "blendFuncDestination", label: "End"},
+						]
+					},
+					{
+						header: "Gravity",
+						children: [
+							{key: "gravityx", label: "X Gravity"},
+							{key: "gravityy", label: "Y Gravity"},
+						]
+					},
+					{
+						header: "Lifetime",
+						children: [
+							{key: "particleLifespan", label: "Lifespan"},
+							{key: "particleLifespanVariance", label: "Lifespan Variance"},
+						]
+					},
+					{
+						header: "Size",
+						children: [
+							{key: "startParticleSize", label: "Start"},
+							{key: "startParticleSizeVariance", label: "Start Variance"},
+							{key: "finishParticleSize", label: "End"},
+							{key: "finishParticleSizeVariance", label: "End Variance"},
+						]
+					},
+					{
+						header: "Angle",
+						children: [
+							{key: "angle", label: "Angle"},
+							{key: "angleVariance", label: "Angle Variance"},
+						]
+					},
+					{
+						header: "Rotation",
+						children: [
+							{key: "rotationStart", label: "Start"},
+							{key: "rotationStartVariance", label: "Start Variance"},
+							{key: "rotationEnd", label: "End"},
+							{key: "rotationEndVariance", label: "End Variance"},
+						]
+					},
+					{
+						header: "Speed",
+						children: [
+							{key: "speed", label: "Speed"},
+							{key: "speedVariance", label: "Speed Variance"},
+						]
+					},
+					{
+						header: "Acceleration",
+						children: [
+							{key: "radialAcceleration", label: "Radial"},
+							{key: "radialAccelVariance", label: "Radial Variance"},
+							{key: "tangentialAcceleration", label: "Tangential"},
+							{key: "tangentialAccelVariance", label: "Tangential Variance"},
+						]
+					},
+				]
+			)
 		}
 
 		/**
@@ -46,23 +148,20 @@ package com.grantech.models
 			this.radialAccelVariance = 0;
 			this.tangentialAcceleration = 0;
 			this.tangentialAccelVariance = 0;
-			// Radial Emitter
 			this.maxRadius = 0;
 			this.maxRadiusVariance = 0;
 			this.minRadius = 0;
 			this.minRadiusVariance = 0;
 			this.rotatePerSecond = 0;
 			this.rotatePerSecondVariance = 0;
-			/**? Colors */
 			this.startColor = new ColorArgb(0.4,0,0,1);
 			this.startColorVariance = new ColorArgb(0,0,0,1);
 			this.finishColor = new ColorArgb(0,0,0,1);
 			this.finishColorVariance = new ColorArgb(0,0,0,1);
-			// this.blendFuncSource = 1;
-			// this.blendFuncDestination = 1;
+			this.blendFuncSource = 1;
+			this.blendFuncDestination = 1;
 			this.maxParticles = 300;
-			var pathString:String = File.applicationDirectory.nativePath + "/media/default.png";
-			this.texture = File.applicationDirectory.resolvePath(pathString).url;
+			this.texture = File.applicationDirectory.resolvePath(File.applicationDirectory.nativePath + "/media/default.png").url;
 		}
 
 		public function get emitterType():int
@@ -628,13 +727,67 @@ package com.grantech.models
 			this._texture = value;
 		}
 
+		public function get jsonOutput():Object
+		{
+			return {
+				emitterType: this.emitterType,
+				duration: this.duration,
+				sourcePositionVariancex: this.sourcePositionVariancex,
+				sourcePositionVariancey: this.sourcePositionVariancey,
+				gravityx: this.gravityx,
+				gravityy: this.gravityy,
+				particleLifespan: this.particleLifespan,
+				particleLifespanVariance: this.particleLifespanVariance,
+				startParticleSize: this.startParticleSize,
+				startParticleSizeVariance: this.startParticleSizeVariance,
+				finishParticleSize: this.finishParticleSize,
+				finishParticleSizeVariance: this.finishParticleSizeVariance,
+				angle: this.angle,
+				angleVariance: this.angleVariance,
+				rotationStart: this.rotationStart,
+				rotationStartVariance: this.rotationStartVariance,
+				rotationEnd: this.rotationEnd,
+				rotationEndVariance: this.rotationEndVariance,
+				speed: this.speed,
+				speedVariance: this.speedVariance,
+				radialAcceleration: this.radialAcceleration,
+				radialAccelVariance: this.radialAccelVariance,
+				tangentialAcceleration: this.tangentialAcceleration,
+				tangentialAccelVariance: this.tangentialAccelVariance,
+				maxRadius: this.maxRadius,
+				maxRadiusVariance: this.maxRadiusVariance,
+				minRadius: this.minRadius,
+				minRadiusVariance: this.minRadiusVariance,
+				rotatePerSecond: this.rotatePerSecond,
+				rotatePerSecondVariance: this.rotatePerSecondVariance,
+				startColorRed: this.startColorRed,
+				startColorBlue: this.startColorBlue,
+				startColorGreen: this.startColorGreen,
+				startColorAlpha: this.startColorAlpha,
+				startColorVarianceRed: this.startColorVarianceRed,
+				startColorVarianceBlue: this.startColorVarianceBlue,
+				startColorVarianceGreen: this.startColorVarianceGreen,
+				startColorVarianceAlpha: this.startColorVarianceAlpha,
+				finishColorRed: this.finishColorRed,
+				finishColorBlue: this.finishColorBlue,
+				finishColorGreen: this.finishColorGreen,
+				finishColorAlpha: this.finishColorAlpha,
+				finishColorVarianceRed: this.finishColorVarianceRed,
+				finishColorVarianceBlue: this.finishColorVarianceBlue,
+				finishColorVarianceGreen: this.finishColorVarianceGreen,
+				finishColorVarianceAlpha: this.finishColorVarianceAlpha,
+				blendFuncSource: this.blendFuncSource,
+				blendFuncDestination: this.blendFuncDestination,
+				maxParticles: this.maxParticles
+			}
+		}
+
 		public function parseDataFromFile(value:File):void
 		{
-			// var extension:String = value.extension;
 			parseJsonConfig(value.data.readUTFBytes(value.data.length));
 		}
 
-		private function parseJsonConfig(xconfig:String):void 
+		protected function parseJsonConfig(xconfig:String):void 
 		{
 			var config:Object = JSON.parse(xconfig)
 			this.sourcePositionVariancex = config.sourcePositionVariancex;
@@ -696,22 +849,5 @@ package com.grantech.models
 				default:    throw new ArgumentError("unsupported blending function: " + value);
 			}
 		}
-		// private function convertBlendFunc(value:String):int
-		// {
-		// 	switch (value)
-		// 	{
-		// 		case Context3DBlendFactor.ZERO: return 0;
-		// 		case Context3DBlendFactor.ONE: return 1;
-		// 		case Context3DBlendFactor.SOURCE_COLOR: return 0x300;
-		// 		case Context3DBlendFactor.ONE_MINUS_SOURCE_COLOR: return 0x301;
-		// 		case Context3DBlendFactor.SOURCE_ALPHA: return 0x302;
-		// 		case Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA: return 0x303;
-		// 		case Context3DBlendFactor.DESTINATION_ALPHA: return 0x304;
-		// 		case Context3DBlendFactor.ONE_MINUS_DESTINATION_ALPHA: return 0x305;
-		// 		case Context3DBlendFactor.DESTINATION_COLOR: return 0x306;
-		// 		case Context3DBlendFactor.ONE_MINUS_DESTINATION_COLOR: return 0x307;
-		// 		default:    throw new ArgumentError("unsupported blending function: " + value);
-		// 	}
-		// }
 	}
 }

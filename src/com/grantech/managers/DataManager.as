@@ -3,7 +3,6 @@ package com.grantech.managers
 	import com.grantech.models.ImageDataModel;
 	import com.grantech.models.LayerDataModel;
 	import com.grantech.models.ParticleDataModel;
-	import com.grantech.models.ParticleGroupCollectionModel;
 
 	import feathers.core.IFeathersEventDispatcher;
 	import feathers.data.ArrayHierarchicalCollection;
@@ -53,10 +52,6 @@ package com.grantech.managers
 		public static const PARTICLE_LAYER:String = "particle";
 		public static const IMAGE_LAYER:String = "image";
 		/**
-		 * For sanity check only
-		 */
-		public const MAXIMUM_LAYER_COUNT:int = 100;
-		/**
 		 * @private Variable which contains DataManager singleton.
 		 */
 		private static var _instance:DataManager;
@@ -70,14 +65,7 @@ package com.grantech.managers
 				_instance = new DataManager();
 				return _instance;
 		}
-
-		private var _layerGroup:ParticleGroupCollectionModel;
 		
-		public function get layerGroup():ParticleGroupCollectionModel
-		{
-			return _layerGroup;
-		}
-
 		/**
 		 * @private Variable which contains current layer index.
 		 */
@@ -96,24 +84,20 @@ package com.grantech.managers
 		 */
 		public function set currentLayerIndex(index:int):void
 		{
-			if( this._currentLayerIndex == index )
-				return;
-
 			// New selected layer causes removing all inspector items.
-			this.inspector.removeAll();
 
 			// Index range is out of range. _currentLayerIndex range: [-1, int.MAX_VALUE]
 			if(index < -1)
 				return;
 
 			this._currentLayerIndex = index;
-			var itemAtCurrent:Object = layers.getItemAt(index);
+			var itemAtCurrent:Object = layerComponentCollection.getItemAt(index);
 
 			if(this._currentLayerIndex > -1)
 			{
-				this._inspectorGroup.arrayData = layerGroup.groupModel.arrayData;
+				this._inspectorComponentCollection.arrayData = itemAtCurrent.propertiesCollection.arrayData;
 			}
-			this.inspector.updateAll();
+			this.inspectorComponentCollection.updateAll();
 		}
 
 		private var _layerCount:int;
@@ -128,20 +112,7 @@ package com.grantech.managers
 		 */
 		public function layerAt(index:int):Object
 		{
-			return layers.getItemAt(index);
-		}
-
-		/**
-		 * @private Layers ListCollection data structure.
-		 */
-		private var _layers:ListCollection;
-
-		/**
-		 * Available layers data structure.
-		 */
-		public function get layers():ListCollection
-		{
-			return _layers;
+			return layerComponentCollection.getItemAt(index);
 		}
 
 		private var _idHolder:int;
@@ -158,9 +129,6 @@ package com.grantech.managers
 		{
 			/**
 			 * Algorithm addLayer:
-			 * if layersCount > maximumLayerCount then
-			 * 	throw range error
-			 * 
 			 * switch case (particle? image?)
 			 * -> create new `model`.
 			 * -> add model to a ListCollection.
@@ -169,9 +137,6 @@ package com.grantech.managers
 			 * 
 			 * Call -> selectLayer(model)
 			 */
-
-			if(this._layerCount > MAXIMUM_LAYER_COUNT)
-				throw new RangeError("New layer exceedes maximum layer count.");
 			
 			var model:LayerDataModel = new LayerDataModel();
 			model.id = genNewLayerId();
@@ -179,7 +144,7 @@ package com.grantech.managers
 			model.x = x;
 			model.y = y;
 			model.type = type;
-			model.order = _layers.length == 0 ? 0 : this._layers.getItemAt(0).order+1;
+			model.order = _layerComponentCollection.length == 0 ? 0 : this._layerComponentCollection.getItemAt(0).order+1;
 
 			if (type == PARTICLE_LAYER)
 			{
@@ -192,11 +157,12 @@ package com.grantech.managers
 				pModel.order = model.order;
 				pModel.type = model.type;
 				// Add model to list.
-				this.layers.addItemAt(pModel, this.currentLayerIndex+1);
+				this.layerComponentCollection.addItemAt(pModel, 0);
 				// Increment layer count.
+				this._currentLayerIndex += 1;
 				this._layerCount += 1;
-				this._layers.updateAll();
-				this._inspectorGroup.updateAll();
+				this._layerComponentCollection.updateAll();
+				this._inspectorComponentCollection.updateAll();
 				// Dispatch Event.
 				DataManager.instance.dispatchEventWith(Event.ADDED, false, { particle: pModel });
 			}
@@ -210,17 +176,19 @@ package com.grantech.managers
 				iModel.order = model.order;
 				iModel.type = model.type;
 				// Add model to list.	
-				this.layers.addItemAt(iModel, this.currentLayerIndex+1);
+				this.layerComponentCollection.addItemAt(iModel, this.currentLayerIndex+1);
 				// Increment layer count.
 				this._layerCount += 1;
-				this._layers.updateAll();
-				this._inspectorGroup.updateAll();
+				this._currentLayerIndex += 1;
+				this._layerComponentCollection.updateAll();
+				this._inspectorComponentCollection.updateAll();
 				// Dispatch Event.
 				
 				DataManager.instance.dispatchEventWith(Event.ADDED, false, { image: iModel });
 			}
 			// Call to select layer.
-			this.selectLayerAt(this.currentLayerIndex+1);
+			this.currentLayerIndex = 0;
+			this.selectLayerAt(this.currentLayerIndex);
 		}
 
 		/**
@@ -233,7 +201,7 @@ package com.grantech.managers
 			 * -> get index of model.
 			 * Call -> selectLayerAt(index)
 			 */
-			var index:int = this.layers.getItemIndex(model);
+			var index:int = this.layerComponentCollection.getItemIndex(model);
 			this.selectLayerAt(index);
 		}
 
@@ -250,8 +218,6 @@ package com.grantech.managers
 			 * Set -> currentLayerIndex to new index
 			 * Event -> SELECT, currentLayerIndex
 			 */
-			if (this.currentLayerIndex == index || index < 0 )
-				return;
 			this.currentLayerIndex = index;
 			DataManager.instance.dispatchEventWith(Event.SELECT, false, { index: index } );
 		}
@@ -261,7 +227,7 @@ package com.grantech.managers
 		 */
 		public function removeLayer(layer:Object):void
 		{
-			var index:int = this.layers.getItemIndex(layer);
+			var index:int = this.layerComponentCollection.getItemIndex(layer);
 			this.removeLayerAt(index);
 		}
 
@@ -272,9 +238,10 @@ package com.grantech.managers
 		{
 			if (this.layerCount == 0)
 				return;
-
+			
 			DataManager.instance.dispatchEventWith(Event.REMOVED, true, { index: index });
-			this.layers.removeItemAt(index);
+			this.inspectorComponentCollection.removeAll();
+			this.layerComponentCollection.removeItemAt(index);
 			this._layerCount -= 1;
 			// Must handle this at both list and it's collection.
 			if(index >= 0)
@@ -286,27 +253,20 @@ package com.grantech.managers
 		public function editCurrentLayerData(key:String, value:*):void
 		{
 			layerAt(this.currentLayerIndex).setProperty(key, value);
-			//trace(JSON.stringify(layerAt(this.currentLayerIndex)));
-			// DataManager.instance.dispatchEventWith(Event.CHANGE, false, { key: key, value: value });
 		}
 
-		/**
-		 * @private Inspector ListCollection data structure. 
-		 */
-		private var _inspector:ListCollection;
-
-		/**
-		 * @private Inspector Hierarircial Collection.
-		 */
-		private var _inspectorGroup:ArrayHierarchicalCollection;
-
-		/**
-		 * Avilable inspectors data structure.
-		 */
-		public function get inspector():IHierarchicalCollection
+		// -----------------------------------------------------------------------------------------------------------
+		private var _layerComponentCollection:ListCollection;
+		public function get layerComponentCollection():ListCollection
 		{
-			return _inspectorGroup;
+			return _layerComponentCollection;
 		}
+		private var _inspectorComponentCollection:ArrayHierarchicalCollection;
+		public function get inspectorComponentCollection():IHierarchicalCollection
+		{
+			return _inspectorComponentCollection;
+		}
+		// -----------------------------------------------------------------------------------------------------------
 
 		public function orderFunction(a:Object, b:Object):int
 		{
@@ -326,40 +286,40 @@ package com.grantech.managers
 
 		public function raiseLayerAt(index:int):void
 		{
-			var layer:LayerDataModel = this.layers.getItemAt(index) as LayerDataModel;
+			var layer:LayerDataModel = this.layerComponentCollection.getItemAt(index) as LayerDataModel;
 			if(index == 0)
 				return;
-			var higherLayer:LayerDataModel = this.layers.getItemAt(index-1) as LayerDataModel;
+			var higherLayer:LayerDataModel = this.layerComponentCollection.getItemAt(index-1) as LayerDataModel;
 			var tmp:int = layer.order;
 			layer.order = higherLayer.order;
 			higherLayer.order = tmp;
-			this._layers.refresh();
-			this._layers.updateAll();
-			DataManager.instance.dispatchEventWith("swap", false, {a: this.layers.getItemAt(index).id, b:this.layers.getItemAt(index-1).id});
+			this._layerComponentCollection.refresh();
+			this._layerComponentCollection.updateAll();
+			DataManager.instance.dispatchEventWith("swap", false, {a: this.layerComponentCollection.getItemAt(index).id, b:this.layerComponentCollection.getItemAt(index-1).id});
 		}
 		
 		public function lowerLayerAt(index:int):void
 		{
-			var layer:LayerDataModel = this.layers.getItemAt(index) as LayerDataModel;
-			if(index == this.layers.length-1)
+			var layer:LayerDataModel = this.layerComponentCollection.getItemAt(index) as LayerDataModel;
+			if(index == this.layerComponentCollection.length-1)
 			{
 				return;
 			}
-			var lowerLayer:LayerDataModel = this.layers.getItemAt(index+1) as LayerDataModel;
+			var lowerLayer:LayerDataModel = this.layerComponentCollection.getItemAt(index+1) as LayerDataModel;
 			var tmp:int = layer.order;
 			layer.order = lowerLayer.order;
 			lowerLayer.order = tmp
 			layer.order = lowerLayer.order-1;
-			this._layers.refresh();
-			this._layers.updateAll();
-			DataManager.instance.dispatchEventWith("swap", false, {a: this.layers.getItemAt(index).id, b:this.layers.getItemAt(index+1).id});
+			this._layerComponentCollection.refresh();
+			this._layerComponentCollection.updateAll();
+			DataManager.instance.dispatchEventWith("swap", false, {a: this.layerComponentCollection.getItemAt(index).id, b:this.layerComponentCollection.getItemAt(index+1).id});
 		}
 
-		public function editLayerDataFile(file:File):void
-		{
-			var dataModel:ParticleDataModel = layers.getItemAt(currentLayerIndex) as ParticleDataModel;
-			dataModel.parseDataFromFile(file);
-		}
+		// public function editLayerDataFile(file:File):void
+		// {
+		// 	var dataModel:ParticleDataModel = layerComponentCollection.getItemAt(currentLayerIndex) as ParticleDataModel;
+		// 	dataModel.parseDataFromFile(file);
+		// }
 
 		/**
 		 * Constructor.
@@ -370,11 +330,11 @@ package com.grantech.managers
 			this._idHolder = -1;
 			this._layerCount = 0;
 			this._currentLayerIndex = -1;
-			this._layers = new ListCollection();
-			this._layerGroup = new ParticleGroupCollectionModel();
-			this._inspectorGroup = new ArrayHierarchicalCollection();
+			
+			this._layerComponentCollection = new ListCollection();
+			this._layerComponentCollection.sortCompareFunction = orderFunction;
 
-			this._layers.sortCompareFunction = orderFunction;
+			this._inspectorComponentCollection = new ArrayHierarchicalCollection();
 		}
 	}
 }

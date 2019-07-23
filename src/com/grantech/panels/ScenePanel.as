@@ -1,5 +1,6 @@
 package com.grantech.panels
 {
+	import com.grantech.managers.AssetManager;
 	import com.grantech.managers.DataManager;
 	import com.grantech.managers.SceneManager;
 	import com.grantech.models.ParticleDataModel;
@@ -7,13 +8,10 @@ package com.grantech.panels
 	import feathers.controls.Screen;
 
 	import starling.core.Starling;
+	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.extensions.PDParticleSystem;
 	import starling.textures.Texture;
-	import flash.display.Loader;
-	import com.grantech.managers.AssetManager;
-	import starling.display.DisplayObject;
-	import starling.animation.IAnimatable;
 
 	public class ScenePanel extends Screen
 	{
@@ -58,7 +56,7 @@ package com.grantech.panels
 			var index:int = DataManager.instance.currentLayerIndex;
 			var key:String = event.data == null ? null : event.data.key;
 			var value:* = event.data == null ? null : event.data.value;
-			var particleModel:ParticleDataModel = DataManager.instance.layers.getItemAt(index) as ParticleDataModel;
+			var particleModel:ParticleDataModel = DataManager.instance.layerComponentCollection.getItemAt(index) as ParticleDataModel;
 			if(key == "blendFuncSource" || key == "blendFuncDestination")
 				value = ParticleDataModel.getBlendFunc(value);
 			if (key != null && key != "id" && particleModel != null)
@@ -83,7 +81,7 @@ package com.grantech.panels
 		protected function dataManager_removedHandler(event:Event):void
 		{
 			var index:int = event.data.index;
-			var particleModel:ParticleDataModel = DataManager.instance.layers.getItemAt(index) as ParticleDataModel;
+			var particleModel:ParticleDataModel = DataManager.instance.layerComponentCollection.getItemAt(index) as ParticleDataModel;
 			var particleSystem:PDParticleSystem = SceneManager.instance.getParticleSystem(particleModel.id)
 			particleSystem.stop();
 			Starling.juggler.remove(particleSystem);
