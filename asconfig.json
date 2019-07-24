@@ -1,6 +1,6 @@
 {
 	"type": "app",
-	"config": "air",
+	"config": "airmobile",
 	"airOptions": {
 		"files": [
 			{
@@ -19,7 +19,7 @@
 	},
 	"application": "descriptor.xml",
 	"compilerOptions": {
-		"default-frame-rate": 24,
+		"default-frame-rate": 60,
 		"advanced-telemetry": true,
 		"source-path": [
 			"src",
@@ -27,7 +27,6 @@
 		"library-path": [
 			"lib"
 		],
-		
 		"output": "bin/Applications.swf",
 	},
 	"files": [
