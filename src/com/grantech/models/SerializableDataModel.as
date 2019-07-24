@@ -4,9 +4,8 @@ package com.grantech.models
 
 	import flash.utils.Dictionary;
 
-	import starling.events.EventDispatcher;
-	import com.grantech.managers.DataManager;
 	import starling.events.Event;
+	import starling.events.EventDispatcher;
 
 	/**
 	 * Base Data serializeable class.
@@ -27,7 +26,7 @@ package com.grantech.models
 				return;
 			}
 			this._properties[key] = value;
-			DataManager.instance.dispatchEventWith(Event.CHANGE, false, {key: key, value: value});
+			this.dispatchEventWith(Event.CHANGE, false, key);
 		}
 
 		protected function inspectorStructureFactory():ArrayHierarchicalCollection

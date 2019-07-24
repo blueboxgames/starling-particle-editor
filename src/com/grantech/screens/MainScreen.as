@@ -36,15 +36,15 @@ package com.grantech.screens
 
 			this.layout = new AnchorLayout();
 
-			this.scenePanel = new ScenePanel();
-			this.scenePanel.layoutData = new AnchorLayoutData(0,NaN,0,0);
-			this.addChild(scenePanel);
-
 			this.rightDock = new SidebarPanel();
 			this.rightDock.layoutData = new AnchorLayoutData(0,0,0);
 			this.rightDock.width = 300;
 			this.addChild(rightDock);
 			
+
+			this.scenePanel = new ScenePanel();
+			this.scenePanel.layoutData = new AnchorLayoutData(0,NaN,0,0);
+			this.addChild(scenePanel);
 			this.readjustLayout();
 		}
 
@@ -55,7 +55,7 @@ package com.grantech.screens
 
 		private function readjustLayout():void
 		{
-			this.scenePanel.width = stage.stageWidth - 400;
+			this.scenePanel.width = stage.stageWidth - this.rightDock.width;
 		}
 	}
 }

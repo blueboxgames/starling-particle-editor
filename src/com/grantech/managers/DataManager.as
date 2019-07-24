@@ -1,6 +1,5 @@
 package com.grantech.managers
 {
-	import com.grantech.models.ImageDataModel;
 	import com.grantech.models.LayerDataModel;
 	import com.grantech.models.ParticleDataModel;
 
@@ -9,11 +8,8 @@ package com.grantech.managers
 	import feathers.data.IHierarchicalCollection;
 	import feathers.data.ListCollection;
 
-	import flash.filesystem.File;
-
 	import starling.events.Event;
 	import starling.events.EventDispatcher;
-	import flash.utils.Dictionary;
 
 	/**
 	 * Dispatched when a layer is added.
@@ -50,12 +46,10 @@ package com.grantech.managers
 	 */
 	public class DataManager extends EventDispatcher implements IFeathersEventDispatcher
 	{
-		public static const PARTICLE_DATA:String = "particle";
-		public static const IMAGE_DATA:String = "image";
 		/**
 		 * @private Variable which contains DataManager singleton.
 		 */
-		private static var _instance:DataManager;
+		static private var _instance:DataManager;
 		
 		/**
 		 * @private Unique identifier for new data.
@@ -65,11 +59,11 @@ package com.grantech.managers
 		/**
 		 * DataManager singleton access method.
 		 */
-		public static function get instance():DataManager
+		static public function get instance():DataManager
 		{
 			if( _instance == null )
 				_instance = new DataManager();
-				return _instance;
+			return _instance;
 		}
 
 		/**
@@ -89,7 +83,6 @@ package com.grantech.managers
 		{
 			return _uid;
 		}
-		
 		public function set uid(value:int):void
 		{
 			_uid = value;
@@ -107,49 +100,52 @@ package com.grantech.managers
 			return _inspectorComponentCollection;
 		}
 
-		private var _currentModel:Object;
-		
-		public function get currentModel():Object
+		private var _currentLayer:LayerDataModel;
+		public function get currentlayer():LayerDataModel
 		{
-			return _currentModel;
+			return _currentLayer;
 		}
-		
-		public function set currentModel(value:Object):void
+		public function set currentlayer(value:LayerDataModel):void
 		{
-			_currentModel = value;
+			_currentLayer = value;
 		}
 
 		/**
 		 * Method to add new layer.
 		 */
-		public function addLayer(type:String, name:String=null, x:Number=0, y:Number=0, order:Number=0):void
+		public function addLayer(type:int, name:String=null, x:Number=0, y:Number=0, order:Number=0):void
 		{
-			if (type == PARTICLE_DATA)
+			var layer:LayerDataModel;
+			if (type == LayerDataModel.TYPE_PARTICLE)
 			{
 				// Create new particle model.
-				var model:ParticleDataModel = new ParticleDataModel();
-				model.id = this.uid+=1;
-				model.type = type;
-				model.name = name;
-				model.x = x;
-				model.y = y;
-				model.order = order;
-				
-				// Add model to list.
-				this.layerDataProvider.addItem(model);
-				// Dispatch Event.
-				DataManager.instance.dispatchEventWith(Event.ADDED, false, { particle: model });
+				layer = new ParticleDataModel() as LayerDataModel;
 			}
-			else if (type == IMAGE_DATA)
-			{}
+			else if (type == LayerDataModel.TYPE_IMAGE)
+			{
+					trace("add image not implemented!")
+					return;
+			}
+
+			layer.id = this.uid += 1;
+			layer.type = type;
+			layer.name = name;
+			layer.x = x;
+			layer.y = y;
+			layer.order = order;
+			
+			// Add model to list.
+			this.layerDataProvider.addItem(layer);
+			// Dispatch Event.
+			dispatchEventWith(Event.ADDED, false, layer);
 		}
 
 		/**
 		 * Method to select layer with it's object.
 		 */
-		public function selectLayer(model:Object):void
+		public function selectLayer(layer:LayerDataModel):void
 		{
-			var index:int = this.layerDataProvider.getItemIndex(model);
+			var index:int = this.layerDataProvider.getItemIndex(layer);
 			this.selectLayerAt(index);
 		}
 
@@ -158,14 +154,15 @@ package com.grantech.managers
 		 */
 		public function selectLayerAt(index:int):void
 		{
-			this.currentModel = this.layerDataProvider.getItemAt(index);
-			DataManager.instance.dispatchEventWith(Event.SELECT, false, { index: index });
+			this.currentlayer = this.layerDataProvider.getItemAt(index) as LayerDataModel;
+			this.currentlayer.removeEventListeners(Event.CHANGE);
+			this.dispatchEventWith(Event.SELECT, false, this.currentlayer);
 		}
 
 		/**
 		 * Method to remove layer with it's object.
 		 */
-		public function removeLayer(layer:Object):void
+		public function removeLayer(layer:LayerDataModel):void
 		{
 			var index:int = this.layerDataProvider.getItemIndex(layer);
 			this.removeLayerAt(index);
@@ -176,9 +173,15 @@ package com.grantech.managers
 		 */
 		public function removeLayerAt(index:int):void
 		{
-			DataManager.instance.dispatchEventWith(Event.REMOVED, true, { index: index });
+			var layer:LayerDataModel = this.layerDataProvider.getItemAt(index) as LayerDataModel;
+			if( layer == null )
+			{
+				trace("layer not found.");
+				return;
+			}
+			
 			this.layerDataProvider.removeItemAt(index);
-			// Must handle this at both list and it's collection.
+			this.dispatchEventWith(Event.REMOVED, false, layer);
 		}
 
 		public function raiseLayerAt(index:int):void
@@ -190,9 +193,10 @@ package com.grantech.managers
 			var tmp:int = layer.order;
 			layer.order = higherLayer.order;
 			higherLayer.order = tmp;
-			this._layerDataProvider.refresh();
-			this._layerDataProvider.updateAll();
-			DataManager.instance.dispatchEventWith("swap", false, {a: this.layerDataProvider.getItemAt(index).id, b:this.layerDataProvider.getItemAt(index-1).id});
+			selectLayer(higherLayer);
+			// this._layerDataProvider.refresh();
+			// this._layerDataProvider.updateAll();
+			// dispatchEventWith("swap", false, {a: this.layerDataProvider.getItemAt(index).id, b:this.layerDataProvider.getItemAt(index-1).id});
 		}
 		
 		public function lowerLayerAt(index:int):void
@@ -207,14 +211,17 @@ package com.grantech.managers
 			layer.order = lowerLayer.order;
 			lowerLayer.order = tmp
 			layer.order = lowerLayer.order-1;
-			this._layerDataProvider.refresh();
-			this._layerDataProvider.updateAll();
-			DataManager.instance.dispatchEventWith("swap", false, {a: this.layerDataProvider.getItemAt(index).id, b:this.layerDataProvider.getItemAt(index+1).id});
+			selectLayer(lowerLayer);
+
+			// this._layerDataProvider.refresh();
+			// this._layerDataProvider.updateAll();
+			// DataManager.instance.dispatchEventWith("swap", false, {a: this.layerDataProvider.getItemAt(index).id, b:this.layerDataProvider.getItemAt(index+1).id});
 		}
 
-		public function orderFunction(a:Object, b:Object):int
+		public function orderFunction(a:LayerDataModel, b:LayerDataModel):int
 		{
-			if (a.order > b.order)
+			return b.order - a.order;
+/* 			if (a.order > b.order)z
 			{
 				return -1;
 			}
@@ -226,6 +233,6 @@ package com.grantech.managers
 			{
 				return 0;
 			}
-		}
+ */		}
 	}
 }

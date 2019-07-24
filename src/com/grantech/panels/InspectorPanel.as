@@ -26,9 +26,9 @@ package com.grantech.panels
 
 		protected function dataManager_selectHandler(event:Event):void
 		{
-			if(this.groupedList.dataProvider == DataManager.instance.currentModel.propertiesCollection)
+			if(this.groupedList.dataProvider == DataManager.instance.currentlayer.propertiesCollection)
 				return;
-			this.groupedList.dataProvider = DataManager.instance.currentModel.propertiesCollection;
+			this.groupedList.dataProvider = DataManager.instance.currentlayer.propertiesCollection;
 		}
 
 		/**

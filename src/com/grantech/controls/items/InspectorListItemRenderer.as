@@ -7,6 +7,7 @@ package com.grantech.controls.items
 	import feathers.controls.ColorPicker;
 	import feathers.controls.EditableSlider;
 	import feathers.controls.Label;
+	import feathers.controls.LayoutGroup;
 	import feathers.controls.PickerList;
 	import feathers.controls.popups.CalloutPopUpContentManager;
 	import feathers.controls.renderers.DefaultListItemRenderer;
@@ -15,17 +16,12 @@ package com.grantech.controls.items
 	import feathers.controls.renderers.LayoutGroupGroupedListItemRenderer;
 	import feathers.data.ArrayCollection;
 	import feathers.data.IListCollection;
-	import feathers.layout.HorizontalLayout;
-	import feathers.layout.HorizontalLayoutData;
+	import feathers.layout.AnchorLayout;
+	import feathers.layout.AnchorLayoutData;
 
 	import flash.display3D.Context3DBlendFactor;
-	import flash.filesystem.File;
 
 	import starling.events.Event;
-	import starling.display.DisplayObject;
-	import feathers.controls.LayoutGroup;
-	import feathers.layout.AnchorLayoutData;
-	import feathers.layout.AnchorLayout;
 
 	/**
 	 * InspectorListItemRenderer is a view which renders information from DataModels.
@@ -127,7 +123,7 @@ package com.grantech.controls.items
 
 			this.key = this.data.key as String;
 			this.label = this.data.label as String;
-			this.value = DataManager.instance.currentModel.getProperty(this.key);
+			this.value = DataManager.instance.currentlayer.getProperty(this.key);
 			redrawControls();
 		}
 
@@ -304,7 +300,7 @@ package com.grantech.controls.items
 			if(this.sliderDisplay.value == this.value)
 				return;
 			this.value = this.sliderDisplay.value;
-			DataManager.instance.currentModel.setProperty(this.key, this.value);
+			DataManager.instance.currentlayer.setProperty(this.key, this.value);
 		}
 
 		// private function colorPickerDisplay_changeHandler(e:Event):void
@@ -321,7 +317,7 @@ package com.grantech.controls.items
 			if(this.dropDownDisplay.selectedItem.value == this.value)
 				return;
 			this.value = this.dropDownDisplay.selectedItem.text;
-			DataManager.instance.currentModel.setProperty(this.key, this.value);
+			DataManager.instance.currentlayer.setProperty(this.key, this.value);
 		}
 	}
 }

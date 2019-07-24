@@ -2,6 +2,7 @@ package com.grantech.panels
 {
 	import com.grantech.controls.items.LayerListItemRenderer;
 	import com.grantech.managers.DataManager;
+	import com.grantech.models.LayerDataModel;
 	import com.grantech.utils.Localizations;
 
 	import feathers.controls.Button;
@@ -117,7 +118,7 @@ package com.grantech.panels
 			particleButton.layoutData = new AnchorLayoutData(NaN,100,NaN,NaN);
 			popUp.addChild(particleButton);
 			particleButton.addEventListener(Event.TRIGGERED, function():void{
-				DataManager.instance.addLayer(DataManager.PARTICLE_DATA);
+				DataManager.instance.addLayer(LayerDataModel.TYPE_PARTICLE);
 				popUp.removeFromParent();
 			});
 

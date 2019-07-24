@@ -2,9 +2,11 @@ package com.grantech.models
 {
 	public class LayerDataModel extends SerializableDataModel
 	{
+		static public const TYPE_IMAGE:int = 0; 
+		static public const TYPE_PARTICLE:int = 1;  	
+		private var _type:int;
 		private var _name:String;
 		private var _order:Number;
-		private var _type:String;
 
 		public function LayerDataModel()
 		{
@@ -70,12 +72,12 @@ package com.grantech.models
 			this._order = value;
 		}
 
-		public function get type():String
+		public function get type():int
 		{
 			return this._type;
 		}
 
-		public function set type(value:String):void
+		public function set type(value:int):void
 		{
 			this._type = value;
 		}
