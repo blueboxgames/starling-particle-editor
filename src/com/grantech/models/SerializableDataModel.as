@@ -27,7 +27,7 @@ package com.grantech.models
 				return;
 			}
 			this._properties[key] = value;
-			this.dispatchEventWith(Event.CHANGE, false, {key: key, value: value});
+			DataManager.instance.dispatchEventWith(Event.CHANGE, false, {key: key, value: value});
 		}
 
 		protected function inspectorStructureFactory():ArrayHierarchicalCollection

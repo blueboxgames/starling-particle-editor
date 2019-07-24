@@ -254,8 +254,8 @@ package starling.extensions
 			this.startColorVariance =new ColorArgb(config.startColorVarianceRed, config.startColorVarianceGreen, config.startColorVarianceBlue, config.startColorVarianceAlpha);
 			this.finishColor =new ColorArgb(config.finishColorRed, config.finishColorGreen, config.finishColorBlue, config.finishColorAlpha);
 			this.finishColorVariance =new ColorArgb(config.finishColorVarianceRed, config.finishColorVarianceGreen, config.finishColorVarianceBlue, config.finishColorVarianceAlpha);
-			this.blendFuncSource = getBlendFunc(config.blendFuncSource);
-			this.blendFuncDestination = getBlendFunc(config.blendFuncDestination);
+			this.blendFuncSource = config.blendFuncSource;
+			this.blendFuncDestination = config.blendFuncDestination;
 			this.defaultDuration = config.duration;
 			this.maxParticles = config.maxParticles;
 			this.particleLifespan =  Math.max(0.01, config.particleLifespan);

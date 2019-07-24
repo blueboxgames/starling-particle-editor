@@ -158,8 +158,8 @@ package com.grantech.models
 			this.startColorVariance = new ColorArgb(0,0,0,1);
 			this.finishColor = new ColorArgb(0,0,0,1);
 			this.finishColorVariance = new ColorArgb(0,0,0,1);
-			this.blendFuncSource = 1;
-			this.blendFuncDestination = 1;
+			this.blendFuncSource = Context3DBlendFactor.ONE;
+			this.blendFuncDestination = Context3DBlendFactor.ONE;
 			this.maxParticles = 300;
 			this.texture = File.applicationDirectory.resolvePath(File.applicationDirectory.nativePath + "/media/default.png").url;
 		}
@@ -687,22 +687,22 @@ package com.grantech.models
 			this.setProperty("finishColorVariance", value);
 		}
 
-		public function get blendFuncSource():int
+		public function get blendFuncSource():String
 		{
 			return this.getProperty("blendFuncSource");
 		}
 
-		public function set blendFuncSource(value:int):void
+		public function set blendFuncSource(value:String):void
 		{	
 			this.setProperty("blendFuncSource", value);
 		}
 
-		public function get blendFuncDestination():int
+		public function get blendFuncDestination():String
 		{
 			return this.getProperty("blendFuncDestination");
 		}
 
-		public function set blendFuncDestination(value:int):void
+		public function set blendFuncDestination(value:String):void
 		{
 			this.setProperty("blendFuncDestination", value);
 		}
@@ -776,8 +776,8 @@ package com.grantech.models
 				finishColorVarianceBlue: this.finishColorVarianceBlue,
 				finishColorVarianceGreen: this.finishColorVarianceGreen,
 				finishColorVarianceAlpha: this.finishColorVarianceAlpha,
-				blendFuncSource: this.blendFuncSource,
-				blendFuncDestination: this.blendFuncDestination,
+				blendFuncSource: getBlendCode(this.blendFuncSource),
+				blendFuncDestination: getBlendCode(this.blendFuncDestination),
 				maxParticles: this.maxParticles
 			}
 		}
@@ -823,8 +823,8 @@ package com.grantech.models
 			this.startColorVariance =new ColorArgb(config.startColorVarianceRed, config.startColorVarianceGreen, config.startColorVarianceBlue, config.startColorVarianceAlpha);
 			this.finishColor =new ColorArgb(config.finishColorRed, config.finishColorGreen, config.finishColorBlue, config.finishColorAlpha);
 			this.finishColorVariance =new ColorArgb(config.finishColorVarianceRed, config.finishColorVarianceGreen, config.finishColorVarianceBlue, config.finishColorVarianceAlpha);
-			this.blendFuncSource = config.blendFuncSource;
-			this.blendFuncDestination = config.blendFuncDestination;
+			this.blendFuncSource = getBlendFunc(config.blendFuncSource);
+			this.blendFuncDestination = getBlendFunc(config.blendFuncDestination);
 			this.duration = config.duration;
 			this.maxParticles = config.maxParticles;
 			this.particleLifespan =  Math.max(0.01, config.particleLifespan);
@@ -846,6 +846,24 @@ package com.grantech.models
 				case 0x305: return Context3DBlendFactor.ONE_MINUS_DESTINATION_ALPHA;
 				case 0x306: return Context3DBlendFactor.DESTINATION_COLOR;
 				case 0x307: return Context3DBlendFactor.ONE_MINUS_DESTINATION_COLOR;
+				default:    throw new ArgumentError("unsupported blending function: " + value);
+			}
+		}
+
+		public static function getBlendCode(value:String):int
+		{
+			switch (value)
+			{
+				case Context3DBlendFactor.ZERO: return 0;
+				case Context3DBlendFactor.ONE: return 1;
+				case Context3DBlendFactor.SOURCE_COLOR: return 0x300;
+				case Context3DBlendFactor.ONE_MINUS_SOURCE_COLOR: return 0x301;
+				case Context3DBlendFactor.SOURCE_ALPHA: return 0x302;
+				case Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA: return 0x303;
+				case Context3DBlendFactor.DESTINATION_ALPHA: return 0x304;
+				case Context3DBlendFactor.ONE_MINUS_DESTINATION_ALPHA: return 0x305;
+				case Context3DBlendFactor.DESTINATION_COLOR: return 0x306;
+				case Context3DBlendFactor.ONE_MINUS_DESTINATION_COLOR: return 0x307;
 				default:    throw new ArgumentError("unsupported blending function: " + value);
 			}
 		}

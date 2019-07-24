@@ -13,6 +13,7 @@ package com.grantech.managers
 
 	import starling.events.Event;
 	import starling.events.EventDispatcher;
+	import flash.utils.Dictionary;
 
 	/**
 	 * Dispatched when a layer is added.
@@ -49,77 +50,73 @@ package com.grantech.managers
 	 */
 	public class DataManager extends EventDispatcher implements IFeathersEventDispatcher
 	{
-		public static const PARTICLE_LAYER:String = "particle";
-		public static const IMAGE_LAYER:String = "image";
+		public static const PARTICLE_DATA:String = "particle";
+		public static const IMAGE_DATA:String = "image";
 		/**
 		 * @private Variable which contains DataManager singleton.
 		 */
 		private static var _instance:DataManager;
-
+		
+		/**
+		 * @private Unique identifier for new data.
+		 */
+		
+		
 		/**
 		 * DataManager singleton access method.
 		 */
-		public static function get instance() : DataManager
+		public static function get instance():DataManager
 		{
 			if( _instance == null )
 				_instance = new DataManager();
 				return _instance;
 		}
+
+		/**
+		 * Constructor.
+		 */
+		public function DataManager()
+		{
+			super();
+			this._uid = 0;
+			this._layerDataProvider = new ListCollection();
+			this._inspectorComponentCollection = new ArrayHierarchicalCollection();
+			this._layerDataProvider.sortCompareFunction = orderFunction;
+		}
+
+		private var _uid:int;
+		public function get uid():int
+		{
+			return _uid;
+		}
 		
-		/**
-		 * @private Variable which contains current layer index.
-		 */
-		private var _currentLayerIndex:int;
-
-		/**
-		 * Method to get current layer index.
-		 */
-		public function get currentLayerIndex():int
+		public function set uid(value:int):void
 		{
-			return this._currentLayerIndex;
+			_uid = value;
 		}
 
-		/**
-		 * Method to set current layer index.
-		 */
-		public function set currentLayerIndex(index:int):void
+		private var _layerDataProvider:ListCollection;
+		public function get layerDataProvider():ListCollection
 		{
-			// New selected layer causes removing all inspector items.
-
-			// Index range is out of range. _currentLayerIndex range: [-1, int.MAX_VALUE]
-			if(index < -1)
-				return;
-
-			this._currentLayerIndex = index;
-			var itemAtCurrent:Object = layerComponentCollection.getItemAt(index);
-
-			if(this._currentLayerIndex > -1)
-			{
-				this._inspectorComponentCollection.arrayData = itemAtCurrent.propertiesCollection.arrayData;
-			}
-			this.inspectorComponentCollection.updateAll();
+			return _layerDataProvider;
 		}
 
-		private var _layerCount:int;
-
-		public function get layerCount():int
+		private var _inspectorComponentCollection:ArrayHierarchicalCollection;
+		public function get inspectorComponentCollection():IHierarchicalCollection
 		{
-			return this._layerCount;
+			return _inspectorComponentCollection;
 		}
 
-		/**
-		 * Method to return layer at specified index.
-		 */
-		public function layerAt(index:int):Object
+		private var _currentModel:Object;
+		
+		public function get currentModel():Object
 		{
-			return layerComponentCollection.getItemAt(index);
+			return _currentModel;
 		}
-
-		private var _idHolder:int;
-
-		protected function genNewLayerId():int
+		
+		public function set currentModel(value:Object):void
 		{
-			return this._idHolder += 1;
+			_currentModel = value;
 		}
 
 		/**
@@ -127,68 +124,24 @@ package com.grantech.managers
 		 */
 		public function addLayer(type:String, name:String=null, x:Number=0, y:Number=0, order:Number=0):void
 		{
-			/**
-			 * Algorithm addLayer:
-			 * switch case (particle? image?)
-			 * -> create new `model`.
-			 * -> add model to a ListCollection.
-			 * -> incerement layercount.
-			 * Event -> ADDED, `model`
-			 * 
-			 * Call -> selectLayer(model)
-			 */
-			
-			var model:LayerDataModel = new LayerDataModel();
-			model.id = genNewLayerId();
-			model.name = name ? name : "";
-			model.x = x;
-			model.y = y;
-			model.type = type;
-			model.order = _layerComponentCollection.length == 0 ? 0 : this._layerComponentCollection.getItemAt(0).order+1;
-
-			if (type == PARTICLE_LAYER)
+			if (type == PARTICLE_DATA)
 			{
 				// Create new particle model.
-				var pModel:ParticleDataModel = new ParticleDataModel();
-				pModel.id = model.id;
-				pModel.name = model.name;
-				pModel.x = model.x;
-				pModel.y = model.y;
-				pModel.order = model.order;
-				pModel.type = model.type;
-				// Add model to list.
-				this.layerComponentCollection.addItemAt(pModel, 0);
-				// Increment layer count.
-				this._currentLayerIndex += 1;
-				this._layerCount += 1;
-				this._layerComponentCollection.updateAll();
-				this._inspectorComponentCollection.updateAll();
-				// Dispatch Event.
-				DataManager.instance.dispatchEventWith(Event.ADDED, false, { particle: pModel });
-			}
-			else if (type == IMAGE_LAYER)
-			{
-				var iModel:ImageDataModel = new ImageDataModel();
-				iModel.id = model.id;
-				iModel.name = model.name;
-				iModel.x = model.x;
-				iModel.y = model.y;
-				iModel.order = model.order;
-				iModel.type = model.type;
-				// Add model to list.	
-				this.layerComponentCollection.addItemAt(iModel, this.currentLayerIndex+1);
-				// Increment layer count.
-				this._layerCount += 1;
-				this._currentLayerIndex += 1;
-				this._layerComponentCollection.updateAll();
-				this._inspectorComponentCollection.updateAll();
-				// Dispatch Event.
+				var model:ParticleDataModel = new ParticleDataModel();
+				model.id = this.uid+=1;
+				model.type = type;
+				model.name = name;
+				model.x = x;
+				model.y = y;
+				model.order = order;
 				
-				DataManager.instance.dispatchEventWith(Event.ADDED, false, { image: iModel });
+				// Add model to list.
+				this.layerDataProvider.addItem(model);
+				// Dispatch Event.
+				DataManager.instance.dispatchEventWith(Event.ADDED, false, { particle: model });
 			}
-			// Call to select layer.
-			this.currentLayerIndex = 0;
-			this.selectLayerAt(this.currentLayerIndex);
+			else if (type == IMAGE_DATA)
+			{}
 		}
 
 		/**
@@ -196,12 +149,7 @@ package com.grantech.managers
 		 */
 		public function selectLayer(model:Object):void
 		{
-			/**
-			 * Algorithm selectLayer:
-			 * -> get index of model.
-			 * Call -> selectLayerAt(index)
-			 */
-			var index:int = this.layerComponentCollection.getItemIndex(model);
+			var index:int = this.layerDataProvider.getItemIndex(model);
 			this.selectLayerAt(index);
 		}
 
@@ -210,16 +158,8 @@ package com.grantech.managers
 		 */
 		public function selectLayerAt(index:int):void
 		{
-			/**
-			 * Algorithm selectLayerAt:
-			 * if (new index == current index) or (new index < 0) then
-			 * 	halt;
-			 * 
-			 * Set -> currentLayerIndex to new index
-			 * Event -> SELECT, currentLayerIndex
-			 */
-			this.currentLayerIndex = index;
-			DataManager.instance.dispatchEventWith(Event.SELECT, false, { index: index } );
+			this.currentModel = this.layerDataProvider.getItemAt(index);
+			DataManager.instance.dispatchEventWith(Event.SELECT, false, { index: index });
 		}
 
 		/**
@@ -227,7 +167,7 @@ package com.grantech.managers
 		 */
 		public function removeLayer(layer:Object):void
 		{
-			var index:int = this.layerComponentCollection.getItemIndex(layer);
+			var index:int = this.layerDataProvider.getItemIndex(layer);
 			this.removeLayerAt(index);
 		}
 
@@ -236,37 +176,41 @@ package com.grantech.managers
 		 */
 		public function removeLayerAt(index:int):void
 		{
-			if (this.layerCount == 0)
-				return;
-			
 			DataManager.instance.dispatchEventWith(Event.REMOVED, true, { index: index });
-			this.inspectorComponentCollection.removeAll();
-			this.layerComponentCollection.removeItemAt(index);
-			this._layerCount -= 1;
+			this.layerDataProvider.removeItemAt(index);
 			// Must handle this at both list and it's collection.
-			if(index >= 0)
+		}
+
+		public function raiseLayerAt(index:int):void
+		{
+			var layer:LayerDataModel = this.layerDataProvider.getItemAt(index) as LayerDataModel;
+			if(index == 0)
+				return;
+			var higherLayer:LayerDataModel = this.layerDataProvider.getItemAt(index-1) as LayerDataModel;
+			var tmp:int = layer.order;
+			layer.order = higherLayer.order;
+			higherLayer.order = tmp;
+			this._layerDataProvider.refresh();
+			this._layerDataProvider.updateAll();
+			DataManager.instance.dispatchEventWith("swap", false, {a: this.layerDataProvider.getItemAt(index).id, b:this.layerDataProvider.getItemAt(index-1).id});
+		}
+		
+		public function lowerLayerAt(index:int):void
+		{
+			var layer:LayerDataModel = this.layerDataProvider.getItemAt(index) as LayerDataModel;
+			if(index == this.layerDataProvider.length-1)
 			{
-				this.currentLayerIndex = index - 1;
+				return;
 			}
+			var lowerLayer:LayerDataModel = this.layerDataProvider.getItemAt(index+1) as LayerDataModel;
+			var tmp:int = layer.order;
+			layer.order = lowerLayer.order;
+			lowerLayer.order = tmp
+			layer.order = lowerLayer.order-1;
+			this._layerDataProvider.refresh();
+			this._layerDataProvider.updateAll();
+			DataManager.instance.dispatchEventWith("swap", false, {a: this.layerDataProvider.getItemAt(index).id, b:this.layerDataProvider.getItemAt(index+1).id});
 		}
-
-		public function editCurrentLayerData(key:String, value:*):void
-		{
-			layerAt(this.currentLayerIndex).setProperty(key, value);
-		}
-
-		// -----------------------------------------------------------------------------------------------------------
-		private var _layerComponentCollection:ListCollection;
-		public function get layerComponentCollection():ListCollection
-		{
-			return _layerComponentCollection;
-		}
-		private var _inspectorComponentCollection:ArrayHierarchicalCollection;
-		public function get inspectorComponentCollection():IHierarchicalCollection
-		{
-			return _inspectorComponentCollection;
-		}
-		// -----------------------------------------------------------------------------------------------------------
 
 		public function orderFunction(a:Object, b:Object):int
 		{
@@ -282,59 +226,6 @@ package com.grantech.managers
 			{
 				return 0;
 			}
-		}
-
-		public function raiseLayerAt(index:int):void
-		{
-			var layer:LayerDataModel = this.layerComponentCollection.getItemAt(index) as LayerDataModel;
-			if(index == 0)
-				return;
-			var higherLayer:LayerDataModel = this.layerComponentCollection.getItemAt(index-1) as LayerDataModel;
-			var tmp:int = layer.order;
-			layer.order = higherLayer.order;
-			higherLayer.order = tmp;
-			this._layerComponentCollection.refresh();
-			this._layerComponentCollection.updateAll();
-			DataManager.instance.dispatchEventWith("swap", false, {a: this.layerComponentCollection.getItemAt(index).id, b:this.layerComponentCollection.getItemAt(index-1).id});
-		}
-		
-		public function lowerLayerAt(index:int):void
-		{
-			var layer:LayerDataModel = this.layerComponentCollection.getItemAt(index) as LayerDataModel;
-			if(index == this.layerComponentCollection.length-1)
-			{
-				return;
-			}
-			var lowerLayer:LayerDataModel = this.layerComponentCollection.getItemAt(index+1) as LayerDataModel;
-			var tmp:int = layer.order;
-			layer.order = lowerLayer.order;
-			lowerLayer.order = tmp
-			layer.order = lowerLayer.order-1;
-			this._layerComponentCollection.refresh();
-			this._layerComponentCollection.updateAll();
-			DataManager.instance.dispatchEventWith("swap", false, {a: this.layerComponentCollection.getItemAt(index).id, b:this.layerComponentCollection.getItemAt(index+1).id});
-		}
-
-		// public function editLayerDataFile(file:File):void
-		// {
-		// 	var dataModel:ParticleDataModel = layerComponentCollection.getItemAt(currentLayerIndex) as ParticleDataModel;
-		// 	dataModel.parseDataFromFile(file);
-		// }
-
-		/**
-		 * Constructor.
-		 */
-		public function DataManager()
-		{
-			super();
-			this._idHolder = -1;
-			this._layerCount = 0;
-			this._currentLayerIndex = -1;
-			
-			this._layerComponentCollection = new ListCollection();
-			this._layerComponentCollection.sortCompareFunction = orderFunction;
-
-			this._inspectorComponentCollection = new ArrayHierarchicalCollection();
 		}
 	}
 }

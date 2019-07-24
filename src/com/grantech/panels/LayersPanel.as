@@ -39,7 +39,6 @@ package com.grantech.panels
 		override protected function initialize():void
 		{
 			super.initialize();
-			DataManager.instance.addEventListener(Event.SELECT, dataManager_selectHandler)
 			this.title = Localizations.instance.get("layers_panel_title");
 			this.layout = new AnchorLayout();
 			
@@ -49,7 +48,8 @@ package com.grantech.panels
 			{
 				return new LayerListItemRenderer();
 			}
-			this.listDisplay.dataProvider = DataManager.instance.layerComponentCollection;
+			this.listDisplay.selectedIndex = -1;
+			this.listDisplay.dataProvider = DataManager.instance.layerDataProvider;
 			this.listDisplay.addEventListener(Event.CHANGE, listDisplay_changeHandler);
 			this.addChild(this.listDisplay);
 			
@@ -106,11 +106,6 @@ package com.grantech.panels
 			return footer;
 		}
 
-		protected function listDisplay_changeHandler(event:Event):void
-		{
-			DataManager.instance.selectLayer(this.listDisplay.selectedItem);
-		}
-		
 		protected function addLayerButton_triggeredHandler(event:Event):void
 		{
 			// When a new layer is added we select it from list display too.
@@ -122,7 +117,7 @@ package com.grantech.panels
 			particleButton.layoutData = new AnchorLayoutData(NaN,100,NaN,NaN);
 			popUp.addChild(particleButton);
 			particleButton.addEventListener(Event.TRIGGERED, function():void{
-				DataManager.instance.addLayer(DataManager.PARTICLE_LAYER);
+				DataManager.instance.addLayer(DataManager.PARTICLE_DATA);
 				popUp.removeFromParent();
 			});
 
@@ -133,7 +128,14 @@ package com.grantech.panels
 			this.stage.addChild( popUp );
 			PopUpManager.centerPopUp(popUp);
 		}
-		
+
+		protected function listDisplay_changeHandler(event:Event):void
+		{
+			if(this.listDisplay.selectedIndex < 0)
+				return;
+			DataManager.instance.selectLayerAt(this.listDisplay.selectedIndex);
+		}
+
 		private function removeLayerButton_triggeredHandler(event:Event):void
 		{
 			var selectedIndex:int = listDisplay.selectedIndex;
@@ -156,14 +158,11 @@ package com.grantech.panels
 
 		public function LayersPanel()
 		{
-			super();
-			//DataManager.instance.addEventListener(Event.ADDED, dataManager_addedHandler);
-		
+			super();		
 		}
 		override public function dispose():void
 		{
 			super.dispose();
-			//DataManager.instance.removeEventListener(Event.ADDED, dataManager_addedHandler);
 		}
 
 		protected function dataManager_selectHandler(e:Event):void

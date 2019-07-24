@@ -105,15 +105,19 @@ package com.grantech.controls.items
 		public function InspectorListItemRenderer()
 		{
 			super();
+			// DataManager.instance.addEventListener(Event.SELECT, dataManager_selectHandler);
 		}
 
 		override protected function initialize():void
 		{
 			super.initialize();
-
-			var inspectorItemLayout:AnchorLayout = new AnchorLayout();
-			this.layout = inspectorItemLayout;
+			this.layout = new AnchorLayout();
 		}
+
+		// protected function dataManager_selectHandler(event:Event):void
+		// {
+		// 	this.invalidate(INVALIDATION_FLAG_DATA);
+		// }
 
 		override protected function commitData():void
 		{
@@ -123,7 +127,7 @@ package com.grantech.controls.items
 
 			this.key = this.data.key as String;
 			this.label = this.data.label as String;
-			this._value = DataManager.instance.layerAt(DataManager.instance.currentLayerIndex).getProperty(this.key);
+			this.value = DataManager.instance.currentModel.getProperty(this.key);
 			redrawControls();
 		}
 
@@ -163,13 +167,13 @@ package com.grantech.controls.items
 			switch(ControlsHelper.instance.getType(this.key))
 			{
 				case ControlsHelper.TYPE_COLOR_PICKER:
-					drawColorPicker();
+					//drawColorPicker();
 					break;
 				case ControlsHelper.TYPE_DROPDOWN:
-					drawDropDown();
+					//drawDropDown();
 					break;
 				case ControlsHelper.TYPE_BROWSE:
-					drawBrowseButton();
+					//drawBrowseButton();
 					break;
 				default:
 					drawSlider();
@@ -213,40 +217,39 @@ package com.grantech.controls.items
 				this.dropDownDisplay.layoutData = new AnchorLayoutData(0,0,0,0);
 				this.dropDownDisplay.addEventListener(Event.CHANGE, dropDownDisplay_changeHandler);
 				this.controlType = ControlsHelper.TYPE_DROPDOWN;
-				if (this.key == "blendFuncSource" || this.key == "blendFuncDestination")
-				{
-					var blendModes:IListCollection = new ArrayCollection(
-						[
-							{ text: Context3DBlendFactor.ZERO, value: 0 },
-							{ text: Context3DBlendFactor.ONE, value: 1 },
-							{ text: Context3DBlendFactor.SOURCE_COLOR, value: 0x300 },
-							{ text: Context3DBlendFactor.ONE_MINUS_SOURCE_COLOR, value: 0x301 },
-							{ text: Context3DBlendFactor.SOURCE_ALPHA, value: 0x302 },
-							{ text: Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA, value: 0x303 },
-							{ text: Context3DBlendFactor.DESTINATION_ALPHA, value: 0x304 },
-							{ text: Context3DBlendFactor.ONE_MINUS_DESTINATION_ALPHA, value: 0x305 },
-							{ text: Context3DBlendFactor.DESTINATION_COLOR, value: 0x306 },
-							{ text: Context3DBlendFactor.ONE_MINUS_DESTINATION_COLOR, value: 0x307 }
-						]
-					);
+				
+				var blendModes:IListCollection = new ArrayCollection(
+					[
+						{ value: Context3DBlendFactor.ZERO },
+						{ value: Context3DBlendFactor.ONE },
+						{ value: Context3DBlendFactor.SOURCE_COLOR },
+						{ value: Context3DBlendFactor.ONE_MINUS_SOURCE_COLOR },
+						{ value: Context3DBlendFactor.SOURCE_ALPHA },
+						{ value: Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA },
+						{ value: Context3DBlendFactor.DESTINATION_ALPHA },
+						{ value: Context3DBlendFactor.ONE_MINUS_DESTINATION_ALPHA },
+						{ value: Context3DBlendFactor.DESTINATION_COLOR },
+						{ value: Context3DBlendFactor.ONE_MINUS_DESTINATION_COLOR }
+					]
+				);
 					
-					this.dropDownDisplay.dataProvider = blendModes;
-					this.dropDownDisplay.labelField = "text";
+				this.dropDownDisplay.dataProvider = blendModes;
+				this.dropDownDisplay.labelField = "text";
+				this.dropDownDisplay.selectedIndex = -1;
 
-					for(var i:int; i < blendModes.length; i++)
+				for(var i:int=0; i < blendModes.length; i++)
+				{
+					if (blendModes.getItemAt(i).value == this.value) 
 					{
-						if (blendModes.getItemAt(i).value == this._value) 
-						{
-							this.dropDownDisplay.selectedIndex = i;
-						}
+						this.dropDownDisplay.selectedIndex = i;
 					}
-					this.dropDownDisplay.prompt = blendModes.getItemAt(this.dropDownDisplay.selectedIndex).text;
-					this.dropDownDisplay.itemRendererFactory = function():IListItemRenderer
-					{
-						var itemRenderer:DefaultListItemRenderer = new DefaultListItemRenderer();
-						itemRenderer.labelField = "text";
-						return itemRenderer;
-					}
+				}
+				this.dropDownDisplay.prompt = blendModes.getItemAt(this.dropDownDisplay.selectedIndex).value;
+				this.dropDownDisplay.itemRendererFactory = function():IListItemRenderer
+				{
+					var itemRenderer:DefaultListItemRenderer = new DefaultListItemRenderer();
+					itemRenderer.labelField = "text";
+					return itemRenderer;
 				}
 				this.dropDownDisplay.popUpContentManager = new CalloutPopUpContentManager();
 			}
@@ -254,69 +257,71 @@ package com.grantech.controls.items
 			this.valueHolderDisplay.addChild(this.dropDownDisplay);
 		}
 		
-		protected function drawColorPicker():void
-		{
-			if(this.colorPickerDisplay == null)
-			{
-				this.colorPickerDisplay = new ColorPicker();
-				this.colorPickerDisplay.layoutData = new AnchorLayoutData(0,0,0,0);
-				this.colorPickerDisplay.addEventListener(Event.CHANGE, colorPickerDisplay_changeHandler);
-			}
-			this.controlType = ControlsHelper.TYPE_COLOR_PICKER;
-			this.colorPickerDisplay.data = this.value;
-			this.valueHolderDisplay.addChild(this.colorPickerDisplay);
-		}
+		// protected function drawColorPicker():void
+		// {
+		// 	if(this.colorPickerDisplay == null)
+		// 	{
+		// 		this.colorPickerDisplay = new ColorPicker();
+		// 		this.colorPickerDisplay.layoutData = new AnchorLayoutData(0,0,0,0);
+		// 		this.colorPickerDisplay.addEventListener(Event.CHANGE, colorPickerDisplay_changeHandler);
+		// 	}
+		// 	this.valueHolderDisplay.removeChildren();
+		// 	this.colorPickerDisplay.data = this.value;
+		// 	this.valueHolderDisplay.addChild(this.colorPickerDisplay);
+		// 	this.controlType = ControlsHelper.TYPE_COLOR_PICKER;
+		// }
 
-		private function drawBrowseButton():void
-		{
-			if (this.browseDisplay == null)
-			{
-				this.browseDisplay = new Button();
-				this.browseDisplay.label = "Browse";
-				this.browseDisplay.layoutData = new AnchorLayoutData(0,0,0,0);
-				this.browseDisplay.addEventListener(Event.TRIGGERED, browseDisplay_triggeredHandler);
-			}
-			this.valueHolderDisplay.addChild(this.browseDisplay);
-			this.controlType = ControlsHelper.TYPE_BROWSE;
-		}
+		// private function drawBrowseButton():void
+		// {
+		// 	if (this.browseDisplay == null)
+		// 	{
+		// 		this.browseDisplay = new Button();
+		// 		this.browseDisplay.label = "Browse";
+		// 		this.browseDisplay.layoutData = new AnchorLayoutData(0,0,0,0);
+		// 		this.browseDisplay.addEventListener(Event.TRIGGERED, browseDisplay_triggeredHandler);
+		// 	}
+		// 	this.valueHolderDisplay.addChild(this.browseDisplay);
+		// 	this.controlType = ControlsHelper.TYPE_BROWSE;
+		// }
 
-		protected function browseDisplay_triggeredHandler(e:Event):void
-		{
-			this.value = new File();
-			this.value.addEventListener(Event.SELECT, file_SelectHandler);
-			this.value.browse();
-		}
+		// protected function browseDisplay_triggeredHandler(e:Event):void
+		// {
+		// 	this.value = new File();
+		// 	this.value.addEventListener(Event.SELECT, file_SelectHandler);
+		// 	this.value.browse();
+		// }
 
-		protected function file_SelectHandler(e:*):void
-		{
-			this.value = this._value.nativePath;
-			DataManager.instance.editCurrentLayerData(this.key, this._value);
-		}
+		// protected function file_SelectHandler(e:*):void
+		// {
+		// 	this.value = this._value.nativePath;
+		// 	DataManager.instance.editCurrentLayerData(this.key, this._value);
+		// }
 
 		private function sliderDisplay_changeHandler(e:Event):void
 		{
-			if(sliderDisplay == null)
+			if(this.sliderDisplay == null)
+				return;
+			if(this.sliderDisplay.value == this.value)
 				return;
 			this.value = this.sliderDisplay.value;
-			this.data.value = this.sliderDisplay.value;
-			DataManager.instance.editCurrentLayerData(this.key, this._value);
+			DataManager.instance.currentModel.setProperty(this.key, this.value);
 		}
 
-		private function colorPickerDisplay_changeHandler(e:Event):void
-		{
-			this.data.value = this.colorPickerDisplay.data;
-			this.value = this.colorPickerDisplay.data;
-			DataManager.instance.editCurrentLayerData(this.key, this._value);
-		}
+		// private function colorPickerDisplay_changeHandler(e:Event):void
+		// {
+		// 	this.data.value = this.colorPickerDisplay.data;
+		// 	// this.value = this.colorPickerDisplay.data;
+		// 	DataManager.instance.editCurrentLayerData(this.key, this.data.value);
+		// }
 
 		private function dropDownDisplay_changeHandler(e:Event):void
 		{
-			this._value = this.dropDownDisplay.selectedItem.value;
-			this.data.value = this.dropDownDisplay.selectedItem.value;
-			if(this.key == "blendFuncSource")
-				DataManager.instance.editCurrentLayerData("blendFuncSource", this._value);
-			if(this.key == "blendFuncDestination")
-				DataManager.instance.editCurrentLayerData("blendFuncDestination", this._value);
+			if(this.dropDownDisplay == null)
+				return;
+			if(this.dropDownDisplay.selectedItem.value == this.value)
+				return;
+			this.value = this.dropDownDisplay.selectedItem.text;
+			DataManager.instance.currentModel.setProperty(this.key, this.value);
 		}
 	}
 }
