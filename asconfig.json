@@ -27,7 +27,7 @@
 		"library-path": [
 			"lib"
 		],
-		"output": "bin/Applications.swf",
+		"output": "bin/release.swf",
 	},
 	"files": [
 		"src/Application.as"
