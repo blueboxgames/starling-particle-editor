@@ -15,9 +15,9 @@
 		"advanced-telemetry": true,
 		"source-path": [
 			"src",
-			"C:\\Sources\\feathers-ui\\4.0.0\\source",
-			"C:\\Sources\\starling\\2.5.1\\starling\\src",
-			"C:\\Sources\\feathers-ui\\4.0.0\\themes\\MetalWorksDesktopTheme\\source"
+		],
+		"library-path": [
+			"lib"
 		],
 		
 		"output": "bin/Applications.swf"
