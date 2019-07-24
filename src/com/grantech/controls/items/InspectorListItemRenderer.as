@@ -7,7 +7,6 @@ package com.grantech.controls.items
 	import feathers.controls.ColorPicker;
 	import feathers.controls.EditableSlider;
 	import feathers.controls.Label;
-	import feathers.controls.LayoutGroup;
 	import feathers.controls.PickerList;
 	import feathers.controls.popups.CalloutPopUpContentManager;
 	import feathers.controls.renderers.DefaultListItemRenderer;
@@ -29,7 +28,8 @@ package com.grantech.controls.items
 	public class InspectorListItemRenderer extends LayoutGroupGroupedListItemRenderer implements IGroupedListItemRenderer
 	{
 		protected static const INVALIDATION_FLAG_LABEL:String = "label";
-
+		static private const LABEL_LAYOUTDATA:AnchorLayoutData = new AnchorLayoutData(NaN, 130, NaN, 10);
+		static private const VALUE_LAYOUTDATA:AnchorLayoutData = new AnchorLayoutData(NaN, 10, NaN, 130);
 		// Data from `AbstractGroupCollectionModel`
 		// ---------------------------------------
 		private var _key:String;
@@ -95,7 +95,6 @@ package com.grantech.controls.items
 		private var colorPickerDisplay:ColorPicker;
 		private var dropDownDisplay:PickerList;
 		private var browseDisplay:Button;
-		private var valueHolderDisplay:LayoutGroup;
 		// ---------------------------------------
 		
 		public function InspectorListItemRenderer()
@@ -140,7 +139,7 @@ package com.grantech.controls.items
 			if(this.labelDisplay == null)
 			{
 				this.labelDisplay = new Label();
-				this.labelDisplay.layoutData = new AnchorLayoutData(NaN,150,NaN,0);
+				this.labelDisplay.layoutData = LABEL_LAYOUTDATA;
 				this.addChild(labelDisplay);
 			}
 			this.labelDisplay.text = this.label;
@@ -148,17 +147,7 @@ package com.grantech.controls.items
 
 		protected function redrawControls():void
 		{
-			if(this.valueHolderDisplay == null)
-			{
-				this.valueHolderDisplay = new LayoutGroup();
-				this.valueHolderDisplay.layout = new AnchorLayout();
-				this.valueHolderDisplay.layoutData = new AnchorLayoutData(NaN,0,NaN,150);
-			}
-
-			if(this.valueHolderDisplay.numChildren != 0 && this.controlType != ControlsHelper.instance.getType(this.key))
-			{
-				this.valueHolderDisplay.removeChildren();
-			}
+			removeChildren();
 
 			switch(ControlsHelper.instance.getType(this.key))
 			{
@@ -175,7 +164,6 @@ package com.grantech.controls.items
 					drawSlider();
 					break;
 			}
-			this.addChild(this.valueHolderDisplay);
 		}
 
 		protected function drawSlider():void
@@ -183,7 +171,7 @@ package com.grantech.controls.items
 			if(this.sliderDisplay == null)
 			{
 				this.sliderDisplay = new EditableSlider();
-				this.sliderDisplay.layoutData = new AnchorLayoutData(0,0,0,0);
+				this.sliderDisplay.layoutData = VALUE_LAYOUTDATA
 				this.sliderDisplay.addEventListener(Event.CHANGE, sliderDisplay_changeHandler);
 			}
 
@@ -201,7 +189,7 @@ package com.grantech.controls.items
 			}
 			
 			this.sliderDisplay.value = this.value;
-			this.valueHolderDisplay.addChild(this.sliderDisplay);
+			this.addChild(this.sliderDisplay);
 			this.controlType = ControlsHelper.TYPE_SLIDER;
 		}
 
@@ -250,7 +238,7 @@ package com.grantech.controls.items
 				this.dropDownDisplay.popUpContentManager = new CalloutPopUpContentManager();
 			}
 			
-			this.valueHolderDisplay.addChild(this.dropDownDisplay);
+			this.addChild(this.dropDownDisplay);
 		}
 		
 		// protected function drawColorPicker():void
