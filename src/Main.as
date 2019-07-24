@@ -1,7 +1,7 @@
 package
 {
+  import com.grantech.screens.MainScreen;
   import com.grantech.utils.Localizations;
-  import com.grantech.views.MainView;
 
   import feathers.controls.Drawers;
   import feathers.controls.StackScreenNavigator;
@@ -49,7 +49,7 @@ package
       this.navigator = new StackScreenNavigator();
       this.content = this.navigator;
 
-      this.addView(MainView.NAME, MainView);
+      this.addView(MainScreen.NAME, MainScreen);
       
       Localizations.instance.addEventListener(Event.CHANGE, localizations_changeHandler);
       Localizations.instance.changeLocale("en_US", new AssetManager());
@@ -66,7 +66,7 @@ package
       if( popTranstion != null )
         item.popTransition = popTranstion;
       item.addPopEvent(Event.COMPLETE);
-      item.setScreenIDForPushEvent(MainView.NAME, MainView.NAME);
+      item.setScreenIDForPushEvent(MainScreen.NAME, MainScreen.NAME);
       this.navigator.addScreen(screenType, item);
     }
 
@@ -86,7 +86,7 @@ package
      */
     private function localizations_changeHandler(e:Event):void
     {
-      this.navigator.rootScreenID = MainView.NAME;
+      this.navigator.rootScreenID = MainScreen.NAME;
     }
   }
 }
