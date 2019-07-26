@@ -1,252 +1,44 @@
 {
-	"emitterType": {
-		"min": 0,
-		"max": 1,
-		"step": 1
-	},
-	
-	"defaultDuration": {
-		"min": -1,
-		"max": 10000,
-		"step": 1
-	},
-
-	"sourcePositionVariancex": {
-		"min": -10000,
-		"max": 10000,
-		"step": 1
-	},
-
-	"sourcePositionVariancey": {
-		"min": -10000,
-		"max": 10000,
-		"step": 1
-	},
-	
-	"gravityx": {
-		"min": -10000,
-		"max": 10000,
-		"step": 1
-	},
-	
-	"gravityy": {
-		"min": -10000,
-		"max": 10000,
-		"step": 1
-	},
-
-	"particleLifespan": {
-		"min": 0,
-		"max": 10000,
-		"step": 0.1
-	},
-
-	"particleLifespanVariance": {
-		"min": 0,
-		"max": 10000,
-		"step": 0.1
-	},
-	
-	"startParticleSize": {
-		"min": 0,
-		"max": 10000,
-		"step": 1
-	},
-
-	"startParticleSizeVariance": {
-		"min": 0,
-		"max": 10000,
-		"step": 1
-	},
-
-	"finishParticleSize": {
-		"min": 0,
-		"max": 10000,
-		"step": 1
-	},
-
-	"finishParticleSizeVariance": {
-		"min": 0,
-		"max": 10000,
-		"step": 1
-	},
-
-	"angle": {
-		"min": -180,
-		"max": 180,
-		"step": 1
-	},
-
-	"angleVariance": {
-		"min": -180,
-		"max": 180,
-		"step": 1
-	},
-
-	"rotationStart": {
-		"min": -10000,
-		"max": 10000,
-		"step": 1
-	},
-
-	"rotationStartVariance": {
-		"min": -10000,
-		"max": 10000,
-		"step": 1
-	},
-
-	"rotationEnd": {
-		"min": -10000,
-		"max": 10000,
-		"step": 1
-	},
-
-	"rotationEndVariance": {
-		"min": -10000,
-		"max": 10000,
-		"step": 1
-	},
-
-	"speed": {
-		"min": 0,
-		"max": 10000,
-		"step": 1
-	},
-
-	"speedVariance": {
-		"min": 0,
-		"max": 10000,
-		"step": 1
-	},
-
-	"radialAcceleration": {
-		"min": -10000,
-		"max": 10000,
-		"step": 1
-	},
-	"radialAccelVariance": {
-		"min": 0,
-		"max": 10000,
-		"step": 1
-	},
-
-	"tangentialAcceleration": {
-		"min": -10000,
-		"max": 10000,
-		"step": 1
-	},
-
-	"tangentialAccelVariance": {
-		"min": 0,
-		"max": 10000,
-		"step": 1
-	},
-
-	"maxRadius": {
-		"min": 0,
-		"max": 10000,
-		"step": 1
-	},
-	
-	"maxRadiusVariance": {
-		"min": 0,
-		"max": 10000,
-		"step": 1
-	},
-	
-	"minRadius": {
-		"min": 0,
-		"max": 10000,
-		"step": 1
-	},
-	
-	"minRadiusVariance": {
-		"min": 0,
-		"max": 10000,
-		"step": 1
-	},
-	
-	"rotatePerSecond": {
-		"min": -360,
-		"max": 360,
-		"step": 1
-	},
-	
-	"rotatePerSecondVariance": {
-		"min": 0,
-		"max": 360,
-		"step": 1
-	},
-	
-	"startColorRed": {
-		"min": 0,
-		"max": 255,
-		"step": 1
-	},
-	
-	"startColorGreen": {
-		"min": 0,
-		"max": 255,
-		"step": 1
-	},
-	
-	"startColorBlue": {	
-		"min": 0,
-		"max": 255,
-		"step": 1
-	},
-	
-	"startColorVarianceRed": {
-		"min": 0,
-		"max": 255,
-		"step": 1
-	},
-	
-	"startColorVarianceGreen": {
-		"min": 0,
-		"max": 255,
-		"step": 1
-	},
-	
-	"startColorVarianceBlue": {
-		"min": 0,
-		"max": 255,
-		"step": 1
-	},
-	
-	"endColorRed": {
-		"min": 0,
-		"max": 255,
-		"step": 1
-	},
-	
-	"endColorGreen": {
-		"min": 0,
-		"max": 255,
-		"step": 1
-	},
-	
-	"endColorBlue": {
-		"min": 0,
-		"max": 255,
-		"step": 1
-	},
-	
-	"endColorVarianceRed": {
-		"min": 0,
-		"max": 255,
-		"step": 1
-	},
-	
-	"endColorVarianceGreen": {
-		"min": 0,
-		"max": 255,
-		"step": 1
-	},
-	
-	"endColorVarianceBlue": {
-		"min": 0,
-		"max": 255,
-		"step": 1
-	}
+	"emitterType":								{ "min": 0,				"max": 1,			"step": 1, 		"default":	0, "control":"slider"	},
+	"defaultDuration": 						{ "min": -1,			"max": 10000,	"step": 1, 		"default":	0, "control":"slider"	},
+	"sourcePositionVariancex":		{ "min": -10000,	"max": 10000,	"step": 1, 		"default":	0, "control":"slider"	},
+	"sourcePositionVariancey":		{ "min": -10000,	"max": 10000,	"step": 1, 		"default":	0, "control":"slider"	},
+	"gravityx":										{ "min": -10000,	"max": 10000,	"step": 1, 		"default":	0, "control":"slider"	},
+	"gravityy": 									{ "min": -10000,	"max": 10000,	"step": 1, 		"default":	0, "control":"slider"	},
+	"particleLifespan":						{ "min": 0,				"max": 10000,	"step": 0.1,	"default":	0, "control":"slider"	},
+	"particleLifespanVariance": 	{ "min": 0,				"max": 10000,	"step": 0.1,	"default":	0, "control":"slider"	},
+	"startParticleSize":					{ "min": 0,				"max": 10000,	"step": 1, 		"default":	0, "control":"slider"	},
+	"startParticleSizeVariance":	{ "min": 0,				"max": 10000,	"step": 1, 		"default":	0, "control":"slider"	},
+	"finishParticleSize":					{ "min": 0,				"max": 10000,	"step": 1, 		"default":	0, "control":"slider"	},
+	"finishParticleSizeVariance": { "min": 0,				"max": 10000,	"step": 1, 		"default":	0, "control":"slider"	},
+	"angle": 											{ "min": -180,		"max": 180,		"step": 1, 		"default":	0, "control":"slider"	},
+	"angleVariance": 							{ "min": -180,		"max": 180,		"step": 1, 		"default":	0, "control":"slider"	},
+	"rotationStart": 							{ "min": -10000,	"max": 10000,	"step": 1, 		"default":	0, "control":"slider"	},
+	"rotationStartVariance": 			{ "min": -10000,	"max": 10000,	"step": 1, 		"default":	0, "control":"slider"	},
+	"rotationEnd": 								{ "min": -10000,	"max": 10000,	"step": 1, 		"default":	0, "control":"slider"	},
+	"rotationEndVariance": 				{ "min": -10000,	"max": 10000,	"step": 1, 		"default":	0, "control":"slider"	},
+	"speed": 											{ "min": 0,				"max": 10000,	"step": 1, 		"default":	0, "control":"slider"	},
+	"speedVariance": 							{ "min": 0,				"max": 10000,	"step": 1, 		"default":	0, "control":"slider"	},
+	"radialAcceleration": 				{ "min": -10000,	"max": 10000,	"step": 1, 		"default":	0, "control":"slider"	},
+	"radialAccelVariance": 				{ "min": 0,				"max": 10000,	"step": 1, 		"default":	0, "control":"slider"	},
+	"tangentialAcceleration": 		{ "min": -10000,	"max": 10000,	"step": 1, 		"default":	0, "control":"slider"	},
+	"tangentialAccelVariance": 		{ "min": 0,				"max": 10000,	"step": 1, 		"default":	0, "control":"slider"	},
+	"maxRadius": 									{ "min": 0,				"max": 10000,	"step": 1, 		"default":	0, "control":"slider"	},
+	"maxRadiusVariance": 					{ "min": 0,				"max": 10000,	"step": 1, 		"default":	0, "control":"slider"	},
+	"minRadius": 									{ "min": 0,				"max": 10000,	"step": 1, 		"default":	0, "control":"slider"	},
+	"minRadiusVariance": 					{ "min": 0,				"max": 10000,	"step": 1, 		"default":	0, "control":"slider"	},
+	"rotatePerSecond": 						{ "min": -360,		"max": 360,		"step": 1, 		"default":	0, "control":"slider"	},
+	"rotatePerSecondVariance": 		{ "min": 0,				"max": 360,		"step": 1, 		"default":	0, "control":"slider"	},
+	"startColorRed": 							{ "min": 0,				"max": 255,		"step": 1, 		"default":	0, "control":"slider"	},
+	"startColorGreen": 						{ "min": 0,				"max": 255,		"step": 1, 		"default":	0, "control":"slider"	},
+	"startColorBlue": 						{ "min": 0,				"max": 255,		"step": 1, 		"default":	0, "control":"slider"	},
+	"startColorVarianceRed": 			{ "min": 0,				"max": 255,		"step": 1, 		"default":	0, "control":"slider"	},
+	"startColorVarianceGreen": 		{ "min": 0,				"max": 255,		"step": 1, 		"default":	0, "control":"slider"	},
+	"startColorVarianceBlue": 		{ "min": 0,				"max": 255,		"step": 1, 		"default":	0, "control":"slider"	},
+	"endColorRed": 								{ "min": 0,				"max": 255,		"step": 1, 		"default":	0, "control":"slider"	},
+	"endColorGreen": 							{ "min": 0,				"max": 255,		"step": 1, 		"default":	0, "control":"slider"	},
+	"endColorBlue": 							{ "min": 0,				"max": 255,		"step": 1, 		"default":	0, "control":"slider"	},
+	"endColorVarianceRed":				{ "min": 0,				"max": 255,		"step": 1, 		"default":	0, "control":"slider"	},				
+	"endColorVarianceGreen":			{ "min": 0,				"max": 255,		"step": 1, 		"default":	0, "control":"slider"	},
+	"endColorVarianceBlue":				{ "min": 0,				"max": 255,		"step": 1, 		"default":	0, "control":"slider"	}	
 }
