@@ -6,10 +6,10 @@ package com.grantech.models
 
 	public class ControlsHelper
 	{
-		static public const TYPE_SLIDER:int = 0;
-		static public const TYPE_COLOR_PICKER:int = 1;
-		static public const TYPE_DROPDOWN:int = 2;
-		static public const TYPE_BROWSE:int = 3;
+		static public const TYPE_BUTTON:String = "button";
+		static public const TYPE_SLIDER:String = "slider";
+		static public const TYPE_COMBO_BOX:String = "combo";
+		static public const TYPE_COLOR_PICKER:String = "color";
 		public function ControlsHelper()
 		{
 			super();
@@ -45,34 +45,33 @@ package com.grantech.models
 
 		private static function init():void
 		{
-			var propFile:File = File.applicationDirectory.resolvePath("config/particle_info.json");
+			var propFile:File = File.applicationDirectory.resolvePath("config/ui-design-helper.json");
 			var propFileStream:FileStream = new FileStream();
 			propFileStream.open(propFile, FileMode.READ);
 			propertyList = JSON.parse(propFileStream.readUTFBytes(propFileStream.bytesAvailable));
 		}
 
-		public function getType(property:String):int
+		public function getGroup(property:String):String
 		{
-			switch( property )
-			{
-				case "startColor":
-				case "startColorVariance":
-				case "finishColor":
-				case "finishColorVariance":
-					return TYPE_COLOR_PICKER;
-					break;
-				case "blendFuncSource":
-				case "blendFuncDestination":
-					return TYPE_DROPDOWN;
-					break;
-				case "texture":
-					return TYPE_BROWSE;
-					break;
-				default:
-					return TYPE_SLIDER;
-					break;
-			}
+			if( propertyList.hasOwnProperty(property) )
+				return propertyList[property].group;
+			return "basic";
 		}
+
+		public function getType(property:String):String
+		{
+			if( propertyList.hasOwnProperty(property) )
+				return propertyList[property].control;
+			return TYPE_SLIDER;
+		}
+
+		public function getData(property:String):Object
+		{
+			if( propertyList.hasOwnProperty(property) )
+				return propertyList[property].data;
+			return null;
+		}
+	
 		public function getMin(property:String):Number
 		{
 			var value:Number = -10000;			

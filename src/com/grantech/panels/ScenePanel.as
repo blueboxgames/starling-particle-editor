@@ -10,6 +10,7 @@ package com.grantech.panels
 
 	import starling.core.Starling;
 	import starling.events.Event;
+	import starling.animation.IAnimatable;
 
 	public class ScenePanel extends Screen
 	{
@@ -34,7 +35,7 @@ package com.grantech.panels
 			{
 				var particleObject:PDSceneParticleSystem = generateParticleSystemFromParticleDataModel(layer as ParticleDataModel);
 				particleObject.start();
-				Starling.juggler.add(particleObject);
+				Starling.juggler.add(particleObject as IAnimatable);
 			}
 			else if(layer.type == LayerDataModel.TYPE_IMAGE)
 			{
@@ -47,7 +48,7 @@ package com.grantech.panels
 		protected function dataManager_selectHandler(event:Event):void
 		{
 			var selectedLayer:LayerDataModel = event.data as LayerDataModel;
-			selectedLayer.addEventListener(Event.CHANGE, selectedLayer_changeHandler);
+			DataManager.instance.currentlayer.addEventListener(Event.CHANGE, selectedLayer_changeHandler);
 		}
 
 		protected function selectedLayer_changeHandler(event:Event):void

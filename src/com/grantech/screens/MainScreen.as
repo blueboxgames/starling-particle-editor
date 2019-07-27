@@ -38,7 +38,7 @@ package com.grantech.screens
 
 			this.rightDock = new SidebarPanel();
 			this.rightDock.layoutData = new AnchorLayoutData(0,0,0);
-			this.rightDock.width = 300;
+			this.rightDock.width = 360;
 			this.addChild(rightDock);
 			
 

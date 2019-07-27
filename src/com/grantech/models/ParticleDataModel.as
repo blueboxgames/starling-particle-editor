@@ -1,124 +1,19 @@
 package com.grantech.models
 {
-	import flash.display3D.Context3DBlendFactor;
 	import flash.filesystem.File;
 
 	import starling.extensions.ColorArgb;
 	import starling.utils.deg2rad;
 	import starling.utils.rad2deg;
-	import feathers.data.ArrayHierarchicalCollection;
-	import starling.extensions.PDParticleSystem;
 
 	public class ParticleDataModel extends LayerDataModel
 	{
-		private var _texture:String;
-		
 		public function ParticleDataModel()
 		{
 			super();
 			this.initialize();
 		}
-
-		override protected function inspectorStructureFactory():ArrayHierarchicalCollection
-		{
-			return new ArrayHierarchicalCollection(
-				[
-					{
-						header: "Image",
-						children: [
-							{key: "texture", label: "Texture"}
-						]
-					},
-					{
-						header: "Position", 
-						children: [
-							{key: "x", label: "X"},
-							{key: "y", label: "Y"},
-						]
-					},
-					{
-						header: "Emitter",
-						children: [
-							{key: "emitterType", label: "Type"},
-							{key: "sourcePositionVariancex", label: "X Variance"},
-							{key: "sourcePositionVariancey", label: "Y Variance"},
-						]
-					},
-					{
-						header: "Colors",
-						children: [
-							{key: "startColor", label: "Start Color"},
-							{key: "startColorVariance", label: "Start Color Variance"},
-							{key: "finishColor", label: "End Color"},
-							{key: "finishColorVariance", label: "End Color Variance"},
-						]
-					},
-					{
-						header: "Blending",
-						children: [
-							{key: "blendFuncSource", label: "Start"},
-							{key: "blendFuncDestination", label: "End"},
-						]
-					},
-					{
-						header: "Gravity",
-						children: [
-							{key: "gravityx", label: "X Gravity"},
-							{key: "gravityy", label: "Y Gravity"},
-						]
-					},
-					{
-						header: "Lifetime",
-						children: [
-							{key: "particleLifespan", label: "Lifespan"},
-							{key: "particleLifespanVariance", label: "Lifespan Variance"},
-						]
-					},
-					{
-						header: "Size",
-						children: [
-							{key: "startParticleSize", label: "Start"},
-							{key: "startParticleSizeVariance", label: "Start Variance"},
-							{key: "finishParticleSize", label: "End"},
-							{key: "finishParticleSizeVariance", label: "End Variance"},
-						]
-					},
-					{
-						header: "Angle",
-						children: [
-							{key: "angle", label: "Angle"},
-							{key: "angleVariance", label: "Angle Variance"},
-						]
-					},
-					{
-						header: "Rotation",
-						children: [
-							{key: "rotationStart", label: "Start"},
-							{key: "rotationStartVariance", label: "Start Variance"},
-							{key: "rotationEnd", label: "End"},
-							{key: "rotationEndVariance", label: "End Variance"},
-						]
-					},
-					{
-						header: "Speed",
-						children: [
-							{key: "speed", label: "Speed"},
-							{key: "speedVariance", label: "Speed Variance"},
-						]
-					},
-					{
-						header: "Acceleration",
-						children: [
-							{key: "radialAcceleration", label: "Radial"},
-							{key: "radialAccelVariance", label: "Radial Variance"},
-							{key: "tangentialAcceleration", label: "Tangential"},
-							{key: "tangentialAccelVariance", label: "Tangential Variance"},
-						]
-					},
-				]
-			)
-		}
-
+ 
 		/**
 		 * This function will set default properties.
 		 */
@@ -158,8 +53,8 @@ package com.grantech.models
 			this.startColorVariance = new ColorArgb(0,0,0,1);
 			this.finishColor = new ColorArgb(0,0,0,1);
 			this.finishColorVariance = new ColorArgb(0,0,0,1);
-			this.blendFuncSource = Context3DBlendFactor.ONE;
-			this.blendFuncDestination = Context3DBlendFactor.ONE;
+			this.blendFuncSource = 1;
+			this.blendFuncDestination = 1;
 			this.maxParticles = 300;
 			this.texture = File.applicationDirectory.resolvePath(File.applicationDirectory.nativePath + "/media/default.png").url;
 		}
@@ -168,7 +63,6 @@ package com.grantech.models
 		{
 			return this.getProperty("emitterType");
 		}
-
 		public function set emitterType(value:int):void
 		{
 			this.setProperty("emitterType", value);
@@ -178,7 +72,6 @@ package com.grantech.models
 		{
 			return this.getProperty("defaultDuration");
 		}
-
 		public function set duration(value:Number):void
 		{
 			this.setProperty("defaultDuration", value);
@@ -188,7 +81,6 @@ package com.grantech.models
 		{
 			return this.getProperty("sourcePositionVariancex");
 		}
-
 		public function set sourcePositionVariancex(value:Number):void
 		{
 			this.setProperty("sourcePositionVariancex", value);
@@ -198,7 +90,6 @@ package com.grantech.models
 		{
 			return this.getProperty("sourcePositionVariancey");
 		}
-
 		public function set sourcePositionVariancey(value:Number):void
 		{
 			this.setProperty("sourcePositionVariancey", value);
@@ -209,7 +100,6 @@ package com.grantech.models
 		{
 			return this.getProperty("particleLifespan");
 		}
-
 		public function set particleLifespan(value:Number):void
 		{
 			this.setProperty("particleLifespan", value);
@@ -220,7 +110,6 @@ package com.grantech.models
 		{
 			return this.getProperty("particleLifespanVariance");
 		}
-
 		public function set particleLifespanVariance(value:Number):void
 		{
 			this.setProperty("particleLifespanVariance", value);
@@ -230,7 +119,6 @@ package com.grantech.models
 		{
 			return this.getProperty("startParticleSize");
 		}
-
 		public function set startParticleSize(value:Number):void
 		{
 			this.setProperty("startParticleSize", value);
@@ -240,7 +128,6 @@ package com.grantech.models
 		{
 			return this.getProperty("startParticleSizeVariance");
 		}
-
 		public function set startParticleSizeVariance(value:Number):void
 		{
 			this.setProperty("startParticleSizeVariance", value);
@@ -250,7 +137,6 @@ package com.grantech.models
 		{
 			return this.getProperty("finishParticleSize");
 		}
-
 		public function set finishParticleSize(value:Number):void
 		{
 			this.setProperty("finishParticleSize", value);
@@ -260,7 +146,6 @@ package com.grantech.models
 		{
 			return this.getProperty("finishParticleSizeVariance");
 		}
-
 		public function set finishParticleSizeVariance(value:Number):void
 		{
 			this.setProperty("finishParticleSizeVariance", value);
@@ -270,7 +155,6 @@ package com.grantech.models
 		{
 			return deg2rad(this.getProperty("angle"));
 		}
-
 		public function set angle(value:Number):void
 		{
 			this.setProperty("angle", rad2deg(value));
@@ -280,7 +164,6 @@ package com.grantech.models
 		{
 			return deg2rad(this.getProperty("angleVariance"));
 		}
-
 		public function set angleVariance(value:Number):void
 		{
 			this.setProperty("angleVariance", rad2deg(value));
@@ -290,7 +173,6 @@ package com.grantech.models
 		{
 			return this.getProperty("rotationStart");
 		}
-
 		public function set rotationStart(value:Number):void
 		{
 			this.setProperty("rotationStart", value);
@@ -300,7 +182,6 @@ package com.grantech.models
 		{
 			return this.getProperty("rotationStartVariance");
 		}
-
 		public function set rotationStartVariance(value:Number):void
 		{
 			this.setProperty("rotationStartVariance", value);
@@ -310,7 +191,6 @@ package com.grantech.models
 		{
 			return this.getProperty("rotationEnd");
 		}
-
 		public function set rotationEnd(value:Number):void
 		{
 			this.setProperty("rotationEnd", value);
@@ -320,7 +200,6 @@ package com.grantech.models
 		{
 			return this.getProperty("rotationEndVariance");
 		}
-
 		public function set rotationEndVariance(value:Number):void
 		{
 			this.setProperty("rotationEndVariance", value);
@@ -331,7 +210,6 @@ package com.grantech.models
 		{
 			return this.getProperty("speed");
 		}
-
 		public function set speed(value:Number):void
 		{
 			this.setProperty("speed", value);
@@ -341,7 +219,6 @@ package com.grantech.models
 		{
 			return this.getProperty("speedVariance");
 		}
-
 		public function set speedVariance(value:Number):void
 		{
 			this.setProperty("speedVariance", value);
@@ -351,7 +228,6 @@ package com.grantech.models
 		{
 			return this.getProperty("gravityx");
 		}
-
 		public function set gravityx(value:Number):void
 		{
 			this.setProperty("gravityx", value);
@@ -361,7 +237,6 @@ package com.grantech.models
 		{
 			return this.getProperty("gravityy");
 		}
-
 		public function set gravityy(value:Number):void
 		{
 			this.setProperty("gravityy", value);
@@ -371,7 +246,6 @@ package com.grantech.models
 		{
 			return this.getProperty("radialAcceleration");
 		}
-
 		public function set radialAcceleration(value:Number):void
 		{
 			this.setProperty("radialAcceleration", value);
@@ -381,7 +255,6 @@ package com.grantech.models
 		{
 			return this.getProperty("radialAccelVariance");
 		}
-
 		public function set radialAccelVariance(value:Number):void
 		{
 			this.setProperty("radialAccelVariance", value);
@@ -391,7 +264,6 @@ package com.grantech.models
 		{
 			return this.getProperty("tangentialAcceleration");
 		}
-
 		public function set tangentialAcceleration(value:Number):void
 		{
 			this.setProperty("tangentialAcceleration", value);
@@ -401,19 +273,15 @@ package com.grantech.models
 		{
 			return this.getProperty("tangentialAccelVariance");
 		}
-
 		public function set tangentialAccelVariance(value:Number):void
 		{
 			this.setProperty("tangentialAccelVariance", value);
 		}
 
-		
-		// radial configuration 
 		public function get maxRadius():Number
 		{
 			return this.getProperty("maxRadius");
 		}
-
 		public function set maxRadius(value:Number):void
 		{
 			this.setProperty("maxRadius", value);
@@ -423,7 +291,6 @@ package com.grantech.models
 		{
 			return this.getProperty("maxRadiusVariance");
 		}
-
 		public function set maxRadiusVariance(value:Number):void
 		{
 			this.setProperty("maxRadiusVariance", value);
@@ -433,7 +300,6 @@ package com.grantech.models
 		{
 			return this.getProperty("minRadius");
 		}
-
 		public function set minRadius(value:Number):void
 		{
 			this.setProperty("minRadius", value);
@@ -443,7 +309,6 @@ package com.grantech.models
 		{
 			return this.getProperty("minRadiusVariance");
 		}
-
 		public function set minRadiusVariance(value:Number):void
 		{
 			this.setProperty("minRadiusVariance", value);
@@ -453,7 +318,6 @@ package com.grantech.models
 		{
 			return this.getProperty("rotatePerSecond");
 		}
-
 		public function set rotatePerSecond(value:Number):void
 		{
 			this.setProperty("rotatePerSecond", value);
@@ -463,7 +327,6 @@ package com.grantech.models
 		{
 			return this.getProperty("rotatePerSecondVariance");
 		}
-
 		public function set rotatePerSecondVariance(value:Number):void
 		{
 			this.setProperty("rotatePerSecondVariance", value);
@@ -475,7 +338,6 @@ package com.grantech.models
 		{
 			return this.getProperty("startColor");
 		}
-
 		public function set startColor(value:ColorArgb):void
 		{
 			this.setProperty("startColor", value);
@@ -485,97 +347,12 @@ package com.grantech.models
 		{
 			return this.startColor.red;
 		}
-
-		public function set startColorRed(value:Number):void
-		{
-			this.startColor.red = value;
-			this.setProperty("startColor", value);
-		}
-
-		public function get startColorGreen():Number
-		{
-			return this.startColor.green;
-		}
-
-		public function set startColorGreen(value:Number):void
-		{
-			this.startColor.green = value;
-			this.setProperty("startColor", value);
-		}
-
-		public function get startColorBlue():Number
-		{
-			return this.startColor.blue;
-		}
-
-		public function set startColorBlue(value:Number):void
-		{
-			this.startColor.blue = value;
-			this.setProperty("startColor", value);
-		}
-
-		public function get startColorAlpha():Number
-		{
-			return this.startColor.alpha;
-		}
-
-		public function set startColorAlpha(value:Number):void
-		{
-			this.startColor.alpha = value;
-			this.setProperty("startColor", value);
-		}
-
 		public function get startColorVariance():ColorArgb
 		{
 			return this.getProperty("startColorVariance");
 		}
-
 		public function set startColorVariance(value:ColorArgb):void
 		{
-			this.setProperty("startColorVariance", value);
-		}
-
-		public function get startColorVarianceRed():Number
-		{
-			return this.startColorVariance.red;
-		}
-
-		public function set startColorVarianceRed(value:Number):void
-		{
-			this.startColorVariance.red = value;
-			this.setProperty("startColorVariance", this.startColorVariance);
-		}
-
-		public function get startColorVarianceGreen():Number
-		{
-			return this.startColorVariance.green;
-		}
-
-		public function set startColorVarianceGreen(value:Number):void
-		{
-			this.startColorVariance.green = value;
-			this.setProperty("startColorVariance", this.startColorVariance);
-		}
-
-		public function get startColorVarianceBlue():Number
-		{
-			return this.getProperty("startColorVarianceBlue");
-		}
-
-		public function set startColorVarianceBlue(value:Number):void
-		{
-			this.startColorVariance.blue = value;
-			this.setProperty("startColorVariance", value);
-		}
-
-		public function get startColorVarianceAlpha():Number
-		{
-			return this.startColor.alpha;
-		}
-
-		public function set startColorVarianceAlpha(value:Number):void
-		{
-			this.startColor.alpha = value;
 			this.setProperty("startColorVariance", value);
 		}
 
@@ -583,53 +360,8 @@ package com.grantech.models
 		{
 			return this.getProperty("finishColor");
 		}
-
 		public function set finishColor(value:ColorArgb):void
 		{
-			this.setProperty("finishColor", value);
-		}
-
-		public function get finishColorRed():Number
-		{
-			return this.finishColor.red;
-		}
-
-		public function set finishColorRed(value:Number):void
-		{
-			this.finishColor.red = value;
-			this.setProperty("finishColor", value);
-		}
-
-		public function get finishColorGreen():Number
-		{
-			return this.finishColor.green;
-		}
-
-		public function set finishColorGreen(value:Number):void
-		{
-			this.finishColor.green = value;
-			this.setProperty("finishColor", value);
-		}
-
-		public function get finishColorBlue():Number
-		{
-			return this.finishColor.blue;
-		}
-
-		public function set finishColorBlue(value:Number):void
-		{
-			this.finishColor.blue = value;
-			this.setProperty("finishColor", value);
-		}
-
-		public function get finishColorAlpha():Number
-		{
-			return this.finishColor.alpha;
-		}
-
-		public function set finishColorAlpha(value:Number):void
-		{
-			this.finishColor.alpha = value;
 			this.setProperty("finishColor", value);
 		}
 
@@ -637,72 +369,25 @@ package com.grantech.models
 		{
 			return this.getProperty("finishColorVariance");
 		}
-
 		public function set finishColorVariance(value:ColorArgb):void
 		{
 			this.setProperty("finishColorVariance", value);
 		}
 
-		public function get finishColorVarianceRed():Number
-		{
-			return this.finishColorVariance.red;
-		}
-
-		public function set finishColorVarianceRed(value:Number):void
-		{
-			this.finishColorVariance.red = value;
-			this.setProperty("finishColorVariance", value);
-		}
-
-		public function get finishColorVarianceGreen():Number
-		{
-			return this.finishColorVariance.green;
-		}
-
-		public function set finishColorVarianceGreen(value:Number):void
-		{
-			this.finishColorVariance.green = value;
-			this.setProperty("finishColorVariance", value);
-		}
-
-		public function get finishColorVarianceBlue():Number
-		{
-			return this.finishColorVariance.blue;
-		}
-
-		public function set finishColorVarianceBlue(value:Number):void
-		{
-			this.finishColorVariance.blue = value;
-			this.setProperty("finishColorVariance", value);
-		}
-
-		public function get finishColorVarianceAlpha():Number
-		{
-			return this.finishColorVariance.alpha;
-		}
-
-		public function set finishColorVarianceAlpha(value:Number):void
-		{
-			this.finishColorVariance.alpha = value;
-			this.setProperty("finishColorVariance", value);
-		}
-
-		public function get blendFuncSource():String
+		public function get blendFuncSource():int
 		{
 			return this.getProperty("blendFuncSource");
 		}
-
-		public function set blendFuncSource(value:String):void
+		public function set blendFuncSource(value:int):void
 		{	
 			this.setProperty("blendFuncSource", value);
 		}
 
-		public function get blendFuncDestination():String
+		public function get blendFuncDestination():int
 		{
 			return this.getProperty("blendFuncDestination");
 		}
-
-		public function set blendFuncDestination(value:String):void
+		public function set blendFuncDestination(value:int):void
 		{
 			this.setProperty("blendFuncDestination", value);
 		}
@@ -711,7 +396,6 @@ package com.grantech.models
 		{
 			return this.getProperty("maxParticles");
 		}
-
 		public function set maxParticles(value:Number):void
 		{
 			this.setProperty("maxParticles", value);
@@ -719,12 +403,11 @@ package com.grantech.models
 
 		public function get texture():String
 		{
-			return this._texture;
+			return this.getProperty("texture");
 		}
-
 		public function set texture(value:String):void
 		{
-			this._texture = value;
+			this.setProperty("texture", value);
 		}
 
 		public function get jsonOutput():Object
@@ -760,24 +443,24 @@ package com.grantech.models
 				minRadiusVariance: this.minRadiusVariance,
 				rotatePerSecond: this.rotatePerSecond,
 				rotatePerSecondVariance: this.rotatePerSecondVariance,
-				startColorRed: this.startColorRed,
-				startColorBlue: this.startColorBlue,
-				startColorGreen: this.startColorGreen,
-				startColorAlpha: this.startColorAlpha,
-				startColorVarianceRed: this.startColorVarianceRed,
-				startColorVarianceBlue: this.startColorVarianceBlue,
-				startColorVarianceGreen: this.startColorVarianceGreen,
-				startColorVarianceAlpha: this.startColorVarianceAlpha,
-				finishColorRed: this.finishColorRed,
-				finishColorBlue: this.finishColorBlue,
-				finishColorGreen: this.finishColorGreen,
-				finishColorAlpha: this.finishColorAlpha,
-				finishColorVarianceRed: this.finishColorVarianceRed,
-				finishColorVarianceBlue: this.finishColorVarianceBlue,
-				finishColorVarianceGreen: this.finishColorVarianceGreen,
-				finishColorVarianceAlpha: this.finishColorVarianceAlpha,
-				blendFuncSource: getBlendCode(this.blendFuncSource),
-				blendFuncDestination: getBlendCode(this.blendFuncDestination),
+				startColorRed: this.startColor.red,
+				startColorBlue: this.startColor.blue,
+				startColorGreen: this.startColor.green,
+				startColorAlpha: this.startColor.alpha,
+				startColorVarianceRed: this.startColorVariance.red,
+				startColorVarianceBlue: this.startColorVariance.blue,
+				startColorVarianceGreen: this.startColorVariance.green,
+				startColorVarianceAlpha: this.startColorVariance.alpha,
+				finishColorRed: this.finishColor.red,
+				finishColorBlue: this.finishColor.blue,
+				finishColorGreen: this.finishColor.green,
+				finishColorAlpha: this.finishColor.alpha,
+				finishColorVarianceRed: this.finishColorVariance.red,
+				finishColorVarianceBlue: this.finishColorVariance.blue,
+				finishColorVarianceGreen: this.finishColorVariance.green,
+				finishColorVarianceAlpha: this.finishColorVariance.alpha,
+				blendFuncSource:this.blendFuncSource,
+				blendFuncDestination: this.blendFuncDestination,
 				maxParticles: this.maxParticles
 			}
 		}
@@ -819,12 +502,12 @@ package com.grantech.models
 			this.minRadiusVariance =config.minRadiusVariance;
 			this.rotatePerSecond =deg2rad(config.rotatePerSecond);
 			this.rotatePerSecondVariance =deg2rad(config.rotatePerSecondVariance);
-			this.startColor =new ColorArgb(config.startColorRed, config.startColorGreen, config.startColorBlue, config.startColorAlpha);
-			this.startColorVariance =new ColorArgb(config.startColorVarianceRed, config.startColorVarianceGreen, config.startColorVarianceBlue, config.startColorVarianceAlpha);
-			this.finishColor =new ColorArgb(config.finishColorRed, config.finishColorGreen, config.finishColorBlue, config.finishColorAlpha);
-			this.finishColorVariance =new ColorArgb(config.finishColorVarianceRed, config.finishColorVarianceGreen, config.finishColorVarianceBlue, config.finishColorVarianceAlpha);
-			this.blendFuncSource = getBlendFunc(config.blendFuncSource);
-			this.blendFuncDestination = getBlendFunc(config.blendFuncDestination);
+			this.startColor = new ColorArgb(config.startColorRed, config.startColorGreen, config.startColorBlue, config.startColorAlpha);
+			this.startColorVariance = new ColorArgb(config.startColorVarianceRed, config.startColorVarianceGreen, config.startColorVarianceBlue, config.startColorVarianceAlpha);
+			this.finishColor = new ColorArgb(config.finishColorRed, config.finishColorGreen, config.finishColorBlue, config.finishColorAlpha);
+			this.finishColorVariance = new ColorArgb(config.finishColorVarianceRed, config.finishColorVarianceGreen, config.finishColorVarianceBlue, config.finishColorVarianceAlpha);
+			this.blendFuncSource = config.blendFuncSource;
+			this.blendFuncDestination = config.blendFuncDestination;
 			this.duration = config.duration;
 			this.maxParticles = config.maxParticles;
 			this.particleLifespan =  Math.max(0.01, config.particleLifespan);
@@ -832,7 +515,7 @@ package com.grantech.models
 			this.minRadiusVariance = 0.0;
 		}
 
-		public static function getBlendFunc(value:int):String
+/* 		public static function getBlendFunc(value:int):String
 		{
 			switch (value)
 			{
@@ -866,6 +549,6 @@ package com.grantech.models
 				case Context3DBlendFactor.ONE_MINUS_DESTINATION_COLOR: return 0x307;
 				default:    throw new ArgumentError("unsupported blending function: " + value);
 			}
-		}
+		} */
 	}
 }

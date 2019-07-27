@@ -1,5 +1,7 @@
 package com.grantech.models
 {
+	import feathers.data.ArrayHierarchicalCollection;
+
 	public class LayerDataModel extends SerializableDataModel
 	{
 		static public const TYPE_IMAGE:int = 0; 
@@ -36,7 +38,6 @@ package com.grantech.models
 		{
 			return this._name;
 		}
-
 		public function set name(value:String):void
 		{
 			this._name = value;
@@ -46,7 +47,6 @@ package com.grantech.models
 		{
 			return this.getProperty("x");
 		}
-
 		public function set x(value:Number):void
 		{
 			this.setProperty("x", value);
@@ -56,18 +56,25 @@ package com.grantech.models
 		{
 			return this.getProperty("y");
 		}
-
 		public function set y(value:Number):void
 		{
 			this.setProperty("y", value);
 		}
 
-		public function get order():Number
+		public function get alpha():Number
+		{
+			return this.getProperty("alpha");
+		}
+		public function set alpha(value:Number):void
+		{
+			this.setProperty("alpha", value);
+		}
+
+		public function get order():int
 		{
 			return this._order;
 		}
-
-		public function set order(value:Number):void
+		public function set order(value:int):void
 		{
 			this._order = value;
 		}
@@ -76,10 +83,33 @@ package com.grantech.models
 		{
 			return this._type;
 		}
-
 		public function set type(value:int):void
 		{
 			this._type = value;
+		}
+		
+		public function getHierarchicalCollection():ArrayHierarchicalCollection
+		{
+			var ret:ArrayHierarchicalCollection = new ArrayHierarchicalCollection();
+			for(var key:String in _properties)
+			{
+				var type:String = ControlsHelper.instance.getType(key);
+				var header:String = ControlsHelper.instance.getGroup(key);
+				var index:int = getHeader(header, ret);
+				if (index > -1)
+					ret.getItemAt(index).children.push({label:key, type:type});
+				else
+					ret.addItemAt({header:header, children:[{label:key, type:type}]}, ret.getLength())
+			}
+			return ret;
+		}
+		private function getHeader(header:String, collection:ArrayHierarchicalCollection):int
+		{
+			var len:int = collection.getLength();
+			for(var i:int = 0; i < len; i++)
+				if(collection.getItemAt(i).header == header)
+				return i;
+			return -1;
 		}
 	}
 }
