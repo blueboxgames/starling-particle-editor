@@ -514,41 +514,5 @@ package com.grantech.models
 			this.finishParticleSizeVariance = config.finishParticleSizeVariance;
 			this.minRadiusVariance = 0.0;
 		}
-
-/* 		public static function getBlendFunc(value:int):String
-		{
-			switch (value)
-			{
-				case 0:     return Context3DBlendFactor.ZERO;
-				case 1:     return Context3DBlendFactor.ONE;
-				case 0x300: return Context3DBlendFactor.SOURCE_COLOR;
-				case 0x301: return Context3DBlendFactor.ONE_MINUS_SOURCE_COLOR;
-				case 0x302: return Context3DBlendFactor.SOURCE_ALPHA;
-				case 0x303: return Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA;
-				case 0x304: return Context3DBlendFactor.DESTINATION_ALPHA;
-				case 0x305: return Context3DBlendFactor.ONE_MINUS_DESTINATION_ALPHA;
-				case 0x306: return Context3DBlendFactor.DESTINATION_COLOR;
-				case 0x307: return Context3DBlendFactor.ONE_MINUS_DESTINATION_COLOR;
-				default:    throw new ArgumentError("unsupported blending function: " + value);
-			}
-		}
-
-		public static function getBlendCode(value:String):int
-		{
-			switch (value)
-			{
-				case Context3DBlendFactor.ZERO: return 0;
-				case Context3DBlendFactor.ONE: return 1;
-				case Context3DBlendFactor.SOURCE_COLOR: return 0x300;
-				case Context3DBlendFactor.ONE_MINUS_SOURCE_COLOR: return 0x301;
-				case Context3DBlendFactor.SOURCE_ALPHA: return 0x302;
-				case Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA: return 0x303;
-				case Context3DBlendFactor.DESTINATION_ALPHA: return 0x304;
-				case Context3DBlendFactor.ONE_MINUS_DESTINATION_ALPHA: return 0x305;
-				case Context3DBlendFactor.DESTINATION_COLOR: return 0x306;
-				case Context3DBlendFactor.ONE_MINUS_DESTINATION_COLOR: return 0x307;
-				default:    throw new ArgumentError("unsupported blending function: " + value);
-			}
-		} */
 	}
 }

@@ -14,6 +14,7 @@ package starling.extensions
 
     import starling.textures.Texture;
     import starling.utils.deg2rad;
+    import starling.utils.rad2deg;
 
     public class PDParticleSystem extends ParticleSystem
     {
@@ -348,82 +349,122 @@ package starling.extensions
             }
         }
 	
-		private function getBlendFunc(value:int):String
-		{
-			switch (value)
-			{
-				case 0:     return Context3DBlendFactor.ZERO;
-				case 1:     return Context3DBlendFactor.ONE;
-				case 0x300: return Context3DBlendFactor.SOURCE_COLOR;
-				case 0x301: return Context3DBlendFactor.ONE_MINUS_SOURCE_COLOR;
-				case 0x302: return Context3DBlendFactor.SOURCE_ALPHA;
-				case 0x303: return Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA;
-				case 0x304: return Context3DBlendFactor.DESTINATION_ALPHA;
-				case 0x305: return Context3DBlendFactor.ONE_MINUS_DESTINATION_ALPHA;
-				case 0x306: return Context3DBlendFactor.DESTINATION_COLOR;
-				case 0x307: return Context3DBlendFactor.ONE_MINUS_DESTINATION_COLOR;
-				default:    throw new ArgumentError("unsupported blending function: " + value);
-			}
-		}
-		
+				private function getBlendFunc(value:int):String
+				{
+					switch (value)
+					{
+						case 0:     return Context3DBlendFactor.ZERO;
+						case 1:     return Context3DBlendFactor.ONE;
+						case 0x300: return Context3DBlendFactor.SOURCE_COLOR;
+						case 0x301: return Context3DBlendFactor.ONE_MINUS_SOURCE_COLOR;
+						case 0x302: return Context3DBlendFactor.SOURCE_ALPHA;
+						case 0x303: return Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA;
+						case 0x304: return Context3DBlendFactor.DESTINATION_ALPHA;
+						case 0x305: return Context3DBlendFactor.ONE_MINUS_DESTINATION_ALPHA;
+						case 0x306: return Context3DBlendFactor.DESTINATION_COLOR;
+						case 0x307: return Context3DBlendFactor.ONE_MINUS_DESTINATION_COLOR;
+						default:    throw new ArgumentError("unsupported blending function: " + value);
+					}
+				}
+				
+				public function getBlendCode(value:String):int
+				{
+					switch (value)
+					{
+						case Context3DBlendFactor.ZERO: return 0;
+						case Context3DBlendFactor.ONE: return 1;
+						case Context3DBlendFactor.SOURCE_COLOR: return 0x300;
+						case Context3DBlendFactor.ONE_MINUS_SOURCE_COLOR: return 0x301;
+						case Context3DBlendFactor.SOURCE_ALPHA: return 0x302;
+						case Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA: return 0x303;
+						case Context3DBlendFactor.DESTINATION_ALPHA: return 0x304;
+						case Context3DBlendFactor.ONE_MINUS_DESTINATION_ALPHA: return 0x305;
+						case Context3DBlendFactor.DESTINATION_COLOR: return 0x306;
+						case Context3DBlendFactor.ONE_MINUS_DESTINATION_COLOR: return 0x307;
+						default:    throw new ArgumentError("unsupported blending function: " + value);
+					}
+				}
+
         public function get emitterType():int { return _emitterType; }
         public function set emitterType(value:int):void { _emitterType = value; }
 
+
+        public function get sourcePositionVariancex():Number { return _emitterXVariance; }
+        public function set sourcePositionVariancex(value:Number):void { _emitterXVariance = value; }
         public function get emitterXVariance():Number { return _emitterXVariance; }
         public function set emitterXVariance(value:Number):void { _emitterXVariance = value; }
 
+        public function get sourcePositionVariancey():Number { return _emitterYVariance; }
+        public function set sourcePositionVariancey(value:Number):void { _emitterYVariance = value; }
         public function get emitterYVariance():Number { return _emitterYVariance; }
         public function set emitterYVariance(value:Number):void { _emitterYVariance = value; }
 
+        public function get duration():Number { return _defaultDuration; }
+        public function set duration(value:Number):void { defaultDuration = value; }
         public function get defaultDuration():Number { return _defaultDuration; }
-        public function set defaultDuration(value:Number):void
-        {
-            _defaultDuration = value < 0 ? Number.MAX_VALUE : value;
-        }
+        public function set defaultDuration(value:Number):void { _defaultDuration = value < 0 ? Number.MAX_VALUE : value; }
 
-        override public function set capacity(value:int):void
-        {
-            super.capacity = value;
-            updateEmissionRate();
-        }
+        public function set maxParticles(value:int):void { capacity = value; }
+        public function get maxParticles():int { return capacity; }
+        override public function set capacity(value:int):void { super.capacity = value; updateEmissionRate(); }
 
+        public function get particleLLifespan():Number { return _lifespan; }
+        public function set particleLLifespan(value:Number):void { lifespan = value; }
         public function get lifespan():Number { return _lifespan; }
-        public function set lifespan(value:Number):void 
-        { 
-            _lifespan = Math.max(0.01, value);
-            updateEmissionRate();
-        }
+        public function set lifespan(value:Number):void { _lifespan = Math.max(0.01, value); updateEmissionRate(); }
 
+        public function get particleLLifespanVariance():Number { return _lifespanVariance; }
+        public function set particleLLifespanVariance(value:Number):void { _lifespanVariance = value; }
         public function get lifespanVariance():Number { return _lifespanVariance; }
         public function set lifespanVariance(value:Number):void { _lifespanVariance = value; }
 
+        public function get startParticleSize():Number { return _startSize; }
+        public function set startParticleSize(value:Number):void { _startSize = value; }
         public function get startSize():Number { return _startSize; }
         public function set startSize(value:Number):void { _startSize = value; }
 
+        public function get startParticleSizeVariance():Number { return _startSizeVariance; }
+        public function set startParticleSizeVariance(value:Number):void { _startSizeVariance = value; }
         public function get startSizeVariance():Number { return _startSizeVariance; }
         public function set startSizeVariance(value:Number):void { _startSizeVariance = value; }
 
+        public function get finishParticleSize():Number { return _endSize; }
+        public function set finishParticleSize(value:Number):void { endSize = value; }
         public function get endSize():Number { return _endSize; }
         public function set endSize(value:Number):void { _endSize = value; }
 
+        public function get finishParticleSizeVariance():Number { return _endSizeVariance; }
+        public function set finishParticleSizeVariance(value:Number):void { _endSizeVariance = value; }
         public function get endSizeVariance():Number { return _endSizeVariance; }
         public function set endSizeVariance(value:Number):void { _endSizeVariance = value; }
 
+        public function get angle():Number { return rad2deg(_emitAngle); }
+        public function set angle(value:Number):void { _emitAngle = deg2rad(value); }
         public function get emitAngle():Number { return _emitAngle; }
         public function set emitAngle(value:Number):void { _emitAngle = value; }
 
+        public function get angleVariance():Number { return rad2deg(_emitAngleVariance); }
+        public function set angleVariance(value:Number):void { _emitAngleVariance = deg2rad(value); }
         public function get emitAngleVariance():Number { return _emitAngleVariance; }
         public function set emitAngleVariance(value:Number):void { _emitAngleVariance = value; }
 
+        public function get rotationStart():Number { return rad2deg(_startRotation); }
+        public function set rotationStart(value:Number):void { _startRotation = deg2rad(value); }
         public function get startRotation():Number { return _startRotation; }
         public function set startRotation(value:Number):void { _startRotation = value; }
         
+        public function get rotationStartVariance():Number { return rad2deg(_startRotationVariance); }
+        public function set rotationStartVariance(value:Number):void { _startRotationVariance = deg2rad(value); }
         public function get startRotationVariance():Number { return _startRotationVariance; }
         public function set startRotationVariance(value:Number):void { _startRotationVariance = value; }
         
+        public function get rotationEnd():Number { return rad2deg(_endRotation); }
+        public function set rotationEnd(value:Number):void { _endRotation = deg2rad(value); }
         public function get endRotation():Number { return _endRotation; }
         public function set endRotation(value:Number):void { _endRotation = value; }
         
+        public function get rotationEndVariance():Number { return rad2deg(_endRotationVariance); }
+        public function set rotationEndVariance(value:Number):void { _endRotationVariance = deg2rad(value); }
         public function get endRotationVariance():Number { return _endRotationVariance; }
         public function set endRotationVariance(value:Number):void { _endRotationVariance = value; }
         
@@ -442,12 +483,16 @@ package starling.extensions
         public function get radialAcceleration():Number { return _radialAcceleration; }
         public function set radialAcceleration(value:Number):void { _radialAcceleration = value; }
 
+        public function get radialAccelVariance():Number { return _radialAccelerationVariance; }
+        public function set radialAccelVariance(value:Number):void { _radialAccelerationVariance = value; }
         public function get radialAccelerationVariance():Number { return _radialAccelerationVariance; }
         public function set radialAccelerationVariance(value:Number):void { _radialAccelerationVariance = value; }
 
         public function get tangentialAcceleration():Number { return _tangentialAcceleration; }
         public function set tangentialAcceleration(value:Number):void { _tangentialAcceleration = value; }
 
+        public function get tangentialAccelVariance():Number { return _tangentialAccelerationVariance; }
+        public function set tangentialAccelVariance(value:Number):void { _tangentialAccelerationVariance = value; }
         public function get tangentialAccelerationVariance():Number { return _tangentialAccelerationVariance; }
         public function set tangentialAccelerationVariance(value:Number):void { _tangentialAccelerationVariance = value; }
 
@@ -475,10 +520,20 @@ package starling.extensions
         public function get startColorVariance():ColorArgb { return _startColorVariance; }
         public function set startColorVariance(value:ColorArgb):void { _startColorVariance = value; }
 
+        public function get finishColor():ColorArgb { return _endColor; }
+        public function set finishColor(value:ColorArgb):void { _endColor = value; }
         public function get endColor():ColorArgb { return _endColor; }
         public function set endColor(value:ColorArgb):void { _endColor = value; }
 
+        public function get finishColorVariance():ColorArgb { return _endColorVariance; }
+        public function set finishColorVariance(value:ColorArgb):void { _endColorVariance = value; }
         public function get endColorVariance():ColorArgb { return _endColorVariance; }
         public function set endColorVariance(value:ColorArgb):void { _endColorVariance = value; }
+
+				public function get blendFuncSource():int { return getBlendCode(blendFactorSource); }
+        public function set blendFuncSource(value:int):void { blendFactorSource = getBlendFunc(value) }
+
+				public function get blendFuncDestination():int { return getBlendCode(blendFactorDestination); }
+        public function set blendFuncDestination(value:int):void { blendFactorDestination = getBlendFunc(value) }
     }
 }

@@ -8,9 +8,9 @@ package com.grantech.panels
 
 	import feathers.controls.Screen;
 
+	import starling.animation.IAnimatable;
 	import starling.core.Starling;
 	import starling.events.Event;
-	import starling.animation.IAnimatable;
 
 	public class ScenePanel extends Screen
 	{
@@ -60,6 +60,13 @@ package com.grantech.panels
 				trace(" sceneObject " + selectedLayer.id + " not found.");
 				return;
 			}
+			
+			if( sceneObject[event.data] == null )
+			{
+				trace(" sceneObject has not '" + event.data + "' variable.");
+				return;
+			}
+			
 			sceneObject[event.data] = selectedLayer.getProperty(event.data as String);
 		}
 
