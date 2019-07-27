@@ -78,7 +78,7 @@ package starling.extensions
             _blendFactorDestination = Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA;
             _batchable = false;
 
-            this.maxParticles = 128;
+            this.capacity = 128;
             this.texture = texture;
 
             updateBlendMode();
@@ -122,7 +122,6 @@ package starling.extensions
             }
             else
             {
-                trace(_blendFactorSource + ", " + _blendFactorDestination);
                 blendMode = _blendFactorSource + ", " + _blendFactorDestination;
                 BlendMode.register(blendMode, _blendFactorSource, _blendFactorDestination);
             }
@@ -206,7 +205,7 @@ package starling.extensions
 
             var particleIndex:int = 0;
             var particle:Particle;
-            var maxNumParticles:int = maxParticles;
+            var maxNumParticles:int = capacity;
             
             // advance existing particles
 
@@ -365,7 +364,7 @@ package starling.extensions
          *  throughout their lifespans. */
         public function populate(count:int):void
         {
-            var maxNumParticles:int = maxParticles;
+            var maxNumParticles:int = capacity;
             count = Math.min(count, maxNumParticles - _numParticles);
             
             var p:Particle;
@@ -379,11 +378,11 @@ package starling.extensions
             _numParticles += count;
         }
 
-        public function get maxParticles():int { return _vertexData.numVertices / 4; }
-        public function set maxParticles(value:int):void
+        public function get capacity():int { return _vertexData.numVertices / 4; }
+        public function set capacity(value:int):void
         {
             var i:int;
-            var oldCapacity:int = maxParticles;
+            var oldCapacity:int = capacity;
             var newCapacity:int = value > MAX_NUM_PARTICLES ? MAX_NUM_PARTICLES : value;
             var baseVertexData:VertexData = new VertexData(style.vertexFormat, 4);
             var texture:Texture = this.texture;
@@ -451,15 +450,15 @@ package starling.extensions
         public function get emitterNextY():Number { return _emitterNextY; }
         public function set emitterNextY(value:Number):void { _emitterNextY = value; }
 
-        public function get blendFuncSource():String { return _blendFactorSource; }
-        public function set blendFuncSource(value:String):void
+        public function get blendFactorSource():String { return _blendFactorSource; }
+        public function set blendFactorSource(value:String):void
         {
             _blendFactorSource = value;
             updateBlendMode();
         }
         
-        public function get blendFuncDestination():String { return _blendFactorDestination; }
-        public function set blendFuncDestination(value:String):void
+        public function get blendFactorDestination():String { return _blendFactorDestination; }
+        public function set blendFactorDestination(value:String):void
         {
             _blendFactorDestination = value;
             updateBlendMode();

@@ -81,13 +81,5 @@ package starling.extensions
             alpha = argb.alpha;
         }
 
-        public function toString():String
-        {
-            var redStr:String = int(red*255).toString(16).length == 2 ? int(red*255).toString(16) : "0" + int(red*255).toString(16);  
-            var greenStr:String = int(green*255).toString(16).length == 2 ? int(green*255).toString(16) : "0" + int(green*255).toString(16);  
-            var blueStr:String = int(blue*255).toString(16).length == 2 ? int(blue*255).toString(16) : "0" + int(blue*255).toString(16);  
-            var alphaStr:String = int(alpha*255).toString(16).length == 2 ? int(alpha*255).toString(16) : "0" + int(alpha*255).toString(16);  
-            return "#" + redStr + greenStr + blueStr + alphaStr;
-        }
     }
 }
