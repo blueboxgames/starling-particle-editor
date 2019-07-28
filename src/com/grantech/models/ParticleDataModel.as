@@ -342,11 +342,23 @@ package com.grantech.models
 		{
 			this.setProperty("startColor", value);
 		}
-
 		public function get startColorRed():Number
 		{
 			return this.startColor.red;
 		}
+		public function get startColorGreen():Number
+		{
+			return this.startColor.green;
+		}
+		public function get startColorBlue():Number
+		{
+			return this.startColor.blue;
+		}
+		public function get startColorAlpha():Number
+		{
+			return this.startColor.alpha;
+		}
+
 		public function get startColorVariance():ColorArgb
 		{
 			return this.getProperty("startColorVariance");
@@ -354,6 +366,22 @@ package com.grantech.models
 		public function set startColorVariance(value:ColorArgb):void
 		{
 			this.setProperty("startColorVariance", value);
+		}
+		public function get startColorVarianceRed():Number
+		{
+			return this.startColorVariance.red;
+		}
+		public function get startColorVarianceGreen():Number
+		{
+			return this.startColorVariance.green;
+		}
+		public function get startColorVarianceBlue():Number
+		{
+			return this.startColorVariance.blue;
+		}
+		public function get startColorVarianceAlpha():Number
+		{
+			return this.startColorVariance.alpha;
 		}
 
 		public function get finishColor():ColorArgb
@@ -364,6 +392,22 @@ package com.grantech.models
 		{
 			this.setProperty("finishColor", value);
 		}
+		public function get finishColorRed():Number
+		{
+			return this.finishColor.red;
+		}
+		public function get finishColorGreen():Number
+		{
+			return this.finishColor.green;
+		}
+		public function get finishColorBlue():Number
+		{
+			return this.finishColor.blue;
+		}
+		public function get finishColorAlpha():Number
+		{
+			return this.finishColor.alpha;
+		}
 
 		public function get finishColorVariance():ColorArgb
 		{
@@ -372,6 +416,22 @@ package com.grantech.models
 		public function set finishColorVariance(value:ColorArgb):void
 		{
 			this.setProperty("finishColorVariance", value);
+		}
+		public function get finishColorVarianceRed():Number
+		{
+			return this.finishColorVariance.red;
+		}
+		public function get finishColorVarianceGreen():Number
+		{
+			return this.finishColorVariance.green;
+		}
+		public function get finishColorVarianceBlue():Number
+		{
+			return this.finishColorVariance.blue;
+		}
+		public function get finishColorVarianceAlpha():Number
+		{
+			return this.finishColorVariance.alpha;
 		}
 
 		public function get blendFuncSource():int
