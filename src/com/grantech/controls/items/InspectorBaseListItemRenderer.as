@@ -6,8 +6,11 @@ package com.grantech.controls.items
 	import feathers.controls.renderers.IGroupedListItemRenderer;
 	import feathers.controls.renderers.LayoutGroupGroupedListItemRenderer;
 	import feathers.core.FeathersControl;
+	import feathers.events.FeathersEventType;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
+
+	import starling.events.Event;
 
 	/**
 	 * InspectorListItemRenderer is a view which renders information from DataModels.
@@ -73,9 +76,13 @@ package com.grantech.controls.items
 			if( this._data == null || this._owner == null )
 				return;
 
+			if( !this._owner.hasEventListener(FeathersEventType.SCROLL_START) )
+				this._owner.addEventListener(FeathersEventType.SCROLL_START, owner_scrollStartHandler);
 			this.label = this.data.label as String;
 			this.value = DataManager.instance.currentlayer.getProperty(this.label);
 		}
+		
+		protected function owner_scrollStartHandler(event:Event):void { }
 
 		override protected function draw():void
 		{

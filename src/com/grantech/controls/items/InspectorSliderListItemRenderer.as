@@ -4,6 +4,7 @@ package com.grantech.controls.items
 	import com.grantech.models.ControlsHelper;
 
 	import feathers.controls.EditableSlider;
+	import feathers.core.FeathersControl;
 
 	import starling.events.Event;
 
@@ -16,7 +17,7 @@ package com.grantech.controls.items
 
 			if(this.valueDisplay == null)
 			{
-				this.valueDisplay = new EditableSlider();
+				this.valueDisplay = new EditableSlider() as FeathersControl;
 				this.valueDisplay.layoutData = VALUE_LAYOUTDATA;
 				this.addChild(this.valueDisplay);
 			}
@@ -28,6 +29,14 @@ package com.grantech.controls.items
 			slider.maximum = ControlsHelper.instance.getMax(this.label);
 			slider.value = this.value;
 			slider.addEventListener(Event.CHANGE, slider_changeHandler);
+		}
+
+		override protected function owner_scrollStartHandler(event:Event):void
+		{
+			var slider:EditableSlider = this.valueDisplay as EditableSlider;
+			if( slider == null )
+				return;
+			slider.currentState = EditableSlider.STATE_NONE;
 		}
 
 		protected function slider_changeHandler(event:Event):void
