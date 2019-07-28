@@ -52,10 +52,7 @@ package com.grantech.panels
 			this.groupedList.setItemRendererFactoryWithID(ControlsHelper.TYPE_SLIDER, 			function ():IGroupedListItemRenderer { return new InspectorSliderListItemRenderer() as IGroupedListItemRenderer; } );
 			this.groupedList.setItemRendererFactoryWithID(ControlsHelper.TYPE_COMBO_BOX,		function ():IGroupedListItemRenderer { return new InspectorComboListItemRenderer() as IGroupedListItemRenderer; } );
 			this.groupedList.setItemRendererFactoryWithID(ControlsHelper.TYPE_COLOR_PICKER,	function ():IGroupedListItemRenderer { return new InspectorColorListItemRenderer() as IGroupedListItemRenderer; } );
-			this.groupedList.factoryIDFunction = function(item:Object, groupIndex:int, itemIndex:int):String
-			{
-					return item.type;
-			};
+			this.groupedList.factoryIDFunction = function(item:Object, groupIndex:int, itemIndex:int):String { return item.type; };
 			this.addChild(this.groupedList);
 		}
 	}

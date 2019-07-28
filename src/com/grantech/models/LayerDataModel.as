@@ -91,7 +91,7 @@ package com.grantech.models
 		public function getHierarchicalCollection():ArrayHierarchicalCollection
 		{
 			var ret:ArrayHierarchicalCollection = new ArrayHierarchicalCollection();
-			for(var key:String in _properties)
+			for each(var key:String in ControlsHelper.instance.keys)
 			{
 				var type:String = ControlsHelper.instance.getType(key);
 				var header:String = ControlsHelper.instance.getGroup(key);

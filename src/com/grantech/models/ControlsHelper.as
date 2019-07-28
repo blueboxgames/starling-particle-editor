@@ -3,6 +3,7 @@ package com.grantech.models
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
+	import flash.utils.Dictionary;
 
 	public class ControlsHelper
 	{
@@ -24,72 +25,71 @@ package com.grantech.models
 			if( _instance == null )
 			{
 				_instance = new ControlsHelper();
-				_propertyList = new Object();
-				init();
+				_instance.init();
 			}
 			
 			return _instance;
 		}
 
-		private static var _propertyList:Object;
+		public var keys:Vector.<String>;
+		public var elements:Dictionary;
 
-		public static function get propertyList() : Object
+		private function init():void
 		{
-			return _propertyList;
-		}
-
-		public static function set propertyList(value:Object):void
-		{
-			_propertyList = value;
-		}
-
-		private static function init():void
-		{
-			var propFile:File = File.applicationDirectory.resolvePath("config/ui-design-helper.json");
+			var propFile:File = File.applicationDirectory.resolvePath("config/ui-design-helper.xml");
 			var propFileStream:FileStream = new FileStream();
 			propFileStream.open(propFile, FileMode.READ);
-			propertyList = JSON.parse(propFileStream.readUTFBytes(propFileStream.bytesAvailable));
+			var xml:XML = new XML(propFileStream.readUTFBytes(propFileStream.bytesAvailable));
+			keys = new Vector.<String>();
+			elements = new Dictionary();
+			var len:int = xml.item.length();
+			for(var i:int = 0; i < len; i++)
+			{
+				var ch:XML = xml.item[i];
+				keys[i] = ch.@name;
+				elements[keys[i]] = { control:ch.@control.toString(), category:ch.@category.toString(),	min:Number(ch.@min),	max:Number(ch.@max),	step:Number(ch.@step),	init:Number(ch.@init),	data:String(ch.@data).split(',')}
+			}
 		}
 
 		public function getGroup(property:String):String
 		{
-			if( propertyList.hasOwnProperty(property) )
-				return propertyList[property].group;
+			if( elements.hasOwnProperty(property) )
+				return elements[property].category;
 			return "basic";
 		}
 
 		public function getType(property:String):String
 		{
-			if( propertyList.hasOwnProperty(property) )
-				return propertyList[property].control;
+			if( elements.hasOwnProperty(property) )
+				return elements[property].control;
 			return TYPE_SLIDER;
 		}
 
 		public function getData(property:String):Object
 		{
-			if( propertyList.hasOwnProperty(property) )
-				return propertyList[property].data;
+			if( elements.hasOwnProperty(property) )
+				return elements[property].data;
 			return null;
 		}
 	
 		public function getMin(property:String):Number
 		{
 			var value:Number = -10000;			
-			value = propertyList[property] ? propertyList[property].min : NaN;
+			value = elements[property] ? elements[property].min : NaN;
 			return value;
 		}
 
 		public function getMax(property:String):Number
 		{
 			var value:Number = -10000;			
-			value = propertyList[property] ? propertyList[property].max : NaN;
+			value = elements[property] ? elements[property].max : NaN;
 			return value;
 		}
 
 		public function getStep(property:String):Number
 		{
 			var value:Number = -10000;			
-			value = propertyList[property] ? propertyList[property].step : NaN;
+			value = elements[property] ? elements[property].step : NaN;
 			return value;
 		}
 	}

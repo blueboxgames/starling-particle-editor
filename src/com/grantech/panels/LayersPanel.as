@@ -47,7 +47,7 @@ package com.grantech.panels
 			this.listDisplay.layoutData = new AnchorLayoutData(0, 0, 0, 0);
 			this.listDisplay.itemRendererFactory = function():IListItemRenderer
 			{
-				return new LayerListItemRenderer();
+				return new LayerListItemRenderer() as IListItemRenderer;
 			}
 			this.listDisplay.selectedIndex = -1;
 			this.listDisplay.dataProvider = DataManager.instance.layerDataProvider;

@@ -1,4 +1,27 @@
 {
 	"layers_panel_title": "Layers",
-	"inspector_panel_title": "Inspector"
+	"inspector_panel_title": "Inspector",
+	
+	"blendFuncSource_0": "zero",
+	"blendFuncSource_1": "one",
+	"blendFuncSource_768": "source color",
+	"blendFuncSource_769": "one minus source color",
+	"blendFuncSource_770": "source alpha",
+	"blendFuncSource_771": "one minus source alpha",
+	"blendFuncSource_772": "destination alpha",
+	"blendFuncSource_773": "one minus destination alpha",
+	"blendFuncSource_774": "destination color",
+	"blendFuncSource_775": "one minus destination color",
+
+	"blendFuncDestination_0": "zero",
+	"blendFuncDestination_1": "one",
+	"blendFuncDestination_768": "source color",
+	"blendFuncDestination_769": "one minus source color",
+	"blendFuncDestination_770": "source alpha",
+	"blendFuncDestination_771": "one minus source alpha",
+	"blendFuncDestination_772": "destination alpha",
+	"blendFuncDestination_773": "one minus destination alpha",
+	"blendFuncDestination_774": "destination color",
+	"blendFuncDestination_775": "one minus destination color"
+
 }

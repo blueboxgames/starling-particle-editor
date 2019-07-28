@@ -116,9 +116,9 @@ package com.grantech.managers
 		public function addLayer(type:int, name:String=null, x:Number=0, y:Number=0, order:Number=0):void
 		{
 			var layer:LayerDataModel;
+			// Create new particle model.
 			if (type == LayerDataModel.TYPE_PARTICLE)
 			{
-				// Create new particle model.
 				layer = new ParticleDataModel() as LayerDataModel;
 			}
 			else if (type == LayerDataModel.TYPE_IMAGE)
