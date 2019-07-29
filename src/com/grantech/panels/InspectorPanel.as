@@ -6,13 +6,13 @@ package com.grantech.panels
 	import com.grantech.controls.items.InspectorSliderListItemRenderer;
 	import com.grantech.managers.DataManager;
 	import com.grantech.models.ControlsHelper;
+	import com.grantech.models.LayerDataModel;
 	import com.grantech.utils.Localizations;
 
 	import feathers.controls.GroupedList;
 	import feathers.controls.PanelScreen;
 	import feathers.controls.ScrollBarDisplayMode;
 	import feathers.controls.renderers.IGroupedListItemRenderer;
-	import feathers.data.ArrayHierarchicalCollection;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
 
@@ -30,10 +30,15 @@ package com.grantech.panels
 
 		protected function dataManager_selectHandler(event:Event):void
 		{
+			var selectedLayer:LayerDataModel = event.data as LayerDataModel;
+			if( selectedLayer == null )
+			{
+				this.groupedList.dataProvider.removeAll();
+				return;
+			}
 			// if(this.groupedList.dataProvider == DataManager.instance.currentlayer.get)
 			// 	return;
-			var collection:ArrayHierarchicalCollection = DataManager.instance.currentlayer.getHierarchicalCollection();
-			this.groupedList.dataProvider = collection;
+			this.groupedList.dataProvider = selectedLayer.getHierarchicalCollection();
 		}
 
 		/**

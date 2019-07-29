@@ -117,7 +117,8 @@ package com.grantech.panels
 			particleButton.label = "Particle";
 			particleButton.layoutData = new AnchorLayoutData(NaN,100,NaN,NaN);
 			popUp.addChild(particleButton);
-			particleButton.addEventListener(Event.TRIGGERED, function():void{
+			particleButton.addEventListener(Event.TRIGGERED, function():void
+			{
 				DataManager.instance.addLayer(LayerDataModel.TYPE_PARTICLE);
 				popUp.removeFromParent();
 			});

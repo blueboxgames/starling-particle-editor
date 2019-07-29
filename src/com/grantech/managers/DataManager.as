@@ -1,5 +1,6 @@
 package com.grantech.managers
 {
+	import com.grantech.models.ControlsHelper;
 	import com.grantech.models.LayerDataModel;
 	import com.grantech.models.ParticleDataModel;
 
@@ -113,7 +114,7 @@ package com.grantech.managers
 		/**
 		 * Method to add new layer.
 		 */
-		public function addLayer(type:int, name:String=null, x:Number=0, y:Number=0, order:Number=0):void
+		public function addLayer(type:int):void
 		{
 			var layer:LayerDataModel;
 			// Create new particle model.
@@ -129,10 +130,10 @@ package com.grantech.managers
 
 			layer.id = this.uid += 1;
 			layer.type = type;
-			layer.name = name;
-			layer.x = x;
-			layer.y = y;
-			layer.order = order;
+			layer.x = ControlsHelper.instance.getInitValue("x");
+			layer.y = ControlsHelper.instance.getInitValue("y");
+			layer.alpha = ControlsHelper.instance.getInitValue("alpha");
+			layer.order = this.layerDataProvider.length;
 			
 			// Add model to list.
 			this.layerDataProvider.addItem(layer);
@@ -154,8 +155,15 @@ package com.grantech.managers
 		 */
 		public function selectLayerAt(index:int):void
 		{
-			this.currentlayer = this.layerDataProvider.getItemAt(index) as LayerDataModel;
-			this.currentlayer.removeEventListeners(Event.CHANGE);
+			if( index > -1 )
+			{
+				this.currentlayer = this.layerDataProvider.getItemAt(index) as LayerDataModel;
+				this.currentlayer.removeEventListeners(Event.CHANGE);
+			}
+			else
+			{
+				this.currentlayer = null;
+			}
 			this.dispatchEventWith(Event.SELECT, false, this.currentlayer);
 		}
 
@@ -182,57 +190,43 @@ package com.grantech.managers
 			
 			this.layerDataProvider.removeItemAt(index);
 			this.dispatchEventWith(Event.REMOVED, false, layer);
+			selectLayerAt(-1);
 		}
 
 		public function raiseLayerAt(index:int):void
 		{
-			var layer:LayerDataModel = this.layerDataProvider.getItemAt(index) as LayerDataModel;
 			if(index == 0)
 				return;
-			var higherLayer:LayerDataModel = this.layerDataProvider.getItemAt(index-1) as LayerDataModel;
-			var tmp:int = layer.order;
-			layer.order = higherLayer.order;
-			higherLayer.order = tmp;
-			selectLayer(higherLayer);
-			// this._layerDataProvider.refresh();
-			// this._layerDataProvider.updateAll();
-			// dispatchEventWith("swap", false, {a: this.layerDataProvider.getItemAt(index).id, b:this.layerDataProvider.getItemAt(index-1).id});
+			changeOrder(index, -1);
 		}
 		
 		public function lowerLayerAt(index:int):void
 		{
-			var layer:LayerDataModel = this.layerDataProvider.getItemAt(index) as LayerDataModel;
-			if(index == this.layerDataProvider.length-1)
-			{
+			if(index == this.layerDataProvider.length - 1)
 				return;
-			}
-			var lowerLayer:LayerDataModel = this.layerDataProvider.getItemAt(index+1) as LayerDataModel;
-			var tmp:int = layer.order;
-			layer.order = lowerLayer.order;
-			lowerLayer.order = tmp
-			layer.order = lowerLayer.order-1;
-			selectLayer(lowerLayer);
+			changeOrder(index, 1);
+		}
 
-			// this._layerDataProvider.refresh();
-			// this._layerDataProvider.updateAll();
+		private function changeOrder(index:int, direction:int):void
+		{
+			var oldLayer:LayerDataModel = this.layerDataProvider.getItemAt(index) as LayerDataModel;
+			var newLayer:LayerDataModel = this.layerDataProvider.getItemAt(index + direction) as LayerDataModel;
+			trace("oldLayer", oldLayer.order, "  ", "newLayer", newLayer.order);
+
+			var tmp:int = oldLayer.order;
+			oldLayer.order = newLayer.order;
+			newLayer.order = tmp;
+
+			this.layerDataProvider.refresh();
+			// this.layerDataProvider.updateAll();
+			selectLayer(newLayer);
 			// DataManager.instance.dispatchEventWith("swap", false, {a: this.layerDataProvider.getItemAt(index).id, b:this.layerDataProvider.getItemAt(index+1).id});
 		}
 
-		public function orderFunction(a:LayerDataModel, b:LayerDataModel):int
+		public function orderFunction(left:LayerDataModel, right:LayerDataModel):int
 		{
-			return b.order - a.order;
-/* 			if (a.order > b.order)z
-			{
-				return -1;
-			}
-			else if (a.order < b.order)
-			{
-				return 1;
-			}
-			else
-			{
-				return 0;
-			}
- */		}
+			return left.order - right.order;
+ 		}
+
 	}
 }

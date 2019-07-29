@@ -10,6 +10,7 @@ package com.grantech.panels
 
 	import starling.animation.IAnimatable;
 	import starling.core.Starling;
+	import starling.display.DisplayObject;
 	import starling.events.Event;
 
 	public class ScenePanel extends Screen
@@ -31,24 +32,29 @@ package com.grantech.panels
 		protected function dataManager_addHandler(event:Event):void
 		{
 			var layer:LayerDataModel = event.data as LayerDataModel;
-			if(layer.type == LayerDataModel.TYPE_PARTICLE)
+			var sceneObject:DisplayObject;
+			if (layer.type == LayerDataModel.TYPE_PARTICLE)
 			{
-				var particleObject:PDSceneParticleSystem = generateParticleSystemFromParticleDataModel(layer as ParticleDataModel);
-				particleObject.start();
-				Starling.juggler.add(particleObject as IAnimatable);
+				sceneObject = generateParticleSystemFromParticleDataModel(layer as ParticleDataModel);
+				PDSceneParticleSystem(sceneObject).start();
+				Starling.juggler.add(sceneObject as IAnimatable);
 			}
-			else if(layer.type == LayerDataModel.TYPE_IMAGE)
+			else if (layer.type == LayerDataModel.TYPE_IMAGE)
 			{
 				trace("add image not implemented!")
 				return;
 			}
-			this.addChild(particleObject)
+			sceneObject.x = layer.x;
+			sceneObject.y = layer.y;
+			this.addChild(sceneObject)
 		}
 
 		protected function dataManager_selectHandler(event:Event):void
 		{
 			var selectedLayer:LayerDataModel = event.data as LayerDataModel;
-			DataManager.instance.currentlayer.addEventListener(Event.CHANGE, selectedLayer_changeHandler);
+			if( selectedLayer != null )
+				selectedLayer.addEventListener(Event.CHANGE, selectedLayer_changeHandler);
+			sortChildren(sortMethod);
 		}
 
 		protected function selectedLayer_changeHandler(event:Event):void
@@ -72,12 +78,22 @@ package com.grantech.panels
 
 		protected function dataManager_removedHandler(event:Event):void
 		{
+			var removedLayer:LayerDataModel = event.data as LayerDataModel;
+			var removedObject:DisplayObject = getObjectById(removedLayer.id) as DisplayObject;
+			if( removedObject == null )
+				return;
 			
+			if( removedLayer.type == LayerDataModel.TYPE_PARTICLE )
+			{
+				PDSceneParticleSystem(removedObject).stop();
+				Starling.juggler.add(removedObject as IAnimatable);
+			}
+			removedObject.removeFromParent(true);
 		}
 
 		protected function generateParticleSystemFromParticleDataModel(particleDataModel:ParticleDataModel):PDSceneParticleSystem
 		{
-			return new PDSceneParticleSystem(particleDataModel.id, particleDataModel, null);
+			return new PDSceneParticleSystem(particleDataModel, particleDataModel, null);
 		}
 
 		override public function dispose():void
@@ -93,10 +109,16 @@ package com.grantech.panels
 			for(var index:int = 0; index < this.numChildren; index++)
 			{
 				var object:ISceneObject = this.getChildAt(index) as ISceneObject;
-				if( object.id == id )
+				if( object.layer.id == id )
 					return object;
 			}
 			return null;
+		}
+
+
+		private function sortMethod(left:ISceneObject, right:ISceneObject) : Number
+		{
+			return left.layer.order - right.layer.order;
 		}
 	}
 }

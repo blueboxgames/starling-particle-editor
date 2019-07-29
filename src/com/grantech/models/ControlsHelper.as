@@ -51,6 +51,14 @@ package com.grantech.models
 			}
 		}
 
+
+		public function getInitValue(property:String):Number
+		{
+			if( elements.hasOwnProperty(property) )
+				return elements[property].init;
+			return 0;
+		}
+
 		public function getGroup(property:String):String
 		{
 			if( elements.hasOwnProperty(property) )

@@ -1,5 +1,7 @@
 package com.grantech.controls.displays
 {
+	import com.grantech.models.LayerDataModel;
+
 	import flash.display3D.Context3DBlendFactor;
 
 	import starling.extensions.ColorArgb;
@@ -10,15 +12,15 @@ package com.grantech.controls.displays
 
 	public class PDSceneParticleSystem extends PDParticleSystem implements ISceneObject
 	{
-		public function PDSceneParticleSystem(uid:int, config:Object, texture:Texture)
+		public function PDSceneParticleSystem(layer:LayerDataModel, config:Object, texture:Texture)
 		{
 			super(config, texture);
-			this.id = uid;
+			this.layer = layer;
 		}
 
-		private var _id:int;
-		public function get id():int { return this._id; }
-		public function set id(value:int):void { this._id = value; }
+		private var _layer:LayerDataModel;
+		public function get layer():LayerDataModel { return this._layer; }
+		public function set layer(value:LayerDataModel):void { this._layer = value; }
 
 		public function getBlendCode(value:String):int
 		{
