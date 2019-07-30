@@ -211,16 +211,13 @@ package com.grantech.managers
 		{
 			var oldLayer:LayerDataModel = this.layerDataProvider.getItemAt(index) as LayerDataModel;
 			var newLayer:LayerDataModel = this.layerDataProvider.getItemAt(index + direction) as LayerDataModel;
-			trace("oldLayer", oldLayer.order, "  ", "newLayer", newLayer.order);
 
 			var tmp:int = oldLayer.order;
 			oldLayer.order = newLayer.order;
 			newLayer.order = tmp;
 
 			this.layerDataProvider.refresh();
-			// this.layerDataProvider.updateAll();
 			selectLayer(newLayer);
-			// DataManager.instance.dispatchEventWith("swap", false, {a: this.layerDataProvider.getItemAt(index).id, b:this.layerDataProvider.getItemAt(index+1).id});
 		}
 
 		public function orderFunction(left:LayerDataModel, right:LayerDataModel):int
