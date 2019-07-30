@@ -224,6 +224,5 @@ package com.grantech.managers
 		{
 			return left.order - right.order;
  		}
-
 	}
 }
