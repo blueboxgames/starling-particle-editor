@@ -6,9 +6,9 @@ package com.grantech.controls.items
 
 	import starling.events.Event;
 	
-	public class InspectorColorListItemRenderer extends InspectorBaseListItemRenderer
+	public class InspectorColortemRenderer extends InspectorBaseItemRenderer
 	{
-		public function InspectorColorListItemRenderer() { super(); }
+		public function InspectorColortemRenderer() { super(); }
 		override protected function redrawControl():void
 		{
 			super.redrawControl();

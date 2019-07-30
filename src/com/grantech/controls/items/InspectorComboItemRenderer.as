@@ -12,9 +12,9 @@ package com.grantech.controls.items
 
 	import starling.events.Event;
 	
-	public class InspectorComboListItemRenderer extends InspectorBaseListItemRenderer
+	public class InspectorComboItemRenderer extends InspectorBaseItemRenderer
 	{
-		public function InspectorComboListItemRenderer() { super(); }
+		public function InspectorComboItemRenderer() { super(); }
 		override protected function redrawControl():void
 		{
 			super.redrawControl();

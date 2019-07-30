@@ -13,9 +13,9 @@ package com.grantech.controls.items
 	import starling.events.Event;
 
 	/**
-	 * InspectorListItemRenderer is a view which renders information from DataModels.
+	 * InspectorBaseItemRenderer is a view which renders information from DataModels.
 	 */
-	public class InspectorBaseListItemRenderer extends LayoutGroupGroupedListItemRenderer implements IGroupedListItemRenderer
+	public class InspectorBaseItemRenderer extends LayoutGroupGroupedListItemRenderer implements IGroupedListItemRenderer
 	{
 		static protected const LABEL_LAYOUTDATA:AnchorLayoutData = new AnchorLayoutData(NaN, NaN, NaN, 6, NaN, 0);
 		static protected const VALUE_LAYOUTDATA:AnchorLayoutData = new AnchorLayoutData(2, 4, 2, 180);
@@ -55,7 +55,7 @@ package com.grantech.controls.items
 		protected var valueDisplay:FeathersControl;
 		
 		static protected var nums:Object = new Object();
-		public function InspectorBaseListItemRenderer()
+		public function InspectorBaseItemRenderer()
 		{
 			super();
 			this.minHeight = 32;

@@ -8,9 +8,9 @@ package com.grantech.controls.items
 
 	import starling.events.Event;
 
-	public class InspectorSliderListItemRenderer extends InspectorBaseListItemRenderer
+	public class InspectorSliderItemRenderer extends InspectorBaseItemRenderer
 	{
-		public function InspectorSliderListItemRenderer() { super(); }
+		public function InspectorSliderItemRenderer() { super(); }
 		override protected function redrawControl():void
 		{
 			super.redrawControl();
