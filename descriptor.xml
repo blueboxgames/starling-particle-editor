@@ -2,7 +2,7 @@
 <application xmlns="http://ns.adobe.com/air/application/32.0">
   <id>particle-editor</id>
   <versionNumber>1.0</versionNumber>
-  <name>Starling Particle Editor</name>
+  <name>2D Particle Editor</name>
   <filename>StarlingParticleEditor</filename>
   <initialWindow>
     <title>Starling Particle Editor</title>
