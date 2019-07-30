@@ -14,7 +14,11 @@
     <minimizable>true</minimizable>
     <maximizable>true</maximizable>
     <resizable>true</resizable>
-    <!-- <minSize>1024 768</minSize> -->
+    <x>10</x>
+    <y>10</y>
+    <width>1280</width>
+    <height>920</height>
+    <minSize>1024 768</minSize>
     <depthAndStencil>true</depthAndStencil>
   </initialWindow>
 </application>

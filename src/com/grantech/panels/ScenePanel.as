@@ -1,112 +1,124 @@
 package com.grantech.panels
 {
+	import com.grantech.controls.displays.ISceneObject;
+	import com.grantech.controls.displays.PDSceneParticleSystem;
 	import com.grantech.managers.DataManager;
-	import com.grantech.managers.SceneManager;
+	import com.grantech.models.LayerDataModel;
 	import com.grantech.models.ParticleDataModel;
 
 	import feathers.controls.Screen;
 
+	import starling.animation.IAnimatable;
 	import starling.core.Starling;
+	import starling.display.DisplayObject;
 	import starling.events.Event;
-	import starling.extensions.PDParticleSystem;
-	import starling.textures.Texture;
 
 	public class ScenePanel extends Screen
 	{
-		private var _liveChangeEnabled:Boolean;
-
-		[Embed(source="/test.png")]
-		private static const BlueflameParticle:Class;
-
 		public function ScenePanel()
 		{
 			super();
+			DataManager.instance.addEventListener(Event.ADDED, dataManager_addHandler);
+			DataManager.instance.addEventListener(Event.SELECT, dataManager_selectHandler);
+			DataManager.instance.addEventListener(Event.REMOVED, dataManager_removedHandler);
 		}
 
 		override protected function initialize():void
 		{
 			super.initialize();
 			this.name = "ScenePanel";
-			DataManager.instance.addEventListener(Event.ADDED, dataManager_addedHandler);
-			DataManager.instance.addEventListener(Event.CHANGE, dataManager_changeHandler);
-			DataManager.instance.addEventListener(Event.SELECT, dataManager_selectHandler);
-			DataManager.instance.addEventListener(Event.REMOVED, dataManager_removedHandler);
-			DataManager.instance.addEventListener("swap", dataManager_swapHandler);
-
-			this._liveChangeEnabled = true;
 		}
 
-		protected function particleFromDataModel(config:ParticleDataModel):PDParticleSystem
+		protected function dataManager_addHandler(event:Event):void
 		{
-			var blueTexture:Texture = Texture.fromEmbeddedAsset(BlueflameParticle);
-			var particleSystem:PDParticleSystem = new PDParticleSystem(config, blueTexture);
-			return particleSystem;
+			var layer:LayerDataModel = event.data as LayerDataModel;
+			var sceneObject:DisplayObject;
+			if (layer.type == LayerDataModel.TYPE_PARTICLE)
+			{
+				sceneObject = generateParticleSystemFromParticleDataModel(layer as ParticleDataModel);
+				PDSceneParticleSystem(sceneObject).start();
+				Starling.juggler.add(sceneObject as IAnimatable);
+			}
+			else if (layer.type == LayerDataModel.TYPE_IMAGE)
+			{
+				trace("add image not implemented!")
+				return;
+			}
+			sceneObject.x = layer.x;
+			sceneObject.y = layer.y;
+			this.addChild(sceneObject)
 		}
 
-		protected function dataManager_addedHandler(event:Event):void
-		{
-			var reference:ParticleDataModel = event.data as ParticleDataModel;
-			var blueTexture:Texture = Texture.fromEmbeddedAsset(BlueflameParticle);
-			var particleSystem:PDParticleSystem = new PDParticleSystem(reference, blueTexture);
-			particleSystem.x = reference.x;
-			particleSystem.y = reference.y;
-			
-			particleSystem.start();
-			Starling.juggler.add(particleSystem);
-			SceneManager.instance.addParticleSystem(reference.id, particleSystem);
-			this.addChild(particleSystem);
-		}
-
-		protected function dataManager_changeHandler(event:Event):void
-		{
-			var index:int = DataManager.instance.currentLayerIndex;
-			var key:String = event.data.key;
-			var value:* = event.data.value;
-			var particleModel:ParticleDataModel = DataManager.instance.layers.getItemAt(index) as ParticleDataModel;
-			SceneManager.instance.changeParticleSystem(particleModel.id, key, value);
-		}
-
-		/**
-		 * Not implemented
-		 */
 		protected function dataManager_selectHandler(event:Event):void
 		{
-			if (!event.data) 
-				return;
-			var index:int = event.data.index;
-			var particleModel:ParticleDataModel = DataManager.instance.layers.getItemAt(index) as ParticleDataModel;
-			if(particleModel != null)
+			var selectedLayer:LayerDataModel = event.data as LayerDataModel;
+			if( selectedLayer != null )
+				selectedLayer.addEventListener(Event.CHANGE, selectedLayer_changeHandler);
+			sortChildren(sortMethod);
+		}
+
+		protected function selectedLayer_changeHandler(event:Event):void
+		{
+			var selectedLayer:LayerDataModel = event.currentTarget as LayerDataModel;
+			var sceneObject:ISceneObject = getObjectById(selectedLayer.id);
+			if( sceneObject == null )
 			{
-				var particleSystem:PDParticleSystem = SceneManager.instance.getParticleSystem(particleModel.id);
+				trace(" sceneObject " + selectedLayer.id + " not found.");
+				return;
 			}
+			
+			if( sceneObject[event.data] == null )
+			{
+				trace(" sceneObject has not '" + event.data + "' variable.");
+				return;
+			}
+			
+			sceneObject[event.data] = selectedLayer.getProperty(event.data as String);
 		}
 
 		protected function dataManager_removedHandler(event:Event):void
 		{
-			var index:int = event.data.index;
-			var particleModel:ParticleDataModel = DataManager.instance.layers.getItemAt(index) as ParticleDataModel;
-			var particleSystem:PDParticleSystem = SceneManager.instance.getParticleSystem(particleModel.id)
-			particleSystem.stop();
-			Starling.juggler.remove(particleSystem);
-			this.removeChild(particleSystem);
-			particleSystem.dispose();
+			var removedLayer:LayerDataModel = event.data as LayerDataModel;
+			var removedObject:DisplayObject = getObjectById(removedLayer.id) as DisplayObject;
+			if( removedObject == null )
+				return;
+			
+			if( removedLayer.type == LayerDataModel.TYPE_PARTICLE )
+			{
+				PDSceneParticleSystem(removedObject).stop();
+				Starling.juggler.add(removedObject as IAnimatable);
+			}
+			removedObject.removeFromParent(true);
 		}
 
-		protected function dataManager_swapHandler(event:Event):void
+		protected function generateParticleSystemFromParticleDataModel(particleDataModel:ParticleDataModel):PDSceneParticleSystem
 		{
-			var a:PDParticleSystem = SceneManager.instance.getParticleSystem(event.data.a);
-			var b:PDParticleSystem = SceneManager.instance.getParticleSystem(event.data.b);
-			this.swapChildren(a,b);
+			return new PDSceneParticleSystem(particleDataModel, particleDataModel, null);
 		}
 
 		override public function dispose():void
 		{
-			DataManager.instance.removeEventListener(Event.ADDED, dataManager_addedHandler);
-			DataManager.instance.removeEventListener(Event.CHANGE, dataManager_changeHandler);
+			DataManager.instance.removeEventListener(Event.ADDED, dataManager_addHandler);
 			DataManager.instance.removeEventListener(Event.SELECT, dataManager_selectHandler);
-			DataManager.instance.removeEventListener(Event.REMOVED, dataManager_removedHandler);
-			DataManager.instance.removeEventListener("swap", dataManager_swapHandler);
+			DataManager.instance.addEventListener(Event.REMOVED, dataManager_removedHandler);
 			super.dispose();
+		}
+
+		private function getObjectById(id:int):ISceneObject
+		{
+			for(var index:int = 0; index < this.numChildren; index++)
+			{
+				var object:ISceneObject = this.getChildAt(index) as ISceneObject;
+				if( object.layer.id == id )
+					return object;
+			}
+			return null;
+		}
+
+
+		private function sortMethod(left:ISceneObject, right:ISceneObject) : Number
+		{
+			return left.layer.order - right.layer.order;
 		}
 	}
 }

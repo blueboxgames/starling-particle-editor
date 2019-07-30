@@ -37,7 +37,6 @@ protected function touchHandler( event:TouchEvent ):void
 		touchID = -1;
 		return;
 	}
-	//trace("touchHandler", index, touchID)
 	if( touchID >= 0 )
 	{
 		touch = event.getTouch( touchTarget, null, touchID );

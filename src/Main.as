@@ -1,7 +1,7 @@
 package
 {
+  import com.grantech.screens.MainScreen;
   import com.grantech.utils.Localizations;
-  import com.grantech.views.MainView;
 
   import feathers.controls.Drawers;
   import feathers.controls.StackScreenNavigator;
@@ -9,20 +9,12 @@ package
   import feathers.core.IFeathersControl;
   import feathers.themes.MetalWorksDesktopTheme;
 
-  import flash.geom.Rectangle;
-
   import starling.assets.AssetManager;
-  import starling.core.Starling;
   import starling.events.Event;
-  import starling.events.ResizeEvent;
 
   public class Main extends Drawers
   {
     static public var theme:MetalWorksDesktopTheme;
-    /**
-     * Main stage viewport.
-     */
-    private var viewPort:Rectangle =  Starling.current.viewPort;
     /**
      *Navigator through the screens.
      */
@@ -43,13 +35,11 @@ package
     override protected function initialize():void
     {
       super.initialize();
-      
-      this.stage.addEventListener(ResizeEvent.RESIZE, stage_onResizeHandler);
 
       this.navigator = new StackScreenNavigator();
       this.content = this.navigator;
 
-      this.addView(MainView.NAME, MainView);
+      this.addView(MainScreen.NAME, MainScreen);
       
       Localizations.instance.addEventListener(Event.CHANGE, localizations_changeHandler);
       Localizations.instance.changeLocale("en_US", new AssetManager());
@@ -66,19 +56,8 @@ package
       if( popTranstion != null )
         item.popTransition = popTranstion;
       item.addPopEvent(Event.COMPLETE);
-      item.setScreenIDForPushEvent(MainView.NAME, MainView.NAME);
+      item.setScreenIDForPushEvent(MainScreen.NAME, MainScreen.NAME);
       this.navigator.addScreen(screenType, item);
-    }
-
-    /**
-     * Changes viewport accordingly.
-     */
-    private function stage_onResizeHandler(e:ResizeEvent):void
-    {
-      this.viewPort.width = e.width , this.viewPort.height = e.height;
-      Starling.current.viewPort = this.viewPort;
-
-      this.stage.stageWidth = e.width, this.stage.stageHeight = e.height;
     }
 
     /**
@@ -86,7 +65,7 @@ package
      */
     private function localizations_changeHandler(e:Event):void
     {
-      this.navigator.rootScreenID = MainView.NAME;
+      this.navigator.rootScreenID = MainScreen.NAME;
     }
   }
 }

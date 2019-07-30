@@ -1,24 +1,33 @@
 {
 	"type": "app",
-	"config": "air",
+	"config": "airmobile",
 	"airOptions": {
-		"target": "native",
-		"windows": {
-			"extdir": ["ext"],
-			"target": "native",
-			"output": "dist/windows/StarlingParticleEditor.exe"
-		}
+		"files": [
+			{
+				"file": "files/config",
+				"path": "config"
+			},
+			{
+				"file": "files/media",
+				"path": "media"
+			},
+			{
+				"file": "files/locale",
+				"path": "locale"
+			}
+		]
 	},
 	"application": "descriptor.xml",
 	"compilerOptions": {
 		"default-frame-rate": 60,
+		"advanced-telemetry": true,
 		"source-path": [
-			"src"
+			"src",
 		],
 		"library-path": [
 			"lib"
 		],
-		"output": "bin/Applications.swf"
+		"output": "bin/release.swf",
 	},
 	"files": [
 		"src/Application.as"

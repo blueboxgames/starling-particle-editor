@@ -1,50 +1,63 @@
 package com.grantech.panels
  {
-	import com.grantech.controls.items.InspectorListItemRenderer;
+	import com.grantech.controls.items.InspectorButtonListItemRenderer;
+	import com.grantech.controls.items.InspectorColorListItemRenderer;
+	import com.grantech.controls.items.InspectorComboListItemRenderer;
+	import com.grantech.controls.items.InspectorSliderListItemRenderer;
 	import com.grantech.managers.DataManager;
+	import com.grantech.models.ControlsHelper;
+	import com.grantech.models.LayerDataModel;
 	import com.grantech.utils.Localizations;
 
 	import feathers.controls.GroupedList;
-	import feathers.controls.List;
 	import feathers.controls.PanelScreen;
+	import feathers.controls.ScrollBarDisplayMode;
 	import feathers.controls.renderers.IGroupedListItemRenderer;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
 
+	import starling.events.Event;
 
 	public class InspectorPanel extends PanelScreen
 	{
-		private var list:List;
 		private var groupedList:GroupedList;
 		
 		public function InspectorPanel()
 		{
 			super();
+			DataManager.instance.addEventListener(Event.SELECT, dataManager_selectHandler);
 		}
 
+		protected function dataManager_selectHandler(event:Event):void
+		{
+			var selectedLayer:LayerDataModel = event.data as LayerDataModel;
+			if( selectedLayer == null )
+			{
+				this.groupedList.dataProvider.removeAll();
+				return;
+			}
+			// if(this.groupedList.dataProvider == DataManager.instance.currentlayer.get)
+			// 	return;
+			this.groupedList.dataProvider = selectedLayer.getHierarchicalCollection();
+		}
+
+		/**
+		 * Initializes InspectorPanel.
+		 */
 		override protected function initialize():void
 		{
 			super.initialize();
 			this.layout = new AnchorLayout();
 			this.title = Localizations.instance.get("inspector_panel_title");
-			
-			// this.list = new List();
-			// this.list.layoutData = new AnchorLayoutData(0, 0, 0, 0);
-			// this.list.dataProvider = DataManager.instance.inspector;
-			// this.list.itemRendererFactory = function () : IListItemRenderer
-			// {
-			// 	return new InspectorListItemRenderer();
-			// }
-			// this.addChild(this.list);
+
 			this.groupedList = new GroupedList();
 			this.groupedList.layoutData = new AnchorLayoutData(0, 0, 0, 0);
-			this.groupedList.dataProvider = DataManager.instance.inspector;
-			this.groupedList.itemRendererFactory = function() : IGroupedListItemRenderer
-			{
-				var renderer:InspectorListItemRenderer  = new InspectorListItemRenderer();
-				//renderer.labelField = "text";
-				return renderer;
-			}
+			this.groupedList.scrollBarDisplayMode = ScrollBarDisplayMode.FLOAT;
+			this.groupedList.setItemRendererFactoryWithID(ControlsHelper.TYPE_BUTTON,				function ():IGroupedListItemRenderer { return new InspectorButtonListItemRenderer() as IGroupedListItemRenderer; } );
+			this.groupedList.setItemRendererFactoryWithID(ControlsHelper.TYPE_SLIDER, 			function ():IGroupedListItemRenderer { return new InspectorSliderListItemRenderer() as IGroupedListItemRenderer; } );
+			this.groupedList.setItemRendererFactoryWithID(ControlsHelper.TYPE_COMBO_BOX,		function ():IGroupedListItemRenderer { return new InspectorComboListItemRenderer() as IGroupedListItemRenderer; } );
+			this.groupedList.setItemRendererFactoryWithID(ControlsHelper.TYPE_COLOR_PICKER,	function ():IGroupedListItemRenderer { return new InspectorColorListItemRenderer() as IGroupedListItemRenderer; } );
+			this.groupedList.factoryIDFunction = function(item:Object, groupIndex:int, itemIndex:int):String { return item.type; };
 			this.addChild(this.groupedList);
 		}
 	}

@@ -2,13 +2,16 @@ package com.grantech.panels
 {
 	import com.grantech.controls.items.LayerListItemRenderer;
 	import com.grantech.managers.DataManager;
+	import com.grantech.models.LayerDataModel;
 	import com.grantech.utils.Localizations;
 
 	import feathers.controls.Button;
 	import feathers.controls.LayoutGroup;
 	import feathers.controls.List;
+	import feathers.controls.Panel;
 	import feathers.controls.PanelScreen;
 	import feathers.controls.renderers.IListItemRenderer;
+	import feathers.core.PopUpManager;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
 	import feathers.layout.HorizontalLayout;
@@ -17,7 +20,6 @@ package com.grantech.panels
 	import starling.display.Quad;
 	import starling.events.Event;
 	import starling.textures.Texture;
-	import com.grantech.models.ParticleDataModel;
 
 	public class LayersPanel extends PanelScreen
 	{
@@ -38,86 +40,105 @@ package com.grantech.panels
 		override protected function initialize():void
 		{
 			super.initialize();
-			layout= new AnchorLayout();
-
 			this.title = Localizations.instance.get("layers_panel_title");
+			this.layout = new AnchorLayout();
 			
-			/* var listLayout:VerticalLayout = new VerticalLayout();
-			listLayout.horizontalAlign = HorizontalAlign.CENTER;
-			listLayout.paddingTop = 120;
-			this.layout = listLayout; */
-			listDisplay = new List();
-			listDisplay.layoutData = new AnchorLayoutData(0, 0, 0, 0);
-			listDisplay.itemRendererFactory = function () : IListItemRenderer
+			this.listDisplay = new List();
+			this.listDisplay.layoutData = new AnchorLayoutData(0, 0, 0, 0);
+			this.listDisplay.itemRendererFactory = function():IListItemRenderer
 			{
-				return new LayerListItemRenderer();
+				return new LayerListItemRenderer() as IListItemRenderer;
 			}
-			listDisplay.dataProvider = DataManager.instance.layers;
-			addChild(listDisplay);
-			listDisplay.addEventListener(Event.CHANGE, listDisplay_changeHandler);
+			this.listDisplay.selectedIndex = -1;
+			this.listDisplay.dataProvider = DataManager.instance.layerDataProvider;
+			this.listDisplay.addEventListener(Event.CHANGE, listDisplay_changeHandler);
+			this.addChild(this.listDisplay);
+			
+			this.footerFactory = layersPanelFooterFactory;
+		}
 
-			this.footerFactory = function():LayoutGroup {
-				var footer:LayoutGroup = new LayoutGroup();
-				footer.backgroundSkin = new Quad(1,1, 0x272822);
-				var layoutType:HorizontalLayout = new HorizontalLayout();
-				footer.layout = layoutType;
-
-				var addButton:Button = new Button();
-				addButton.width = 24;
-				addButton.height = 24;
-				addButton.defaultSkin = new Quad(1,1, 0x272822);
-				var addButtonIcon:Image = new Image(Texture.fromBitmap(new addLayer()));
-				addButtonIcon.scale = 0.12;
-				addButton.defaultIcon = addButtonIcon;
-				addButton.addEventListener(Event.TRIGGERED, addButton_triggeredHandler);
-				footer.addChild(addButton);
+		protected function layersPanelFooterFactory():LayoutGroup {
+			var footer:LayoutGroup = new LayoutGroup();
+			footer.backgroundSkin = new Quad(1,1, 0x272822);
 				
-				var removeButton:Button = new Button();
-				removeButton.width = 24;
-				removeButton.height = 24;
-				removeButton.defaultSkin = new Quad(1,1, 0x272822);
-				var removeButtonIcon:Image = new Image(Texture.fromBitmap(new removeLayer()));
-				removeButtonIcon.scale = 0.12;
-				removeButton.defaultIcon = removeButtonIcon;
-				removeButton.addEventListener(Event.TRIGGERED, removeButton_triggeredHandler);
-				footer.addChild(removeButton);
+			var layoutType:HorizontalLayout = new HorizontalLayout();
+			footer.layout = layoutType;
 
-				var raiseLayerButton:Button = new Button();
-				raiseLayerButton.width = 24;
-				raiseLayerButton.height = 24;
-				raiseLayerButton.defaultSkin = new Quad(1,1, 0x272822);
-				var raiseLayerButtonIcon:Image = new Image(Texture.fromBitmap(new raiseLayer()));
-				raiseLayerButtonIcon.scale = 0.12;
-				raiseLayerButton.defaultIcon = raiseLayerButtonIcon;
-				raiseLayerButton.addEventListener(Event.TRIGGERED, raiseLayerButton_triggeredHandler);
-				footer.addChild(raiseLayerButton);
-				
-				var lowerLayerButton:Button = new Button();
-				lowerLayerButton.width = 24;
-				lowerLayerButton.height = 24;
-				lowerLayerButton.defaultSkin = new Quad(1,1, 0x272822);
-				var lowerLayerButtonIcon:Image = new Image(Texture.fromBitmap(new lowerLayer()));
-				lowerLayerButtonIcon.scale = 0.12;
-				lowerLayerButton.defaultIcon = lowerLayerButtonIcon;
-				lowerLayerButton.addEventListener(Event.TRIGGERED, lowerLayerButton_triggeredHandler);
-				footer.addChild(lowerLayerButton);
+			var addLayerButton:Button = new Button();
+			addLayerButton.addEventListener(Event.TRIGGERED, addLayerButton_triggeredHandler);
+			addLayerButton.width = 24;
+			addLayerButton.height = 24;
+			addLayerButton.defaultSkin = new Quad(1,1, 0x272822);
+			var addLayerButtonIcon:Image = new Image(Texture.fromBitmap(new addLayer()));
+			addLayerButtonIcon.scale = 0.12;
+			addLayerButton.defaultIcon = addLayerButtonIcon;
+			footer.addChild(addLayerButton);
+			
+			var removeLayerButton:Button = new Button();
+			removeLayerButton.addEventListener(Event.TRIGGERED, removeLayerButton_triggeredHandler);
+			removeLayerButton.width = 24;
+			removeLayerButton.height = 24;
+			removeLayerButton.defaultSkin = new Quad(1,1, 0x272822);
+			var removeLayerButtonIcon:Image = new Image(Texture.fromBitmap(new removeLayer()));
+			removeLayerButtonIcon.scale = 0.12;
+			removeLayerButton.defaultIcon = removeLayerButtonIcon;
+			footer.addChild(removeLayerButton);
 
-				return footer;
-			}
+			var raiseLayerButton:Button = new Button();
+			raiseLayerButton.addEventListener(Event.TRIGGERED, raiseLayerButton_triggeredHandler);
+			raiseLayerButton.width = 24;
+			raiseLayerButton.height = 24;
+			raiseLayerButton.defaultSkin = new Quad(1,1, 0x272822);
+			var raiseLayerButtonIcon:Image = new Image(Texture.fromBitmap(new raiseLayer()));
+			raiseLayerButtonIcon.scale = 0.12;
+			raiseLayerButton.defaultIcon = raiseLayerButtonIcon;
+			footer.addChild(raiseLayerButton);
+			
+			var lowerLayerButton:Button = new Button();
+			lowerLayerButton.addEventListener(Event.TRIGGERED, lowerLayerButton_triggeredHandler);
+			lowerLayerButton.width = 24;
+			lowerLayerButton.height = 24;
+			lowerLayerButton.defaultSkin = new Quad(1,1, 0x272822);
+			var lowerLayerButtonIcon:Image = new Image(Texture.fromBitmap(new lowerLayer()));
+			lowerLayerButtonIcon.scale = 0.12;
+			lowerLayerButton.defaultIcon = lowerLayerButtonIcon;
+			footer.addChild(lowerLayerButton);
+
+			return footer;
+		}
+
+		protected function addLayerButton_triggeredHandler(event:Event):void
+		{
+			// When a new layer is added we select it from list display too.
+			// DataManager.instance.addLayer();
+			var popUp:Panel = new Panel();
+			popUp.layout = new AnchorLayout();
+			var particleButton:Button = new Button();
+			particleButton.label = "Particle";
+			particleButton.layoutData = new AnchorLayoutData(NaN,100,NaN,NaN);
+			popUp.addChild(particleButton);
+			particleButton.addEventListener(Event.TRIGGERED, function():void
+			{
+				DataManager.instance.addLayer(LayerDataModel.TYPE_PARTICLE);
+				popUp.removeFromParent();
+			});
+
+			var imageButton:Button = new Button();
+			imageButton.label = "Image";
+			imageButton.layoutData = new AnchorLayoutData(NaN,NaN,NaN,100);
+			popUp.addChild(imageButton);
+			this.stage.addChild( popUp );
+			PopUpManager.centerPopUp(popUp);
 		}
 
 		protected function listDisplay_changeHandler(event:Event):void
 		{
-			DataManager.instance.selectLayer(this.listDisplay.selectedItem);
+			if(this.listDisplay.selectedIndex < 0)
+				return;
+			DataManager.instance.selectLayerAt(this.listDisplay.selectedIndex);
 		}
-		
-		protected function addButton_triggeredHandler(event:Event):void
-		{
-			DataManager.instance.addLayer();
-			this.listDisplay.selectedIndex = DataManager.instance.currentLayerIndex;
-		}
-		
-		private function removeButton_triggeredHandler(event:Event):void
+
+		private function removeLayerButton_triggeredHandler(event:Event):void
 		{
 			var selectedIndex:int = listDisplay.selectedIndex;
 			if( selectedIndex < 0 )
@@ -135,6 +156,20 @@ package com.grantech.panels
 		private function lowerLayerButton_triggeredHandler(event:Event):void
 		{
 			DataManager.instance.lowerLayerAt(listDisplay.selectedIndex);
+		}
+
+		public function LayersPanel()
+		{
+			super();		
+		}
+		override public function dispose():void
+		{
+			super.dispose();
+		}
+
+		protected function dataManager_selectHandler(e:Event):void
+		{
+			this.listDisplay.selectedIndex = e.data.index;
 		}
 	}
 }

@@ -114,6 +114,7 @@ package feathers.controls
 					this.textInput.isSelectable = true;
 					this.textInput.setFocus();
 				} else {
+					this.textInput.selectRange(0,-1)
 					this.textInput.isEditable = false;
 					this.textInput.isSelectable = false;
 					this.textInput.clearFocus();

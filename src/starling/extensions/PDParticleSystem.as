@@ -222,27 +222,27 @@ package starling.extensions
 		{
             _emitterXVariance = config.sourcePositionVariancex;
             _emitterYVariance = config.sourcePositionVariancey;
-            _gravityX = config.gravityX;
-            _gravityY = config.gravityY;
+            _gravityX = config.gravityx;
+            _gravityY = config.gravityy;
             _emitterType = config.emitterType;
             _lifespan = Math.max(0.01, config.particleLifespan);
             _lifespanVariance = config.particleLifespanVariance;
-            _startSize = config.startSize;
-            _startSizeVariance = config.startSizeVariance;
-            _endSize = config.endSize;
-            _endSizeVariance = config.endSizeVariance;
-            _emitAngle = deg2rad(config.emitAngle);
-            _emitAngleVariance = deg2rad(config.emitAngleVariance);
-            _startRotation = deg2rad(config.startRotation);
-            _startRotationVariance = deg2rad(config.startRotationVariance);
-            _endRotation = deg2rad(config.endRotation);
-            _endRotationVariance = deg2rad(config.endRotationVariance);
+            _startSize = config.startParticleSize;
+            _startSizeVariance = config.startParticleSizeVariance;
+            _endSize = config.finishParticleSize;
+            _endSizeVariance = config.finishParticleSizeVariance;
+            _emitAngle = deg2rad(config.angle);
+            _emitAngleVariance = deg2rad(config.angleVariance);
+            _startRotation = deg2rad(config.rotationStart);
+            _startRotationVariance = deg2rad(config.rotationStartVariance);
+            _endRotation = deg2rad(config.rotationEnd);
+            _endRotationVariance = deg2rad(config.rotationEndVariance);
             _speed = config.speed;
             _speedVariance = config.speedVariance;
             _radialAcceleration = config.radialAcceleration;
-            _radialAccelerationVariance = config.radialAccelerationVariance;
+            _radialAccelerationVariance = config.radialAccelVariance;
             _tangentialAcceleration = config.tangentialAcceleration;
-            _tangentialAccelerationVariance = config.tangentialAccelerationVariance;
+            _tangentialAccelerationVariance = config.tangentialAccelVariance;
             _maxRadius = config.maxRadius;
             _maxRadiusVariance = config.maxRadiusVariance;
             _minRadius = config.minRadius;
@@ -253,8 +253,8 @@ package starling.extensions
             _startColorVariance = new ColorArgb(config.startColorVarianceRed, config.startColorVarianceGreen, config.startColorVarianceBlue, config.startColorVarianceAlpha);
             _endColor = new ColorArgb(config.finishColorRed, config.finishColorGreen, config.finishColorBlue, config.finishColorAlpha);
             _endColorVariance = new ColorArgb(config.finishColorVarianceRed, config.finishColorVarianceGreen, config.finishColorVarianceBlue, config.finishColorVarianceAlpha);
-            blendFactorSource = getBlendFunc(config.blendFactorSource);
-            blendFactorDestination = getBlendFunc(config.blendFactorDestination);
+            blendFactorSource = getBlendFunc(config.blendFuncSource);
+            blendFactorDestination = getBlendFunc(config.blendFuncDestination);
             defaultDuration = config.duration;
             capacity = config.maxParticles;
 
@@ -308,8 +308,8 @@ package starling.extensions
             _startColorVariance = getColor(config.startColorVariance);
             _endColor = getColor(config.finishColor);
             _endColorVariance = getColor(config.finishColorVariance);
-            blendFactorSource = getBlendFunc(getIntValue(config.blendFactorSource));
-            blendFactorDestination = getBlendFunc(getIntValue(config.blendFactorDestination));
+            blendFactorSource = getBlendFunc(getIntValue(config.blendFuncSource));
+            blendFactorDestination = getBlendFunc(getIntValue(config.blendFuncDestination));
             defaultDuration = getFloatValue(config.duration);
             capacity = getIntValue(config.maxParticles);
 
@@ -475,10 +475,10 @@ package starling.extensions
         public function get startColorVariance():ColorArgb { return _startColorVariance; }
         public function set startColorVariance(value:ColorArgb):void { _startColorVariance = value; }
 
-        public function get finishColor():ColorArgb { return _endColor; }
-        public function set finishColor(value:ColorArgb):void { _endColor = value; }
+        public function get endColor():ColorArgb { return _endColor; }
+        public function set endColor(value:ColorArgb):void { _endColor = value; }
 
-        public function get finishColorVariance():ColorArgb { return _endColorVariance; }
-        public function set finishColorVariance(value:ColorArgb):void { _endColorVariance = value; }
+        public function get endColorVariance():ColorArgb { return _endColorVariance; }
+        public function set endColorVariance(value:ColorArgb):void { _endColorVariance = value; }
     }
 }

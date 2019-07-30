@@ -1,10 +1,21 @@
 package com.grantech.controls.items
 {
+	import com.grantech.managers.DataManager;
+	import com.grantech.models.ParticleDataModel;
+
+	import feathers.controls.ButtonGroup;
 	import feathers.controls.Label;
+	import feathers.data.ArrayCollection;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
+	import feathers.layout.Direction;
+
+	import flash.filesystem.File;
+	import flash.net.FileFilter;
+	import flash.net.FileReference;
 
 	import starling.display.Quad;
+	import starling.events.Event;
 
 	public class LayerListItemRenderer extends AbstractTouchableListItemRenderer
 	{
@@ -12,21 +23,42 @@ package com.grantech.controls.items
 		{
 			super();
 		}
-		
+
+		private var id:Number;
 		private var layerName:Label;
+		private var ioGroup:ButtonGroup;
+		private var l:Label;
 
 		override protected function initialize():void
 		{
 			super.initialize();
 
-			_backgroundDisabledSkin = new Quad(1,1, 0x333333);
-			_backgroundSelectedSkin = new Quad(1,1, 0x444444);
+			/**
+			 * Layers selected or unselected skin.
+			 */
+			this.backgroundDisabledSkin = new Quad(1,1, 0x333333);
+			this.backgroundSelectedSkin = new Quad(1,1, 0x666666);
 
-			this.layout = new AnchorLayout();;
+			this.layout = new AnchorLayout();
 
 			this.layerName = new Label();
-			this.layerName.layoutData = new AnchorLayoutData(NaN, NaN, 4, 4);
+			this.layerName.layoutData = new AnchorLayoutData(2, 0, 2, 4);
 			this.addChild(layerName);
+			
+			this.l = new Label();
+			this.l.layoutData = new AnchorLayoutData(2,0,2,40);
+			this.addChild(l)
+
+			this.ioGroup = new ButtonGroup();
+			// this.ioGroup.dataProvider = new ArrayCollection(
+			// 	[
+			// 		{label: "Load", triggered: loadButton_triggeredHandler},
+			// 		{label: "Save", triggered: saveButton_triggeredHandler}
+			// 	]
+			// );
+			this.ioGroup.direction = Direction.HORIZONTAL;
+			this.ioGroup.layoutData = new AnchorLayoutData(2, 4, 2, 200);
+			this.addChild(ioGroup);
 		}
 
 		override protected function commitData():void
@@ -35,17 +67,45 @@ package com.grantech.controls.items
 			
 			if (this.data != null )
 			{
-				var id:String = this.data.id.toString();
-				var order:String = this.data.order.toString();
+				this.id = this.data.id;
+				var id:String = this.id.toString();
 			}
-			this.layerName.text = "Layer: " + id + "  Order: " + order;
+			// TODO: Should be layer name but now we only can differentiate using id.
+			this.layerName.text = "Id: " + id;
 			this.layerName.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
 		override public function set isSelected(value:Boolean):void
 		{
 			super.isSelected = value;
-			backgroundSkin = value ? _backgroundSelectedSkin : _backgroundDisabledSkin;
+			this.backgroundSkin = value ? this.backgroundSelectedSkin : this.backgroundDisabledSkin;
 		}
+
+		// protected function loadButton_triggeredHandler(event:Event):void
+		// {
+		// 	var configFile:File = new File();
+		// 	var configFileExtension:FileFilter = new FileFilter("Data Config", "*.json;*.pex");
+		// 	configFile.browse([configFileExtension]);
+		// 	configFile.addEventListener(Event.SELECT, configFile_selectHandler);
+		// }
+
+		// protected function saveButton_triggeredHandler(event:Event):void
+		// {
+		// 	var newFile:FileReference = new FileReference();
+		// 	var particleData:ParticleDataModel = DataManager.instance.layerAt(DataManager.instance.currentLayerIndex) as ParticleDataModel;
+		// 	newFile.save(JSON.stringify(particleData));
+		// }
+
+		// protected function configFile_selectHandler(event:*):void
+		// {
+		// 	event.currentTarget.load();
+		// 	event.currentTarget.addEventListener(Event.COMPLETE, configFile_completeHandler);
+		// }
+
+		// protected function configFile_completeHandler(event:*):void
+		// {
+		// 	event.currentTarget.removeEventListener(Event.COMPLETE, configFile_completeHandler);
+		// 	DataManager.instance.editLayerDataFile( event.currentTarget );
+		// }
 	}
 }

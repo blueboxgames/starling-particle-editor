@@ -1,6 +1,5 @@
 package
 {
-	import flash.display.NativeWindow;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
@@ -11,54 +10,65 @@ package
 
 	public class Application extends Sprite
 	{
-		private var _window:NativeWindow;
-		private var _starling:Starling;
-		private var _viewPort:Rectangle;
+		private var starling:Starling;
+		private var viewPort:Rectangle;
 
 		public function Application()
 		{
-			this.stage.scaleMode = StageScaleMode.NO_SCALE;
 			this.stage.align = StageAlign.TOP_LEFT;
-			this.stage.frameRate = 60;
-			this.stage.stageWidth = 800;
-			this.stage.stageHeight = 600;
-			this.stage.nativeWindow.addEventListener(Event.RESIZE, stage_resize);
+			this.stage.scaleMode = StageScaleMode.NO_SCALE;
 			this.loaderInfo.addEventListener(Event.COMPLETE, loaderInfo_completeHandler);
 		}
 
 		private function loaderInfo_completeHandler(e:Event):void
 		{
-			this._viewPort = new Rectangle(0,0, 800, 600);
 			this.loaderInfo.removeEventListener(Event.COMPLETE, loaderInfo_completeHandler);
-			this._starling = new Starling(Main, this.stage, _viewPort);
-			this._starling.addEventListener("rootCreated", display_rootCreatedHandler);
-			this._starling.supportHighResolutions = true;
-			this._starling.skipUnchangedFrames = true;
-			this._starling.start();
+			this.viewPort = new Rectangle(0, 0, stage.stageHeight, stage.stageHeight);
+			this.starling = new Starling(Main, this.stage, this.viewPort);
+			this.starling.addEventListener("rootCreated", display_rootCreatedHandler);
+			this.starling.supportHighResolutions = true;
+			this.starling.skipUnchangedFrames = true;
+			this.activate();
 		}
 
 		private function display_rootCreatedHandler(evnet:*):void
 		{
-			this.stage.addEventListener("deactivate", stage_deactivateHandler, false, 0, true);
+			this.stage.addEventListener(Event.DEACTIVATE, stage_deactivateHandler, false, 0, true);
 		}
-
-		private function stage_deactivateHandler(event:*):void
-		{
-			this._starling.stop(true);
-			this.stage.frameRate = 0;
-			this.stage.addEventListener("activate", stage_activateHandler, false, 0, true);
-		}
-
 		private function stage_activateHandler(event:Event):void
     {
-      this.stage.removeEventListener("activate", stage_activateHandler);
-      this.stage.frameRate = 60;
-      this._starling.start();
+			this.activate();
+    }
+		private function stage_deactivateHandler(event:*):void
+		{
+			this.deactivate();
+		}
+    private function stage_resizeHandler(e:Event):void
+    {
+			this.resize();
     }
 
-		private function stage_resize(e:*):void
+		private function activate():void
 		{
-			// _starling.
+			this.stage.removeEventListener(Event.ACTIVATE, stage_activateHandler);
+      this.stage.frameRate = 60;
+      this.starling.start();
+			this.stage.addEventListener(Event.RESIZE, stage_resizeHandler);
+			stage_resizeHandler(null);
+    }
+
+		private function deactivate():void
+		{
+			this.starling.stop(true);
+			this.stage.frameRate = 0;
+			this.stage.addEventListener(Event.ACTIVATE, stage_activateHandler, false, 0, true);
+			this.stage.removeEventListener(Event.RESIZE, stage_resizeHandler);
 		}
+
+		private function resize():void
+    {
+      this.starling.stage.stageWidth = this.viewPort.width = stage.stageWidth;
+      this.starling.stage.stageHeight = this.viewPort.height = stage.stageHeight;
+    }
 	}
 }

@@ -1,5 +1,12 @@
 package feathers.controls
 {
+	import com.grantech.utils.Utils;
+
+	import feathers.events.FeathersEventType;
+	import feathers.layout.HorizontalLayout;
+	import feathers.layout.HorizontalLayoutData;
+	import feathers.layout.VerticalAlign;
+
 	import flash.geom.Point;
 
 	import starling.display.DisplayObject;
@@ -8,11 +15,6 @@ package feathers.controls
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.extensions.ColorArgb;
-	import feathers.layout.HorizontalLayout;
-	import feathers.layout.HorizontalLayoutData;
-	import feathers.layout.VerticalAlign;
-	import feathers.layout.HorizontalAlign;
-	import feathers.events.FeathersEventType;
 
 	public class ColorPicker extends LayoutGroup
 	{
@@ -133,7 +135,7 @@ package feathers.controls
 			this.colorNumber.addEventListener(FeathersEventType.ENTER, colorNumber_enterHandler);
 			this.colorNumber.layoutData = new HorizontalLayoutData(100, NaN);
 
-			this.colorNumber.text = this.data.toString();
+			this.colorNumber.text = Utils.colorToHEX(this.data.red, this.data.green, this.data.blue, this.data.alpha);
 			this.addChild(this.colorNumber);
 		}
 
@@ -163,7 +165,7 @@ package feathers.controls
 			this.data.blue = this.colorPickerElement.b / 255;
 			this.data.alpha = this.colorPickerElement.a / 255;
 			this.colorIndicator.defaultIcon = new Quad(15,15, this.data.toArgb());
-			this.colorNumber.text = this.data.toString();
+			this.colorNumber.text = Utils.colorToHEX(this.data.red, this.data.green, this.data.blue, this.data.alpha);
 			this.dispatchEventWith(Event.CHANGE);
 		}
 
@@ -183,7 +185,7 @@ package feathers.controls
 			this.colorPickerElement.a = this.data.alpha * 255;
 			// this.colorPickerElement.colorIndicator.color =this.data.toArgb();
 			this.colorIndicator.defaultIcon = new Quad(15,15, this.data.toArgb());
-			this.colorNumber.text = this.data.toString();
+			this.colorNumber.text = Utils.colorToHEX(this.data.red, this.data.green, this.data.blue, this.data.alpha);
 			this.dispatchEventWith(Event.CHANGE);
 		}
 
