@@ -9,12 +9,15 @@ package
   import feathers.core.IFeathersControl;
   import feathers.themes.MetalWorksDesktopTheme;
 
+  import flash.filesystem.File;
+
   import starling.assets.AssetManager;
   import starling.events.Event;
 
   public class Main extends Drawers
   {
     static public var theme:MetalWorksDesktopTheme;
+    static public var assetManager:AssetManager;
     /**
      *Navigator through the screens.
      */
@@ -38,13 +41,18 @@ package
 
       this.navigator = new StackScreenNavigator();
       this.content = this.navigator;
-
       this.addView(MainScreen.NAME, MainScreen);
       
-      Localizations.instance.addEventListener(Event.CHANGE, localizations_changeHandler);
-      Localizations.instance.changeLocale("en_US", new AssetManager());
+      assetManager = new AssetManager(); 
+      assetManager.enqueue(File.applicationDirectory.resolvePath("media"));
+      assetManager.loadQueue(sadas);
     }
 
+    private function sadas() : void
+    {
+      Localizations.instance.addEventListener(Event.CHANGE, localizations_changeHandler);
+      Localizations.instance.changeLocale("en_US", assetManager);
+    }
     /**
      * Adds a new view to main navigator.
      */

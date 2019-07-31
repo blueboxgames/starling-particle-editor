@@ -8,7 +8,6 @@ package feathers.controls
 	import flash.geom.Point;
 
 	import starling.display.Image;
-	import starling.display.Quad;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
@@ -25,58 +24,22 @@ package feathers.controls
 		private var bitmapData:BitmapData;
 
 		private var colorPalette:Image;
-		//private var alphaSlider:Slider;
-		//public var colorIndicator:Quad;
 
 		private var _red:int;
-		
-		public function get r():int
-		{
-			return _red;
-		}
-		
-		public function set r(value:int):void
-		{
-			_red = value;
-		}
+		public function get r():int { return _red; }
+		public function set r(value:int):void { _red = value; }
 
 		private var _green:int;
-		
-		public function get g():int
-		{
-			return _green;
-		}
-		
-		public function set g(value:int):void
-		{
-			_green = value;
-		}
+		public function get g():int { return _green; }
+		public function set g(value:int):void { _green = value; }
 
 		private var _blue:int;
-		
-		public function get b():int
-		{
-			return _blue;
-		}
-		
-		public function set b(value:int):void
-		{
-			_blue = value;
-		}
+		public function get b():int { return _blue; }
+		public function set b(value:int):void { _blue = value; }
 
-		private var _alpha:Number;
-		
-		public function get a():Number
-		{
-			return _alpha;
-		}
-		
-		public function set a(value:Number):void
-		{
-			_alpha = value;
-			//if(alphaSlider)
-			// 	this.alphaSlider.value = value;
-		}
+		private var _alpha:int;
+		public function get a():int { return _alpha; }
+		public function set a(value:int):void { _alpha = value; }
 
 		private var _data:ColorArgb;
 		

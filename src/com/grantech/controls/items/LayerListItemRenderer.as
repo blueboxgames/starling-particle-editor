@@ -1,78 +1,50 @@
 package com.grantech.controls.items
 {
-	import com.grantech.managers.DataManager;
-	import com.grantech.models.ParticleDataModel;
+	import com.grantech.models.LayerDataModel;
 
-	import feathers.controls.ButtonGroup;
+	import feathers.controls.ImageLoader;
 	import feathers.controls.Label;
-	import feathers.data.ArrayCollection;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
-	import feathers.layout.Direction;
-
-	import flash.filesystem.File;
-	import flash.net.FileFilter;
-	import flash.net.FileReference;
 
 	import starling.display.Quad;
-	import starling.events.Event;
 
 	public class LayerListItemRenderer extends AbstractTouchableListItemRenderer
 	{
-		public function LayerListItemRenderer()
-		{
-			super();
-		}
-
-		private var id:Number;
-		private var layerName:Label;
-		private var ioGroup:ButtonGroup;
-		private var l:Label;
+		private var layer:LayerDataModel;
+		private var iconDisplay:ImageLoader;
+		private var titleDisplay:Label;
+		public function LayerListItemRenderer() { super(); }
 
 		override protected function initialize():void
 		{
 			super.initialize();
+			this.height = 54;
 
-			/**
-			 * Layers selected or unselected skin.
-			 */
 			this.backgroundDisabledSkin = new Quad(1,1, 0x333333);
 			this.backgroundSelectedSkin = new Quad(1,1, 0x666666);
 
 			this.layout = new AnchorLayout();
 
-			this.layerName = new Label();
-			this.layerName.layoutData = new AnchorLayoutData(2, 0, 2, 4);
-			this.addChild(layerName);
-			
-			this.l = new Label();
-			this.l.layoutData = new AnchorLayoutData(2,0,2,40);
-			this.addChild(l)
+			this.iconDisplay = new ImageLoader();
+			this.iconDisplay.layoutData = new AnchorLayoutData(2, NaN, 2, 2);
+			this.addChild(this.iconDisplay);
 
-			this.ioGroup = new ButtonGroup();
-			// this.ioGroup.dataProvider = new ArrayCollection(
-			// 	[
-			// 		{label: "Load", triggered: loadButton_triggeredHandler},
-			// 		{label: "Save", triggered: saveButton_triggeredHandler}
-			// 	]
-			// );
-			this.ioGroup.direction = Direction.HORIZONTAL;
-			this.ioGroup.layoutData = new AnchorLayoutData(2, 4, 2, 200);
-			this.addChild(ioGroup);
+			this.titleDisplay = new Label();
+			this.titleDisplay.layoutData = new AnchorLayoutData(2, NaN, 2, this.height + 2);
+			this.addChild(this.titleDisplay);
 		}
 
 		override protected function commitData():void
 		{
 			super.commitData();
 			
-			if (this.data != null )
-			{
-				this.id = this.data.id;
-				var id:String = this.id.toString();
-			}
-			// TODO: Should be layer name but now we only can differentiate using id.
-			this.layerName.text = "Id: " + id;
-			this.layerName.invalidate(INVALIDATION_FLAG_DATA);
+			if (this.data == null )
+				return;
+			this.layer = data as LayerDataModel;
+			this.titleDisplay.text = "Id: " + this.layer.id;
+			
+			this.iconDisplay.source = layer.type == LayerDataModel.TYPE_PARTICLE ? Main.assetManager.getTexture("up") : null;
 		}
 
 		override public function set isSelected(value:Boolean):void
