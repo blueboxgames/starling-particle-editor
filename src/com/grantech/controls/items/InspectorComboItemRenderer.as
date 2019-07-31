@@ -57,7 +57,7 @@ package com.grantech.controls.items
 			if (PickerList(valueDisplay).selectedItem == this.value)
 				return;
 			this.value = PickerList(valueDisplay).selectedItem;
-			DataManager.instance.currentlayer.setProperty(this.label, this.value);
+			DataManager.instance.selectedlayer.setProperty(this.label, this.value);
 		}
 	}
 }

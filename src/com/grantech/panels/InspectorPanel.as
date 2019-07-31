@@ -6,7 +6,6 @@ package com.grantech.panels
 	import com.grantech.controls.items.InspectorSliderItemRenderer;
 	import com.grantech.managers.DataManager;
 	import com.grantech.models.ControlsHelper;
-	import com.grantech.models.LayerDataModel;
 	import com.grantech.utils.Localizations;
 
 	import feathers.controls.GroupedList;
@@ -30,15 +29,15 @@ package com.grantech.panels
 
 		protected function dataManager_selectHandler(event:Event):void
 		{
-			var selectedLayer:LayerDataModel = event.data as LayerDataModel;
-			if( selectedLayer == null )
+			var selectedLayerInde:int = event.data as int;
+			if( selectedLayerInde < 0 )
 			{
 				this.groupedList.dataProvider.removeAll();
 				return;
 			}
 			// if(this.groupedList.dataProvider == DataManager.instance.currentlayer.get)
 			// 	return;
-			this.groupedList.dataProvider = selectedLayer.getHierarchicalCollection();
+			this.groupedList.dataProvider = DataManager.instance.selectedlayer.getHierarchicalCollection();
 		}
 
 		/**

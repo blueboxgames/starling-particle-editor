@@ -32,7 +32,7 @@ package com.grantech.controls.items
 			if (button.label == this.value)
 				return;
 			this.value = button.label;
-			DataManager.instance.currentlayer.setProperty(this.label, this.value);
+			DataManager.instance.selectedlayer.setProperty(this.label, this.value);
 		}
 	}
 }

@@ -45,7 +45,7 @@ package com.grantech.controls.items
 			if (slider.value == this.value)
 				return;
 			this.value = slider.value;
-			DataManager.instance.currentlayer.setProperty(this.label, this.value);
+			DataManager.instance.selectedlayer.setProperty(this.label, this.value);
 		}
 	}
 }

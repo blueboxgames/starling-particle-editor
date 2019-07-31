@@ -79,7 +79,7 @@ package com.grantech.controls.items
 			if( !this._owner.hasEventListener(FeathersEventType.SCROLL_START) )
 				this._owner.addEventListener(FeathersEventType.SCROLL_START, owner_scrollStartHandler);
 			this.label = this.data.label as String;
-			this.value = DataManager.instance.currentlayer.getProperty(this.label);
+			this.value = DataManager.instance.selectedlayer.getProperty(this.label);
 		}
 		
 		protected function owner_scrollStartHandler(event:Event):void { }
