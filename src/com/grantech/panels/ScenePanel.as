@@ -51,9 +51,9 @@ package com.grantech.panels
 
 		protected function dataManager_selectHandler(event:Event):void
 		{
-			var selectedLayer:LayerDataModel = event.data as LayerDataModel;
-			if( selectedLayer != null )
-				selectedLayer.addEventListener(Event.CHANGE, selectedLayer_changeHandler);
+			var selectedLayerIndex:int = event.data as int;
+			if( selectedLayerIndex > -1 )
+				DataManager.instance.selectedlayer.addEventListener(Event.CHANGE, selectedLayer_changeHandler);
 			sortChildren(sortMethod);
 		}
 
@@ -93,7 +93,7 @@ package com.grantech.panels
 
 		protected function generateParticleSystemFromParticleDataModel(particleDataModel:ParticleDataModel):PDSceneParticleSystem
 		{
-			return new PDSceneParticleSystem(particleDataModel, particleDataModel, null);
+			return new PDSceneParticleSystem(particleDataModel as LayerDataModel, particleDataModel, particleDataModel.texture);
 		}
 
 		override public function dispose():void

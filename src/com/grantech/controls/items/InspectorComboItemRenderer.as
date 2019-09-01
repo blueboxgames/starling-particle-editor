@@ -36,12 +36,12 @@ package com.grantech.controls.items
 				combo.labelFunction = this.labelFunction;
 			}
 			
-			var blendModes:Array = ControlsHelper.instance.getData(this.label) as Array;
+			var listData:Array = ControlsHelper.instance.getData(this.label) as Array;
 			combo = valueDisplay as PickerList;
 			combo.removeEventListeners(Event.CHANGE);
-			combo.dataProvider = new ArrayCollection(blendModes);
-			combo.selectedIndex = blendModes.indexOf(this.value);
-			combo.prompt = this.labelFunction(blendModes[combo.selectedIndex]);
+			combo.dataProvider = new ArrayCollection(listData);
+			combo.selectedIndex = listData.indexOf(this.value+"");
+			combo.prompt = this.labelFunction(listData[combo.selectedIndex]);
 			combo.addEventListener(Event.CHANGE, comboDisplay_changeHandler);
 		}
 		private function labelFunction(item:Object):String
@@ -57,7 +57,7 @@ package com.grantech.controls.items
 			if (PickerList(valueDisplay).selectedItem == this.value)
 				return;
 			this.value = PickerList(valueDisplay).selectedItem;
-			DataManager.instance.currentlayer.setProperty(this.label, this.value);
+			DataManager.instance.selectedlayer.setProperty(this.label, this.value);
 		}
 	}
 }

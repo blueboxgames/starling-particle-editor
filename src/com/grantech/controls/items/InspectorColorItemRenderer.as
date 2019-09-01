@@ -6,9 +6,9 @@ package com.grantech.controls.items
 
 	import starling.events.Event;
 	
-	public class InspectorColortemRenderer extends InspectorBaseItemRenderer
+	public class InspectorColorItemRenderer extends InspectorBaseItemRenderer
 	{
-		public function InspectorColortemRenderer() { super(); }
+		public function InspectorColorItemRenderer() { super(); }
 		override protected function redrawControl():void
 		{
 			super.redrawControl();
@@ -20,7 +20,6 @@ package com.grantech.controls.items
 				this.addChild(this.valueDisplay);
 			}
 			
-			// var blendModes:Array = ControlsHelper.instance.getData(this.label) as Array;
 			var colorPicker:ColorPicker = valueDisplay as ColorPicker;
 			colorPicker.removeEventListeners(Event.CHANGE);
 			colorPicker.data = this.value;
@@ -32,7 +31,7 @@ package com.grantech.controls.items
 			if (colorPicker.data == this.value)
 				return;
 			this.value = colorPicker.data;
-			DataManager.instance.currentlayer.setProperty(this.label, this.value);
+			DataManager.instance.selectedlayer.setProperty(this.label, this.value);
 		}
 	}
 }

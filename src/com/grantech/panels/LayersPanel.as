@@ -1,42 +1,33 @@
 package com.grantech.panels
 {
+	import com.grantech.controls.items.FooterItemRenderer;
 	import com.grantech.controls.items.LayerListItemRenderer;
 	import com.grantech.managers.DataManager;
 	import com.grantech.models.LayerDataModel;
 	import com.grantech.utils.Localizations;
 
 	import feathers.controls.Button;
-	import feathers.controls.LayoutGroup;
 	import feathers.controls.List;
 	import feathers.controls.Panel;
 	import feathers.controls.PanelScreen;
+	import feathers.controls.ScrollBarDisplayMode;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.core.PopUpManager;
+	import feathers.data.ListCollection;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
+	import feathers.layout.HorizontalAlign;
 	import feathers.layout.HorizontalLayout;
 
-	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.events.Event;
-	import starling.textures.Texture;
 
 	public class LayersPanel extends PanelScreen
 	{
 		private var listDisplay:List;
-		
-		[Embed(source="/media/icons/addLayer.png")]
-		public static var addLayer:Class;
 
-		[Embed(source="/media/icons/removeLayer.png")]
-		public static var removeLayer:Class;
 
-		[Embed(source="/media/icons/raiseLayer.png")]
-		public static var raiseLayer:Class;
-		
-		[Embed(source="/media/icons/lowerLayer.png")]
-		public static var lowerLayer:Class;
-
+		public function LayersPanel() { super(); }
 		override protected function initialize():void
 		{
 			super.initialize();
@@ -45,6 +36,7 @@ package com.grantech.panels
 			
 			this.listDisplay = new List();
 			this.listDisplay.layoutData = new AnchorLayoutData(0, 0, 0, 0);
+			this.listDisplay.scrollBarDisplayMode = ScrollBarDisplayMode.FLOAT;
 			this.listDisplay.itemRendererFactory = function():IListItemRenderer
 			{
 				return new LayerListItemRenderer() as IListItemRenderer;
@@ -57,57 +49,62 @@ package com.grantech.panels
 			this.footerFactory = layersPanelFooterFactory;
 		}
 
-		protected function layersPanelFooterFactory():LayoutGroup {
-			var footer:LayoutGroup = new LayoutGroup();
+		protected function layersPanelFooterFactory():List
+		{
+			var footerLayout:HorizontalLayout = new HorizontalLayout();
+			footerLayout.padding = footerLayout.gap = 2;
+			footerLayout.horizontalAlign = HorizontalAlign.RIGHT;
+
+			var footer:List = new List();
+			footer.layout = footerLayout;
 			footer.backgroundSkin = new Quad(1,1, 0x272822);
-				
-			var layoutType:HorizontalLayout = new HorizontalLayout();
-			footer.layout = layoutType;
-
-			var addLayerButton:Button = new Button();
-			addLayerButton.addEventListener(Event.TRIGGERED, addLayerButton_triggeredHandler);
-			addLayerButton.width = 24;
-			addLayerButton.height = 24;
-			addLayerButton.defaultSkin = new Quad(1,1, 0x272822);
-			var addLayerButtonIcon:Image = new Image(Texture.fromBitmap(new addLayer()));
-			addLayerButtonIcon.scale = 0.12;
-			addLayerButton.defaultIcon = addLayerButtonIcon;
-			footer.addChild(addLayerButton);
-			
-			var removeLayerButton:Button = new Button();
-			removeLayerButton.addEventListener(Event.TRIGGERED, removeLayerButton_triggeredHandler);
-			removeLayerButton.width = 24;
-			removeLayerButton.height = 24;
-			removeLayerButton.defaultSkin = new Quad(1,1, 0x272822);
-			var removeLayerButtonIcon:Image = new Image(Texture.fromBitmap(new removeLayer()));
-			removeLayerButtonIcon.scale = 0.12;
-			removeLayerButton.defaultIcon = removeLayerButtonIcon;
-			footer.addChild(removeLayerButton);
-
-			var raiseLayerButton:Button = new Button();
-			raiseLayerButton.addEventListener(Event.TRIGGERED, raiseLayerButton_triggeredHandler);
-			raiseLayerButton.width = 24;
-			raiseLayerButton.height = 24;
-			raiseLayerButton.defaultSkin = new Quad(1,1, 0x272822);
-			var raiseLayerButtonIcon:Image = new Image(Texture.fromBitmap(new raiseLayer()));
-			raiseLayerButtonIcon.scale = 0.12;
-			raiseLayerButton.defaultIcon = raiseLayerButtonIcon;
-			footer.addChild(raiseLayerButton);
-			
-			var lowerLayerButton:Button = new Button();
-			lowerLayerButton.addEventListener(Event.TRIGGERED, lowerLayerButton_triggeredHandler);
-			lowerLayerButton.width = 24;
-			lowerLayerButton.height = 24;
-			lowerLayerButton.defaultSkin = new Quad(1,1, 0x272822);
-			var lowerLayerButtonIcon:Image = new Image(Texture.fromBitmap(new lowerLayer()));
-			lowerLayerButtonIcon.scale = 0.12;
-			lowerLayerButton.defaultIcon = lowerLayerButtonIcon;
-			footer.addChild(lowerLayerButton);
-
+			footer.itemRendererFactory = function () : IListItemRenderer { return new  FooterItemRenderer(); }
+			footer.dataProvider = new ListCollection([FooterItemRenderer.TYPE_ADD, FooterItemRenderer.TYPE_REMOVE, FooterItemRenderer.TYPE_UP, FooterItemRenderer.TYPE_DOWN, FooterItemRenderer.TYPE_SAVE]);
+			footer.addEventListener(Event.CHANGE, footer_changeHandler);
 			return footer;
 		}
 
-		protected function addLayerButton_triggeredHandler(event:Event):void
+		protected function dataManager_selectHandler(event:Event):void
+		{
+			this.listDisplay.removeEventListener(Event.CHANGE, listDisplay_changeHandler);
+			this.listDisplay.selectedIndex = event.data.index;
+			this.listDisplay.addEventListener(Event.CHANGE, listDisplay_changeHandler);
+		}
+
+		protected function listDisplay_changeHandler(event:Event):void
+		{
+			if( this.listDisplay.selectedIndex < 0 )
+				return;
+			DataManager.instance.selectLayerAt(this.listDisplay.selectedIndex);
+		}
+
+		protected function footer_changeHandler(event:Event):void
+		{
+			if( List(footer).selectedIndex < 0 )
+				return;
+			var selectedItem:String = List(footer).selectedItem as String;
+			switch( selectedItem )
+			{
+				case FooterItemRenderer.TYPE_ADD:
+					addLayer();
+					break;
+				
+				case FooterItemRenderer.TYPE_REMOVE:
+					removeLayer();
+					break;
+				
+				case FooterItemRenderer.TYPE_UP:
+					DataManager.instance.shiftTop(listDisplay.selectedIndex);
+					break;
+				
+				case FooterItemRenderer.TYPE_DOWN:
+					DataManager.instance.shiftDown(listDisplay.selectedIndex);
+					break;
+			}
+			List(footer).selectedIndex = -1;
+		}
+
+		protected function addLayer():void
 		{
 			// When a new layer is added we select it from list display too.
 			// DataManager.instance.addLayer();
@@ -131,14 +128,7 @@ package com.grantech.panels
 			PopUpManager.centerPopUp(popUp);
 		}
 
-		protected function listDisplay_changeHandler(event:Event):void
-		{
-			if(this.listDisplay.selectedIndex < 0)
-				return;
-			DataManager.instance.selectLayerAt(this.listDisplay.selectedIndex);
-		}
-
-		private function removeLayerButton_triggeredHandler(event:Event):void
+		private function removeLayer():void
 		{
 			var selectedIndex:int = listDisplay.selectedIndex;
 			if( selectedIndex < 0 )
@@ -146,30 +136,6 @@ package com.grantech.panels
 			DataManager.instance.removeLayerAt(selectedIndex);
 			if( selectedIndex > 0 )
 				listDisplay.selectedIndex = selectedIndex - 1;
-		}
-
-		private function raiseLayerButton_triggeredHandler(event:Event):void
-		{
-			DataManager.instance.raiseLayerAt(listDisplay.selectedIndex);
-		}
-
-		private function lowerLayerButton_triggeredHandler(event:Event):void
-		{
-			DataManager.instance.lowerLayerAt(listDisplay.selectedIndex);
-		}
-
-		public function LayersPanel()
-		{
-			super();		
-		}
-		override public function dispose():void
-		{
-			super.dispose();
-		}
-
-		protected function dataManager_selectHandler(e:Event):void
-		{
-			this.listDisplay.selectedIndex = e.data.index;
 		}
 	}
 }

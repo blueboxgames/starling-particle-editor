@@ -101,15 +101,13 @@ package com.grantech.managers
 			return _inspectorComponentCollection;
 		}
 
-		private var _currentLayer:LayerDataModel;
-		public function get currentlayer():LayerDataModel
-		{
-			return _currentLayer;
-		}
-		public function set currentlayer(value:LayerDataModel):void
-		{
-			_currentLayer = value;
-		}
+		private var _selectedLayer:LayerDataModel;
+		public function get selectedlayer():LayerDataModel { return _selectedLayer; }
+		public function set selectedlayer(value:LayerDataModel):void { _selectedLayer = value; }
+
+		private var _selectedLayerIndex:int = -1;
+		public function get selectedLayerIndex():int { return _selectedLayerIndex; }
+		public function set selectedLayerIndex(value:int):void { _selectedLayerIndex = value; }
 
 		/**
 		 * Method to add new layer.
@@ -144,7 +142,7 @@ package com.grantech.managers
 		/**
 		 * Method to select layer with it's object.
 		 */
-		public function selectLayer(layer:LayerDataModel):void
+		private function selectLayer(layer:LayerDataModel):void
 		{
 			var index:int = this.layerDataProvider.getItemIndex(layer);
 			this.selectLayerAt(index);
@@ -157,14 +155,15 @@ package com.grantech.managers
 		{
 			if( index > -1 )
 			{
-				this.currentlayer = this.layerDataProvider.getItemAt(index) as LayerDataModel;
-				this.currentlayer.removeEventListeners(Event.CHANGE);
+				this.selectedlayer = this.layerDataProvider.getItemAt(index) as LayerDataModel;
+				this.selectedlayer.removeEventListeners(Event.CHANGE);
 			}
 			else
 			{
-				this.currentlayer = null;
+				this.selectedlayer = null;
 			}
-			this.dispatchEventWith(Event.SELECT, false, this.currentlayer);
+			this.selectedLayerIndex = index;
+			this.dispatchEventWith(Event.SELECT, false, this.selectedLayerIndex);
 		}
 
 		/**
@@ -193,14 +192,14 @@ package com.grantech.managers
 			selectLayerAt(-1);
 		}
 
-		public function raiseLayerAt(index:int):void
+		public function shiftTop(index:int):void
 		{
 			if(index == 0)
 				return;
 			changeOrder(index, -1);
 		}
 		
-		public function lowerLayerAt(index:int):void
+		public function shiftDown(index:int):void
 		{
 			if(index == this.layerDataProvider.length - 1)
 				return;
@@ -217,10 +216,10 @@ package com.grantech.managers
 			newLayer.order = tmp;
 
 			this.layerDataProvider.refresh();
-			selectLayer(newLayer);
+			selectLayerAt(index + direction);
 		}
 
-		public function orderFunction(left:LayerDataModel, right:LayerDataModel):int
+		private function orderFunction(left:LayerDataModel, right:LayerDataModel):int
 		{
 			return left.order - right.order;
  		}
