@@ -3,11 +3,14 @@ package com.grantech.models
 	import flash.filesystem.File;
 
 	import starling.extensions.ColorArgb;
+	import starling.textures.Texture;
 	import starling.utils.deg2rad;
 	import starling.utils.rad2deg;
 
 	public class ParticleDataModel extends LayerDataModel
 	{
+		[Embed(source="/media/default.png")]
+		public static var defaultBitmap:Class;
 		public function ParticleDataModel()
 		{
 			super();
@@ -56,7 +59,7 @@ package com.grantech.models
 			this.blendFuncSource = 1;
 			this.blendFuncDestination = 1;
 			this.maxParticles = 300;
-			this.texture = File.applicationDirectory.resolvePath(File.applicationDirectory.nativePath + "/media/default.png").url;
+			this.texture = Texture.fromBitmap(new defaultBitmap()) as Texture; //  File.applicationDirectory.resolvePath(File.applicationDirectory.nativePath + "/media/default.png");
 		}
 
 		public function get emitterType():int
@@ -104,7 +107,6 @@ package com.grantech.models
 		{
 			this.setProperty("particleLifespan", value);
 		}
-
 
 		public function get particleLifespanVariance():Number
 		{
@@ -461,11 +463,11 @@ package com.grantech.models
 			this.setProperty("maxParticles", value);
 		}
 
-		public function get texture():String
+		public function get texture():Texture
 		{
 			return this.getProperty("texture");
 		}
-		public function set texture(value:String):void
+		public function set texture(value:Texture):void
 		{
 			this.setProperty("texture", value);
 		}

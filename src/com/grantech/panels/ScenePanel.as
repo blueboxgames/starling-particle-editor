@@ -93,7 +93,7 @@ package com.grantech.panels
 
 		protected function generateParticleSystemFromParticleDataModel(particleDataModel:ParticleDataModel):PDSceneParticleSystem
 		{
-			return new PDSceneParticleSystem(particleDataModel as LayerDataModel, particleDataModel, null);
+			return new PDSceneParticleSystem(particleDataModel as LayerDataModel, particleDataModel, particleDataModel.texture);
 		}
 
 		override public function dispose():void
