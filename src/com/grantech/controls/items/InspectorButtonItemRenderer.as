@@ -20,7 +20,6 @@ package com.grantech.controls.items
 				this.addChild(this.valueDisplay);
 			}
 			
-			// var blendModes:Array = ControlsHelper.instance.getData(this.label) as Array;
 			var button:Button = valueDisplay as Button;
 			button.label = this.value;
 			if (!button.hasEventListener(Event.TRIGGERED))

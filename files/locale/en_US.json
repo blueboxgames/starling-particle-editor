@@ -22,6 +22,8 @@
 	"blendFuncDestination_772": "destination alpha",
 	"blendFuncDestination_773": "one minus destination alpha",
 	"blendFuncDestination_774": "destination color",
-	"blendFuncDestination_775": "one minus destination color"
+	"blendFuncDestination_775": "one minus destination color",
 
+	"emitterType_0": "direct",
+	"emitterType_1": "radial"
 }

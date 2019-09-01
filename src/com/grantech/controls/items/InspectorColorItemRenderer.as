@@ -20,7 +20,6 @@ package com.grantech.controls.items
 				this.addChild(this.valueDisplay);
 			}
 			
-			// var blendModes:Array = ControlsHelper.instance.getData(this.label) as Array;
 			var colorPicker:ColorPicker = valueDisplay as ColorPicker;
 			colorPicker.removeEventListeners(Event.CHANGE);
 			colorPicker.data = this.value;
