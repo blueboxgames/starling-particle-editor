@@ -21,6 +21,7 @@ package com.grantech.controls.displays
 		private var _layer:LayerDataModel;
 		public function get layer():LayerDataModel { return this._layer; }
 		public function set layer(value:LayerDataModel):void { this._layer = value; }
+		public function hasOwnProperty(V:*):Boolean { return super.hasOwnProperty(V); }
 
 		public function getBlendCode(value:String):int
 		{

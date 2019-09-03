@@ -6,5 +6,6 @@ package com.grantech.controls.displays
 	{
 		function get layer():LayerDataModel;
 		function set layer(value:LayerDataModel):void;
+		function hasOwnProperty(V:*):Boolean;
 	}
 }

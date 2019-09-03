@@ -85,6 +85,5 @@ package starling.extensions
             blue = argb.blue;
             alpha = argb.alpha;
         }
-
     }
 }

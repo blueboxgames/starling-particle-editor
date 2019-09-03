@@ -67,7 +67,7 @@ package com.grantech.panels
 				return;
 			}
 			
-			if( sceneObject[event.data] == null )
+			if( !sceneObject.hasOwnProperty(event.data) )
 			{
 				trace(" sceneObject has not '" + event.data + "' variable.");
 				return;
