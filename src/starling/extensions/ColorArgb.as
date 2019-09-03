@@ -39,6 +39,11 @@ package starling.extensions
             this.alpha = alpha;
         }
         
+        public function equal(color:ColorArgb):Boolean
+        {
+            return this == color || (color != null && this.red == color.red && this.green == color.green && this.blue == color.blue && this.alpha == color.alpha);
+        }
+        
         public function toRgb():uint
         {
             var r:Number = red;   if (r < 0.0) r = 0.0; else if (r > 1.0) r = 1.0;
