@@ -22,13 +22,13 @@ package com.grantech.controls.items
 			
 			var colorPicker:ColorPicker = valueDisplay as ColorPicker;
 			colorPicker.removeEventListeners(Event.CHANGE);
+			colorPicker.addEventListener(Event.CHANGE, this.colorPickerDisplay_changeHandler);
 			colorPicker.data = this.value;
-			colorPicker.addEventListener(Event.CHANGE, colorPickerDisplay_changeHandler);
 		}
 		private function colorPickerDisplay_changeHandler(e:Event):void
 		{
 			var colorPicker:ColorPicker = valueDisplay as ColorPicker;
-			if (colorPicker.data == this.value)
+			if( colorPicker.data == this.value )
 				return;
 			this.value = colorPicker.data;
 			DataManager.instance.selectedlayer.setProperty(this.label, this.value);

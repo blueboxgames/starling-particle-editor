@@ -3,11 +3,11 @@ package feathers.controls
 	import com.grantech.utils.Utils;
 
 	import feathers.events.FeathersEventType;
+	import feathers.layout.AnchorLayout;
+	import feathers.layout.AnchorLayoutData;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.HorizontalLayoutData;
 	import feathers.layout.VerticalAlign;
-
-	import flash.geom.Point;
 
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
@@ -18,292 +18,162 @@ package feathers.controls
 
 	public class ColorPicker extends LayoutGroup
 	{
-		private var colorNumber:TextInput;
-		private var colorIndicator:Button;
-
-		private var _red:int;
-		
-		public function get red():int
-		{
-			return _red;
-		}
-		
-		public function set red(value:int):void
-		{
-			_red = value;
-		}
-
-		private var _green:int;
-		
-		public function get green():int
-		{
-			return _green;
-		}
-		
-		public function set green(value:int):void
-		{
-			_green = value;
-		}
-
-		private var _blue:Object;
-		
-		public function get blue():Object
-		{
-			return _blue;
-		}
-		
-		public function set blue(value:Object):void
-		{
-			_blue = value;
-		}
-
-		private var _a:Number;
-		
-		public function get a():Number
-		{
-			return _a;
-		}
-		
-		public function set a(value:Number):void
-		{
-			_a = value;
-		}
+		private var inputDisplay:TextInput;
+		private var buttonDisplay:Button;
 
 		public static const INVALIDATION_FLAG_COLOR_PICKER_ELEMENT_FACTORY:String = "colorPickerElementFactory";
 
-		protected var colorPickerElement:AbstractColorPicker;
+		protected var spectrumDisplay:ColorSpectrum;
 
-		protected static function defaultColorPickerElementFactory():AbstractColorPicker
+		protected static function defaultSpctrumFactory():ColorSpectrum
 		{
-			return new AbstractColorPicker();
+			return new ColorSpectrum();
 		}
 		
-		private var _colorPickerElementFactory:Function;
-		
+		private var _spectrumFactory:Function;
 		public function get colorPickerElementFactory():Function
 		{
-			return this._colorPickerElementFactory;
+			return this._spectrumFactory;
 		}
-		
 		public function set colorPickerElementFactory(value:Function):void
 		{
-			if(this._colorPickerElementFactory == value)
-			{
+			if( this._spectrumFactory == value )
 				return;
-			}
 
-			this._colorPickerElementFactory = value;
+			this._spectrumFactory = value;
 			this.invalidate(INVALIDATION_FLAG_COLOR_PICKER_ELEMENT_FACTORY);
 		}
-
-		private var _gap:Number = 0;
 		
-		public function get gap():Number
+		private var _data:ColorArgb;
+		public function get data():ColorArgb
 		{
-			return _gap;
+			return this._data;
 		}
-		
-		public function set gap(value:Number):void
+		public function set data(value:ColorArgb):void
 		{
-			_gap = value;
-		}
-
-		public var data:ColorArgb;
-
-		public function ColorPicker()
-		{
-			super();
-			this.data = new ColorArgb();
+			if( value.equal(this.data) )
+				return;
+			this._data = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
+		public function ColorPicker() { super(); }
 		override protected function initialize():void
 		{
 			super.initialize();
 			var hLayout:HorizontalLayout = new HorizontalLayout();
-			hLayout.verticalAlign = VerticalAlign.MIDDLE;
+			hLayout.verticalAlign = VerticalAlign.JUSTIFY;
+			hLayout.gap = 4;
 			this.layout = hLayout;
 
-			this.colorIndicator = new Button();
-			this.colorIndicator.layoutData = new HorizontalLayoutData(NaN, NaN);
-			this.colorIndicator.width = 20
-			this.colorIndicator.height = 20;
-			this.colorIndicator.defaultIcon = new Quad(15,15, this.data.toArgb());
-			this.colorIndicator.addEventListener(Event.TRIGGERED, colorIndicator_triggeredHandler);
-			this.addChild(this.colorIndicator);
+			this.buttonDisplay = new Button();
+			this.buttonDisplay.width = 29;
+			this.buttonDisplay.defaultIcon = new Quad(24, 24);
+			this.buttonDisplay.addEventListener(Event.TRIGGERED, this.buttonDisplay_triggeredHandler);
+			this.addChild(this.buttonDisplay);
 			
-			this.colorNumber = new TextInput();
-			this.colorNumber.addEventListener(FeathersEventType.ENTER, colorNumber_enterHandler);
-			this.colorNumber.layoutData = new HorizontalLayoutData(100, NaN);
+			var textLayout:LayoutGroup = new LayoutGroup();
+			textLayout.layout = new AnchorLayout();
+			textLayout.layoutData = new HorizontalLayoutData(100);
+			this.addChild(textLayout);
 
-			this.colorNumber.text = Utils.colorToHEX(this.data.red, this.data.green, this.data.blue, this.data.alpha);
-			this.addChild(this.colorNumber);
+			this.inputDisplay = new TextInput();
+			this.inputDisplay.paddingLeft = 16;
+			this.inputDisplay.paddingRight = 6;
+			this.inputDisplay.maxChars = 8;
+			this.inputDisplay.restrict = "0-9a-fA-F";
+			this.inputDisplay.addEventListener(FeathersEventType.ENTER, this.inputDisplay_enterHandler);
+			this.inputDisplay.addEventListener(FeathersEventType.FOCUS_OUT, this.inputDisplay_enterHandler);
+			this.inputDisplay.layoutData = new AnchorLayoutData(0, 0, 0, 0);
+			textLayout.addChild(this.inputDisplay);
+
+			var numSignDIsplay:Label = new Label();
+			numSignDIsplay.layoutData = new AnchorLayoutData(NaN, NaN, NaN, 6, NaN, 0);
+			numSignDIsplay.touchable = false;
+			numSignDIsplay.text = "#"
+			textLayout.addChild(numSignDIsplay)
 		}
 
-		protected function createColorPickerElement():void
+		protected function createSpectrum():void
 		{
-			if(this.colorPickerElement !== null)
+			if( this.spectrumDisplay !== null )
 			{
-				this.colorPickerElement.removeEventListener(Event.CHANGE, colorPickerElement_changeHandler);
-				this.colorPickerElement.dispose();
-				this.colorPickerElement = null;
+				this.spectrumDisplay.removeEventListener(Event.CHANGE, this.spectrumDisplay_changeHandler);
+				this.spectrumDisplay.dispose();
 			}
 
-			var factory:Function = this._colorPickerElementFactory != null ? this._colorPickerElementFactory : defaultColorPickerElementFactory;
-			this.colorPickerElement = AbstractColorPicker(factory());
-			this.colorPickerElement.addEventListener(Event.CHANGE, colorPickerElement_changeHandler);
-			this.colorPickerElement.y = this.colorIndicator.y + this.colorIndicator.height;
-			this.colorPickerElement.scaleX = 0.7;
-			this.colorPickerElement.scaleY = 0.7;
-			this.colorPickerElement.visible = false;
-			this.stage.addChild(this.colorPickerElement as DisplayObject);
+			var factory:Function = this._spectrumFactory != null ? this._spectrumFactory : defaultSpctrumFactory;
+			this.spectrumDisplay = ColorSpectrum(factory());
+			this.spectrumDisplay.addEventListener(Event.CHANGE, this.spectrumDisplay_changeHandler);
+			this.spectrumDisplay.y = this.buttonDisplay.y + this.buttonDisplay.height;
+			this.spectrumDisplay.scaleX = 0.7;
+			this.spectrumDisplay.scaleY = 0.7;
+			this.spectrumDisplay.visible = false;
+			this.stage.addChild(this.spectrumDisplay as DisplayObject);
 		}
 
-		protected function colorPickerElement_changeHandler(e:Event):void
+		protected function spectrumDisplay_changeHandler(e:Event):void
 		{
-			this.data.red =  this.colorPickerElement.r / 255;
-			this.data.green = this.colorPickerElement.g / 255;
-			this.data.blue = this.colorPickerElement.b / 255;
-			this.data.alpha = this.colorPickerElement.a / 255;
-			this.colorIndicator.defaultIcon = new Quad(15,15, this.data.toArgb());
-			this.colorNumber.text = Utils.colorToHEX(this.data.red, this.data.green, this.data.blue, this.data.alpha);
-			this.dispatchEventWith(Event.CHANGE);
+			this.data = this.spectrumDisplay.data;
+			this.dispatchEventWith(Event.CHANGE, false, this.data);
 		}
 
-		protected function colorNumber_enterHandler(e:Event):void
+		protected function inputDisplay_enterHandler(e:Event):void
 		{
-			if(isValidHex(this.colorNumber.text))
-			{
-				this.data = rgbHexToARGB(this.colorNumber.text);
-			} 
-			else if(isValidHexA(this.colorNumber.text))
-			{
-				this.data = argbHexToARGB(this.colorNumber.text);
-			}
-			this.colorPickerElement.r = this.data.red;
-			this.colorPickerElement.g = this.data.green;
-			this.colorPickerElement.b = this.data.blue;
-			this.colorPickerElement.a = this.data.alpha * 255;
-			// this.colorPickerElement.colorIndicator.color =this.data.toArgb();
-			this.colorIndicator.defaultIcon = new Quad(15,15, this.data.toArgb());
-			this.colorNumber.text = Utils.colorToHEX(this.data.red, this.data.green, this.data.blue, this.data.alpha);
-			this.dispatchEventWith(Event.CHANGE);
+			var hexText:String = Utils.normalizeHEX(this.inputDisplay.text);
+			this.inputDisplay.text = hexText;
+			this.data = Utils.hexToARGB(hexText);
+			this.dispatchEventWith(Event.CHANGE, false, this.data);
 		}
 
-		private function rgbHexToARGB(text:String):ColorArgb
+		protected function buttonDisplay_triggeredHandler(e:Event):void
 		{
-			var color:ColorArgb = new ColorArgb();
-			if (text.length == 4)
-			{
-				color.red = ( parseInt(text.slice(1,2), 16) + 16 * parseInt(text.slice(1,2), 16) ) / 255;
-				color.green = ( parseInt(text.slice(2,3), 16) + 16 * parseInt(text.slice(2,3), 16) ) / 255;
-				color.blue = ( parseInt(text.slice(3,4), 16) + 16 * parseInt(text.slice(3,4), 16) ) / 255;
-			}
-			else if (text.length == 7)
-			{
-				color.red = parseInt(text.slice(1,3), 16) / 255;
-				color.green = parseInt(text.slice(3,5), 16) / 255;
-				color.blue = parseInt(text.slice(5,7), 16) / 255;
-			}
-			color.alpha = 1;
-			this.data = color;
-			
-			return color;
-		}
-
-		private function argbHexToARGB(text:String):ColorArgb
-		{
-			var color:ColorArgb = new ColorArgb();
-			if (text.length == 5)
-			{
-				color.red = ( parseInt(text.slice(1,2), 16) + 16 * parseInt(text.slice(1,2), 16) ) / 255;
-				color.green = ( parseInt(text.slice(2,3), 16) + 16 * parseInt(text.slice(2,3), 16) ) / 255;
-				color.blue = ( parseInt(text.slice(3,4), 16) + 16 * parseInt(text.slice(3,4), 16) ) / 255;
-				color.alpha = ( parseInt(text.slice(4,5), 16) + 16 * parseInt(text.slice(4,5), 16) ) / 255;
-			}
-			else if (text.length == 9)
-			{
-				color.red = parseInt(text.slice(1,3), 16) / 255;
-				color.green = parseInt(text.slice(3,5), 16) / 255;
-				color.blue = parseInt(text.slice(5,7), 16) / 255;
-				color.alpha = parseInt(text.slice(7,9), 16) / 255;
-			}
-			return color;
-		}
-
-		private function isValidHex(text:String):Boolean
-		{
-			var isOk:Boolean = false;
-			if( text.search('^#(?:[0-9a-fA-F]{3}){1,2}$') == 0 )
-			{
-				isOk = true;
-			}
-			return isOk;
-		}
-
-		private function isValidHexA(text:String):Boolean
-		{
-			var isOk:Boolean = false;
-			if( text.search('^#(?:[0-9a-fA-F]{4}){1,2}$') == 0 )
-			{
-				isOk = true;
-			}
-			return isOk;
-		}
-
-		protected function colorIndicator_triggeredHandler(e:Event):void
-		{
-			this.stage.addEventListener(TouchEvent.TOUCH, indicator_touchHandler);
+			this.stage.addEventListener(TouchEvent.TOUCH, this.indicator_touchHandler);
 		}
 
 		protected function indicator_touchHandler(e:TouchEvent):void
 		{
-			
 			var touch:Touch = e.getTouch(this.stage);
-			if(touch)
+			if( touch == null )
+				return;
+			if( touch.phase == "ended" && touch.target == this.buttonDisplay )
 			{
-				if( touch.phase == "ended" && touch.target == this.colorIndicator )
+				this.spectrumDisplay.visible = !this.spectrumDisplay.visible;
+				this.spectrumDisplay.data = this.data;
+				this.spectrumDisplay.x = touch.globalX - 260 * this.spectrumDisplay.scale;
+				this.spectrumDisplay.y = touch.globalY + this.buttonDisplay.height;
+			}
+			if( touch.phase == "ended" )
+			{
+				if( touch.target != this.buttonDisplay )
 				{
-					this.colorPickerElement.visible = !this.colorPickerElement.visible;
-					var point:Point = getCurrentPos(touch);
-					this.colorPickerElement.x = point.x - 260*this.colorPickerElement.scale;
-					this.colorPickerElement.y = point.y + this.colorIndicator.height;
+					this.spectrumDisplay.visible = false;
+					this.stage.removeEventListener(TouchEvent.TOUCH, this.indicator_touchHandler);
+					return;
 				}
-				if(touch.phase == "ended")
-				{
-					if(touch.target != this.colorIndicator)
-					{
-						this.colorPickerElement.visible = false;
-						this.stage.removeEventListener(TouchEvent.TOUCH, indicator_touchHandler);
-						return;
-					}
-				}			
 			}	
 		}
 
-		protected function getCurrentPos(touch:Touch):Point
-		{
-			var point:Point = new Point;
-			point.x = touch.globalX;
-			point.y = touch.globalY;
-			return point;
-		} 
-
 		override protected function draw():void
 		{
-			var colorPickerElementInvalid:Boolean = isInvalid(INVALIDATION_FLAG_COLOR_PICKER_ELEMENT_FACTORY);
-			if(colorPickerElementInvalid)
-			{
-				createColorPickerElement();
-			}
+			if( this.isInvalid(INVALIDATION_FLAG_COLOR_PICKER_ELEMENT_FACTORY) )
+				this.createSpectrum();
 
+			if( this.isInvalid(INVALIDATION_FLAG_DATA) )
+			{
+				if( this.buttonDisplay != null )
+					Quad(this.buttonDisplay.defaultIcon).color = this.data.toArgb();
+				if( this.inputDisplay != null )
+					this.inputDisplay.text = Utils.colorToHEX(this.data.red, this.data.green, this.data.blue, this.data.alpha);
+			}
 			super.draw();
 		}
 
 		override public function dispose():void
 		{
-			this.colorIndicator.removeEventListener(Event.TRIGGERED, colorIndicator_triggeredHandler);
-			this.colorPickerElement.removeEventListener(Event.CHANGE, colorPickerElement_changeHandler);
-			this.colorNumber.removeEventListener(FeathersEventType.ENTER, colorNumber_enterHandler);
+			this.buttonDisplay.removeEventListener(Event.TRIGGERED, this.buttonDisplay_triggeredHandler);
+			this.spectrumDisplay.removeEventListener(Event.CHANGE, this.spectrumDisplay_changeHandler);
+			this.inputDisplay.removeEventListener(FeathersEventType.ENTER, this.inputDisplay_enterHandler);
 			super.dispose();
 		}
 	}
