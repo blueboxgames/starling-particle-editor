@@ -17,7 +17,7 @@ package com.grantech.controls.displays
 			super(config, texture);
 			this.layer = layer;
 		}
-
+		
 		private var _layer:LayerDataModel;
 		public function get layer():LayerDataModel { return this._layer; }
 		public function set layer(value:LayerDataModel):void { this._layer = value; }

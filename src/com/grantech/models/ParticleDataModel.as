@@ -1,7 +1,5 @@
 package com.grantech.models
 {
-	import flash.filesystem.File;
-
 	import starling.extensions.ColorArgb;
 	import starling.textures.Texture;
 	import starling.utils.deg2rad;
@@ -527,43 +525,38 @@ package com.grantech.models
 			}
 		}
 
-		public function parseDataFromFile(value:File):void
+		public function parseJsonConfig(json:String):void 
 		{
-			parseJsonConfig(value.data.readUTFBytes(value.data.length));
-		}
-
-		protected function parseJsonConfig(xconfig:String):void 
-		{
-			var config:Object = JSON.parse(xconfig)
+			var config:Object = JSON.parse(json)
 			this.sourcePositionVariancex = config.sourcePositionVariancex;
 			this.sourcePositionVariancey = config.sourcePositionVariancey;
 			this.gravityx = config.gravityx;
 			this.gravityy = config.gravityy;
 			this.emitterType = config.emitterType;
-			this.particleLifespan =Math.max(0.01, config.particleLifespan);
-			this.particleLifespanVariance =config.particleLifespanVariance;
+			this.particleLifespan = Math.max(0.01, config.particleLifespan);
+			this.particleLifespanVariance = config.particleLifespanVariance;
 			this.startParticleSize = config.startParticleSize;
 			this.startParticleSizeVariance = config.startParticleSizeVariance;
 			this.finishParticleSize = config.finishParticleSize;
-			this.finishParticleSizeVariance =config.finishParticleSizeVariance;
-			this.angle =deg2rad(config.angle);
-			this.angleVariance =deg2rad(config.angleVariance);
-			this.rotationStart =deg2rad(config.rotationStart);
-			this.rotationStartVariance =deg2rad(config.rotationStartVariance);
+			this.finishParticleSizeVariance = config.finishParticleSizeVariance;
+			this.angle = deg2rad(config.angle);
+			this.angleVariance = deg2rad(config.angleVariance);
+			this.rotationStart = deg2rad(config.rotationStart);
+			this.rotationStartVariance = deg2rad(config.rotationStartVariance);
 			this.rotationEnd = deg2rad(config.rotationEnd);
 			this.rotationEndVariance = deg2rad(config.rotationEndVariance);
 			this.speed = config.speed;
-			this.speedVariance =config.speedVariance;
-			this.radialAcceleration =config.radialAcceleration;
+			this.speedVariance = config.speedVariance;
+			this.radialAcceleration = config.radialAcceleration;
 			this.radialAccelVariance = config.radialAccelVariance;
-			this.tangentialAcceleration =config.tangentialAcceleration;
-			this.tangentialAccelVariance =config.tangentialAccelVariance;
+			this.tangentialAcceleration = config.tangentialAcceleration;
+			this.tangentialAccelVariance = config.tangentialAccelVariance;
 			this.maxRadius = config.maxRadius;
-			this.maxRadiusVariance =config.maxRadiusVariance;
-			this.minRadius =config.minRadius;
-			this.minRadiusVariance =config.minRadiusVariance;
-			this.rotatePerSecond =deg2rad(config.rotatePerSecond);
-			this.rotatePerSecondVariance =deg2rad(config.rotatePerSecondVariance);
+			this.maxRadiusVariance = config.maxRadiusVariance;
+			this.minRadius = config.minRadius;
+			this.minRadiusVariance = config.minRadiusVariance;
+			this.rotatePerSecond = deg2rad(config.rotatePerSecond);
+			this.rotatePerSecondVariance = deg2rad(config.rotatePerSecondVariance);
 			this.startColor = new ColorArgb(config.startColorRed, config.startColorGreen, config.startColorBlue, config.startColorAlpha);
 			this.startColorVariance = new ColorArgb(config.startColorVarianceRed, config.startColorVarianceGreen, config.startColorVarianceBlue, config.startColorVarianceAlpha);
 			this.finishColor = new ColorArgb(config.finishColorRed, config.finishColorGreen, config.finishColorBlue, config.finishColorAlpha);
@@ -572,9 +565,66 @@ package com.grantech.models
 			this.blendFuncDestination = config.blendFuncDestination;
 			this.duration = config.duration;
 			this.maxParticles = config.maxParticles;
-			this.particleLifespan =  Math.max(0.01, config.particleLifespan);
-			this.finishParticleSizeVariance = config.finishParticleSizeVariance;
-			this.minRadiusVariance = 0.0;
+		}
+
+		public function parseXMLConfig(xml:String):void
+		{
+			var config:XML = new XML(xml);
+			this.sourcePositionVariancex = parseFloat(config.sourcePositionVariance.attribute("x"));
+			this.sourcePositionVariancey = parseFloat(config.sourcePositionVariance.attribute("y"));
+			this.gravityx = parseFloat(config.gravity.attribute("x"));
+			this.gravityy = parseFloat(config.gravity.attribute("y"));
+			this.emitterType = getIntValue(config.emitterType);
+			this.particleLifespan = Math.max(0.01, getFloatValue(config.particleLifeSpan));
+			this.particleLifespanVariance = getFloatValue(config.particleLifespanVariance);
+			this.startParticleSize = getFloatValue(config.startParticleSize);
+			this.startParticleSizeVariance = getFloatValue(config.startParticleSizeVariance);
+			this.finishParticleSize = getFloatValue(config.finishParticleSize);
+			this.finishParticleSizeVariance = getFloatValue(config.FinishParticleSizeVariance);
+			this.angle = deg2rad(getFloatValue(config.angle));
+			this.angleVariance = deg2rad(getFloatValue(config.angleVariance));
+			this.rotationStart = deg2rad(getFloatValue(config.rotationStart));
+			this.rotationStartVariance = deg2rad(getFloatValue(config.rotationStartVariance));
+			this.rotationEnd = deg2rad(getFloatValue(config.rotationEnd));
+			this.rotationEndVariance = deg2rad(getFloatValue(config.rotationEndVariance));
+			this.speed = getFloatValue(config.speed);
+			this.speedVariance = getFloatValue(config.speedVariance);
+			this.radialAcceleration = getFloatValue(config.radialAcceleration);
+			this.radialAccelVariance = getFloatValue(config.radialAccelVariance);
+			this.tangentialAcceleration = getFloatValue(config.tangentialAcceleration);
+			this.tangentialAccelVariance = getFloatValue(config.tangentialAccelVariance);
+			this.maxRadius = getFloatValue(config.maxRadius);
+			this.minRadiusVariance = getFloatValue(config.maxRadiusVariance);
+			this.minRadius = getFloatValue(config.minRadius);
+			this.minRadiusVariance = getFloatValue(config.minRadiusVariance);
+			this.rotatePerSecond = deg2rad(getFloatValue(config.rotatePerSecond));
+			this.rotatePerSecondVariance = deg2rad(getFloatValue(config.rotatePerSecondVariance));
+			this.startColor = getColor(config.startColor);
+			this.startColorVariance = getColor(config.startColorVariance);
+			this.finishColor = getColor(config.finishColor);
+			this.finishColorVariance = getColor(config.finishColorVariance);
+			this.blendFuncSource = getIntValue(config.blendFuncSource);
+			this.blendFuncDestination = getIntValue(config.blendFuncDestination);
+			this.duration = getFloatValue(config.duration);
+			this.maxParticles = getIntValue(config.maxParticles);
+
+			function getIntValue(element:XMLList):int
+			{
+					return parseInt(element.attribute("value"));
+			}
+			function getFloatValue(element:XMLList):Number
+			{
+					return parseFloat(element.attribute("value"));
+			}
+			function getColor(element:XMLList):ColorArgb
+			{
+					var color:ColorArgb = new ColorArgb();
+					color.red   = parseFloat(element.attribute("red"));
+					color.green = parseFloat(element.attribute("green"));
+					color.blue  = parseFloat(element.attribute("blue"));
+					color.alpha = parseFloat(element.attribute("alpha"));
+					return color;
+			}
 		}
 	}
 }

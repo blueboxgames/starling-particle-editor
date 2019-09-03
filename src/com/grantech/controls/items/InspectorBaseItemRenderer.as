@@ -58,7 +58,7 @@ package com.grantech.controls.items
 		public function InspectorBaseItemRenderer()
 		{
 			super();
-			this.minHeight = 32;
+			this.height = 32;
  			/*var cls:String = getQualifiedClassName(this)
 			nums[cls] = nums.hasOwnProperty(cls) ? nums[cls] + 1 : 0;
 			trace(cls, nums[cls]);*/
