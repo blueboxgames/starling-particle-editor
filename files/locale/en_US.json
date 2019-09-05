@@ -25,5 +25,8 @@
 	"blendFuncDestination_775": "one minus destination color",
 
 	"emitterType_0": "direct",
-	"emitterType_1": "radial"
+	"emitterType_1": "radial",
+
+	"footer_add_item_0": "Particle",
+	"footer_add_item_1": "Image"
 }
