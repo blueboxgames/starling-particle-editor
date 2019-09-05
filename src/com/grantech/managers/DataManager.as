@@ -1,6 +1,7 @@
 package com.grantech.managers
 {
 	import com.grantech.models.ControlsHelper;
+	import com.grantech.models.ImageDataModel;
 	import com.grantech.models.LayerDataModel;
 	import com.grantech.models.ParticleDataModel;
 
@@ -122,8 +123,7 @@ package com.grantech.managers
 			}
 			else if (type == LayerDataModel.TYPE_IMAGE)
 			{
-					trace("add image not implemented!")
-					return;
+				layer = new ImageDataModel() as LayerDataModel;
 			}
 
 			layer.id = this.uid += 1;
@@ -131,6 +131,8 @@ package com.grantech.managers
 			layer.x = ControlsHelper.instance.getInitValue("x");
 			layer.y = ControlsHelper.instance.getInitValue("y");
 			layer.alpha = ControlsHelper.instance.getInitValue("alpha");
+			layer.scaleX = ControlsHelper.instance.getInitValue("scaleX");
+			layer.scaleY = ControlsHelper.instance.getInitValue("scaleY");
 			layer.order = this.layerDataProvider.length;
 			
 			// Add model to list.

@@ -1,20 +1,20 @@
 package com.grantech.controls.displays
 {
 	import com.grantech.models.LayerDataModel;
+	import com.grantech.models.ParticleDataModel;
 
 	import flash.display3D.Context3DBlendFactor;
 
 	import starling.extensions.ColorArgb;
 	import starling.extensions.PDParticleSystem;
-	import starling.textures.Texture;
 	import starling.utils.deg2rad;
 	import starling.utils.rad2deg;
 
 	public class PDSceneParticleSystem extends PDParticleSystem implements ISceneObject
 	{
-		public function PDSceneParticleSystem(layer:LayerDataModel, config:Object, texture:Texture)
+		public function PDSceneParticleSystem(layer:LayerDataModel, config:Object)
 		{
-			super(config, texture);
+			super(config, ParticleDataModel(layer).texture);
 			this.layer = layer;
 		}
 		

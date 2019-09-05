@@ -3,6 +3,8 @@
 	<item  name="x"														control="slider"	category="basic"			min="-10000"	max="10000"		step="1" 		init="420" />
 	<item  name="y"														control="slider"	category="basic" 			min="-10000"	max="10000"		step="1" 		init="420" />
 	<item  name="alpha"												control="slider"	category="basic" 			min="0" 			max="1" 			step="0.05" init="1" />
+	<item  name="scaleX"											control="slider"	category="basic" 			min="0" 			max="100"			step="0.05" init="1" />
+	<item  name="scaleY"											control="slider"	category="basic" 			min="0" 			max="100"			step="0.05" init="1" />
 	<item  name="load"												control="button"	category="basic" 			min="0" 			max="1" 			step="0.05" init="1" />
 	<item  name="save"												control="button"	category="basic" 			min="0" 			max="1" 			step="0.05" init="1" />
 	<item  name="texture"											control="button"	category="ps-shape"		min="0" 			max="1" 			step="1" 		init="0" />

@@ -2,7 +2,6 @@ package com.grantech.controls.items
 {
 	import com.grantech.managers.DataManager;
 	import com.grantech.models.ParticleDataModel;
-	import com.grantech.utils.Base64;
 
 	import feathers.controls.Button;
 
@@ -48,7 +47,7 @@ package com.grantech.controls.items
 		}
 		private function button_triggeredHandler(e:Event):void
 		{
-			if( this.value is Texture || this.label == "load" )
+			if( this.label == "texture" || this.label == "load" )
 				loadFile();
 			else if( this.label == "save" )
 				saveConfig();
@@ -61,7 +60,7 @@ package com.grantech.controls.items
 			var allFilter : FileFilter = new FileFilter("All Files", "*.*");
 			var fr:FileReference = new FileReference();
 			fr.addEventListener("select", fr_selectHandler);
-			fr.browse(this.value is Texture ? [imageFilter, allFilter] : [configFilter, allFilter]);
+			fr.browse(this.label == "texture" ? [imageFilter, allFilter] : [configFilter, allFilter]);
 		}
 
 		private function fr_selectHandler(event:*):void
@@ -76,7 +75,7 @@ package com.grantech.controls.items
 		{
 			var fr:FileReference = event.target as FileReference;
 			fr.removeEventListener("complete", fr_completeHandler);
-			if( this.value is Texture )
+			if( this.label == "texture" )
 				loadTexture(fr.data);
 			else if( this.label == "load" )
 				loadConfig(fr.data);

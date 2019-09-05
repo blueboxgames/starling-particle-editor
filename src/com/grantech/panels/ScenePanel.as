@@ -2,9 +2,9 @@ package com.grantech.panels
 {
 	import com.grantech.controls.displays.ISceneObject;
 	import com.grantech.controls.displays.PDSceneParticleSystem;
+	import com.grantech.controls.displays.SceneImage;
 	import com.grantech.managers.DataManager;
 	import com.grantech.models.LayerDataModel;
-	import com.grantech.models.ParticleDataModel;
 
 	import feathers.controls.Screen;
 
@@ -35,14 +35,13 @@ package com.grantech.panels
 			var sceneObject:DisplayObject;
 			if (layer.type == LayerDataModel.TYPE_PARTICLE)
 			{
-				sceneObject = generateParticleSystemFromParticleDataModel(layer as ParticleDataModel);
+				sceneObject = new PDSceneParticleSystem(layer, layer);
 				PDSceneParticleSystem(sceneObject).start();
 				Starling.juggler.add(sceneObject as IAnimatable);
 			}
 			else if (layer.type == LayerDataModel.TYPE_IMAGE)
 			{
-				trace("add image not implemented!")
-				return;
+				sceneObject = new SceneImage(layer);
 			}
 			sceneObject.x = layer.x;
 			sceneObject.y = layer.y;
@@ -89,11 +88,6 @@ package com.grantech.panels
 				Starling.juggler.add(removedObject as IAnimatable);
 			}
 			removedObject.removeFromParent(true);
-		}
-
-		protected function generateParticleSystemFromParticleDataModel(particleDataModel:ParticleDataModel):PDSceneParticleSystem
-		{
-			return new PDSceneParticleSystem(particleDataModel as LayerDataModel, particleDataModel, particleDataModel.texture);
 		}
 
 		override public function dispose():void

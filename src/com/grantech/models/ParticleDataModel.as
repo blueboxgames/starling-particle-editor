@@ -9,6 +9,8 @@ package com.grantech.models
 	{
 		[Embed(source="/media/default.png")]
 		public static var defaultBitmap:Class;
+		public var load:String = "";
+		public var save:String = "";
 		public function ParticleDataModel()
 		{
 			super();

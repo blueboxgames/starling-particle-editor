@@ -29,70 +29,39 @@ package com.grantech.models
 		 * 
 		 * TODO: Handle duplicate id issue.
 		 */
-		public function set id(value:int):void
-		{
-			this.setProperty("id", value);
-		}
+		public function set id(value:int):void { this.setProperty("id", value); }
 
-		public function get name():String
-		{
-			return this._name;
-		}
-		public function set name(value:String):void
-		{
-			this._name = value;
-		}
+		public function get name():String { return this._name; }
+		public function set name(value:String):void { this._name = value; }
 
-		public function get x():Number
-		{
-			return this.getProperty("x");
-		}
-		public function set x(value:Number):void
-		{
-			this.setProperty("x", value);
-		}
+		public function get x():Number { return this.getProperty("x"); }
+		public function set x(value:Number):void { this.setProperty("x", value); }
 
-		public function get y():Number
-		{
-			return this.getProperty("y");
-		}
-		public function set y(value:Number):void
-		{
-			this.setProperty("y", value);
-		}
+		public function get y():Number { return this.getProperty("y"); }
+		public function set y(value:Number):void { this.setProperty("y", value); }
 
-		public function get alpha():Number
-		{
-			return this.getProperty("alpha");
-		}
-		public function set alpha(value:Number):void
-		{
-			this.setProperty("alpha", value);
-		}
+		public function get alpha():Number { return this.getProperty("alpha"); }
+		public function set alpha(value:Number):void { this.setProperty("alpha", value); }
 
-		public function get order():int
-		{
-			return this._order;
-		}
-		public function set order(value:int):void
-		{
-			this._order = value;
-		}
+		public function get scaleX():Number { return this.getProperty("scaleX"); }
+		public function set scaleX(value:Number):void { this.setProperty("scaleX", value); }
 
-		public function get type():int
-		{
-			return this._type;
-		}
-		public function set type(value:int):void
-		{
-			this._type = value;
-		}
+		public function get scaleY():Number { return this.getProperty("scaleY"); }
+		public function set scaleY(value:Number):void { this.setProperty("scaleY", value); }
+
+		public function get order():int { return this._order; }
+		public function set order(value:int):void { this._order = value; }
+
+		public function get type():int { return this._type; }
+		public function set type(value:int):void { this._type = value; }
 		
 		public function getHierarchicalCollection():ArrayHierarchicalCollection
 		{
 			var ret:ArrayHierarchicalCollection = new ArrayHierarchicalCollection();
 			for each(var key:String in ControlsHelper.instance.keys)
 			{
+				if( !this.hasOwnProperty(key) )
+					continue;
 				var type:String = ControlsHelper.instance.getType(key);
 				var header:String = ControlsHelper.instance.getGroup(key);
 				var index:int = getHeader(header, ret);
