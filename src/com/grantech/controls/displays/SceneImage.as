@@ -11,6 +11,8 @@ package com.grantech.controls.displays
     {
       super(ImageDataModel(layer).texture);
 			this.layer = layer;
+      this.pivotX = width * 0.5;
+      this.pivotY = height * 0.5;
 		}
 		
 		private var _layer:LayerDataModel;

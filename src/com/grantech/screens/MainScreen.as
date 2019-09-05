@@ -56,6 +56,7 @@ package com.grantech.screens
 		private function readjustLayout():void
 		{
 			this.scenePanel.width = stage.stageWidth - this.rightDock.width;
+			this.scenePanel.height = stage.stageHeight;
 		}
 	}
 }

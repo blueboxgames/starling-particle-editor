@@ -11,10 +11,12 @@ package com.grantech.panels
 	import starling.animation.IAnimatable;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
+	import starling.display.Sprite;
 	import starling.events.Event;
 
 	public class ScenePanel extends Screen
 	{
+		private var canvas:Sprite; 
 		public function ScenePanel()
 		{
 			super();
@@ -27,6 +29,11 @@ package com.grantech.panels
 		{
 			super.initialize();
 			this.name = "ScenePanel";
+
+			this.canvas = new Sprite();
+			this.addChild(this.canvas);
+			
+			this.addEventListener(Event.RESIZE, scenePanel_resizeHandler)
 		}
 
 		protected function dataManager_addHandler(event:Event):void
@@ -45,7 +52,7 @@ package com.grantech.panels
 			}
 			sceneObject.x = layer.x;
 			sceneObject.y = layer.y;
-			this.addChild(sceneObject)
+			this.canvas.addChild(sceneObject)
 		}
 
 		protected function dataManager_selectHandler(event:Event):void
@@ -53,7 +60,7 @@ package com.grantech.panels
 			var selectedLayerIndex:int = event.data as int;
 			if( selectedLayerIndex > -1 )
 				DataManager.instance.selectedlayer.addEventListener(Event.CHANGE, selectedLayer_changeHandler);
-			sortChildren(sortMethod);
+			this.canvas.sortChildren(sortMethod);
 		}
 
 		protected function selectedLayer_changeHandler(event:Event):void
@@ -100,9 +107,9 @@ package com.grantech.panels
 
 		private function getObjectById(id:int):ISceneObject
 		{
-			for(var index:int = 0; index < this.numChildren; index++)
+			for(var index:int = 0; index < this.canvas.numChildren; index++)
 			{
-				var object:ISceneObject = this.getChildAt(index) as ISceneObject;
+				var object:ISceneObject = this.canvas.getChildAt(index) as ISceneObject;
 				if( object.layer.id == id )
 					return object;
 			}
@@ -113,6 +120,12 @@ package com.grantech.panels
 		private function sortMethod(left:ISceneObject, right:ISceneObject) : Number
 		{
 			return left.layer.order - right.layer.order;
+		}
+
+		protected function scenePanel_resizeHandler(event:Event):void
+		{
+			this.canvas.x = this.width * 0.5;
+			this.canvas.y = this.height * 0.5;
 		}
 	}
 }
