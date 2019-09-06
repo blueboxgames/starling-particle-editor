@@ -33,7 +33,7 @@ package com.grantech.controls.items
 			this.layout = new AnchorLayout();
 
 			this.iconDisplay = new ImageLoader();
-			this.iconDisplay.layoutData = new AnchorLayoutData(4, 4, 4, 4);
+			this.iconDisplay.layoutData = new AnchorLayoutData(8, 8, 8, 8);
 			this.addChild(this.iconDisplay);
 
 			DataManager.instance.addEventListener(Event.SELECT, dataManager_selectHandler);
