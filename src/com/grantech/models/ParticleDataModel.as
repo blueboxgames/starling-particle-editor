@@ -60,421 +60,138 @@ package com.grantech.models
 			this.blendFuncDestination = 1;
 			this.maxParticles = 300;
 			this.texture = Texture.fromBitmap(new defaultBitmap()) as Texture; //  File.applicationDirectory.resolvePath(File.applicationDirectory.nativePath + "/media/default.png");
-		}
+	 	}
 
-		public function get emitterType():int
-		{
-			return this.getProperty("emitterType");
-		}
-		public function set emitterType(value:int):void
-		{
-			this.setProperty("emitterType", value);
-		}
+		public function get emitterType():int { return this.getProperty("emitterType"); }
+		public function set emitterType(value:int):void { this.setProperty("emitterType", value); }
 
-		public function get duration():Number
-		{
-			return this.getProperty("defaultDuration");
-		}
-		public function set duration(value:Number):void
-		{
-			this.setProperty("defaultDuration", value);
-		}
+		public function get duration():Number { return this.getProperty("defaultDuration"); }
+		public function set duration(value:Number):void { this.setProperty("defaultDuration", value); }
 
-		public function get sourcePositionVariancex():Number
-		{
-			return this.getProperty("sourcePositionVariancex");
-		}
-		public function set sourcePositionVariancex(value:Number):void
-		{
-			this.setProperty("sourcePositionVariancex", value);
-		}
+		public function get sourcePositionVariancex():Number { return this.getProperty("sourcePositionVariancex"); }
+		public function set sourcePositionVariancex(value:Number):void { this.setProperty("sourcePositionVariancex", value); }
 
-		public function get sourcePositionVariancey():Number
-		{
-			return this.getProperty("sourcePositionVariancey");
-		}
-		public function set sourcePositionVariancey(value:Number):void
-		{
-			this.setProperty("sourcePositionVariancey", value);
-		}
+		public function get sourcePositionVariancey():Number { return this.getProperty("sourcePositionVariancey"); }
+		public function set sourcePositionVariancey(value:Number):void { this.setProperty("sourcePositionVariancey", value); }
 
 		// particle configuration
-		public function get particleLifespan():Number
-		{
-			return this.getProperty("particleLifespan");
-		}
-		public function set particleLifespan(value:Number):void
-		{
-			this.setProperty("particleLifespan", value);
-		}
+		public function get particleLifespan():Number { return this.getProperty("particleLifespan"); }
+		public function set particleLifespan(value:Number):void { this.setProperty("particleLifespan", value); }
 
-		public function get particleLifespanVariance():Number
-		{
-			return this.getProperty("particleLifespanVariance");
-		}
-		public function set particleLifespanVariance(value:Number):void
-		{
-			this.setProperty("particleLifespanVariance", value);
-		}
+		public function get particleLifespanVariance():Number { return this.getProperty("particleLifespanVariance"); }
+		public function set particleLifespanVariance(value:Number):void { this.setProperty("particleLifespanVariance", value); }
 
-		public function get startParticleSize():Number
-		{
-			return this.getProperty("startParticleSize");
-		}
-		public function set startParticleSize(value:Number):void
-		{
-			this.setProperty("startParticleSize", value);
-		}
+		public function get startParticleSize():Number { return this.getProperty("startParticleSize"); }
+		public function set startParticleSize(value:Number):void { this.setProperty("startParticleSize", value); }
 
-		public function get startParticleSizeVariance():Number
-		{
-			return this.getProperty("startParticleSizeVariance");
-		}
-		public function set startParticleSizeVariance(value:Number):void
-		{
-			this.setProperty("startParticleSizeVariance", value);
-		}
+		public function get startParticleSizeVariance():Number { return this.getProperty("startParticleSizeVariance"); }
+		public function set startParticleSizeVariance(value:Number):void { this.setProperty("startParticleSizeVariance", value); }
 
-		public function get finishParticleSize():Number
-		{
-			return this.getProperty("finishParticleSize");
-		}
-		public function set finishParticleSize(value:Number):void
-		{
-			this.setProperty("finishParticleSize", value);
-		}
+		public function get finishParticleSize():Number { return this.getProperty("finishParticleSize"); }
+		public function set finishParticleSize(value:Number):void { this.setProperty("finishParticleSize", value); }
 
-		public function get finishParticleSizeVariance():Number
-		{
-			return this.getProperty("finishParticleSizeVariance");
-		}
-		public function set finishParticleSizeVariance(value:Number):void
-		{
-			this.setProperty("finishParticleSizeVariance", value);
-		}
+		public function get finishParticleSizeVariance():Number { return this.getProperty("finishParticleSizeVariance"); }
+		public function set finishParticleSizeVariance(value:Number):void { this.setProperty("finishParticleSizeVariance", value); }
 
-		public function get angle():Number
-		{
-			return deg2rad(this.getProperty("angle"));
-		}
-		public function set angle(value:Number):void
-		{
-			this.setProperty("angle", rad2deg(value));
-		}
+		public function get angle():Number { return deg2rad(this.getProperty("angle")); }
+		public function set angle(value:Number):void { this.setProperty("angle", rad2deg(value)); }
 
-		public function get angleVariance():Number
-		{
-			return deg2rad(this.getProperty("angleVariance"));
-		}
-		public function set angleVariance(value:Number):void
-		{
-			this.setProperty("angleVariance", rad2deg(value));
-		}
+		public function get angleVariance():Number { return deg2rad(this.getProperty("angleVariance")); }
+		public function set angleVariance(value:Number):void { this.setProperty("angleVariance", rad2deg(value)); }
 
-		public function get rotationStart():Number
-		{
-			return this.getProperty("rotationStart");
-		}
-		public function set rotationStart(value:Number):void
-		{
-			this.setProperty("rotationStart", value);
-		}
+		public function get rotationStart():Number { return this.getProperty("rotationStart"); }
+		public function set rotationStart(value:Number):void { this.setProperty("rotationStart", value); }
 
-		public function get rotationStartVariance():Number
-		{
-			return this.getProperty("rotationStartVariance");
-		}
-		public function set rotationStartVariance(value:Number):void
-		{
-			this.setProperty("rotationStartVariance", value);
-		}
+		public function get rotationStartVariance():Number { return this.getProperty("rotationStartVariance"); }
+		public function set rotationStartVariance(value:Number):void { this.setProperty("rotationStartVariance", value); }
 
-		public function get rotationEnd():Number
-		{
-			return this.getProperty("rotationEnd");
-		}
-		public function set rotationEnd(value:Number):void
-		{
-			this.setProperty("rotationEnd", value);
-		}
+		public function get rotationEnd():Number { return this.getProperty("rotationEnd"); }
+		public function set rotationEnd(value:Number):void { this.setProperty("rotationEnd", value); }
 
-		public function get rotationEndVariance():Number
-		{
-			return this.getProperty("rotationEndVariance");
-		}
-		public function set rotationEndVariance(value:Number):void
-		{
-			this.setProperty("rotationEndVariance", value);
-		}
+		public function get rotationEndVariance():Number { return this.getProperty("rotationEndVariance"); }
+		public function set rotationEndVariance(value:Number):void { this.setProperty("rotationEndVariance", value); }
 
 		// gravity configuration
-		public function get speed():Number
-		{
-			return this.getProperty("speed");
-		}
-		public function set speed(value:Number):void
-		{
-			this.setProperty("speed", value);
-		}
+		public function get speed():Number { return this.getProperty("speed"); }
+		public function set speed(value:Number):void { this.setProperty("speed", value); }
 
-		public function get speedVariance():Number
-		{
-			return this.getProperty("speedVariance");
-		}
-		public function set speedVariance(value:Number):void
-		{
-			this.setProperty("speedVariance", value);
-		}
+		public function get speedVariance():Number { return this.getProperty("speedVariance"); }
+		public function set speedVariance(value:Number):void { this.setProperty("speedVariance", value); }
 
-		public function get gravityx():Number
-		{
-			return this.getProperty("gravityx");
-		}
-		public function set gravityx(value:Number):void
-		{
-			this.setProperty("gravityx", value);
-		}
+		public function get gravityx():Number { return this.getProperty("gravityx"); }
+		public function set gravityx(value:Number):void { this.setProperty("gravityx", value); }
 
-		public function get gravityy():Number
-		{
-			return this.getProperty("gravityy");
-		}
-		public function set gravityy(value:Number):void
-		{
-			this.setProperty("gravityy", value);
-		}
+		public function get gravityy():Number { return this.getProperty("gravityy"); }
+		public function set gravityy(value:Number):void { this.setProperty("gravityy", value); }
 
-		public function get radialAcceleration():Number
-		{
-			return this.getProperty("radialAcceleration");
-		}
-		public function set radialAcceleration(value:Number):void
-		{
-			this.setProperty("radialAcceleration", value);
-		}
+		public function get radialAcceleration():Number { return this.getProperty("radialAcceleration"); }
+		public function set radialAcceleration(value:Number):void { this.setProperty("radialAcceleration", value); }
 
-		public function get radialAccelVariance():Number
-		{
-			return this.getProperty("radialAccelVariance");
-		}
-		public function set radialAccelVariance(value:Number):void
-		{
-			this.setProperty("radialAccelVariance", value);
-		}
+		public function get radialAccelVariance():Number { return this.getProperty("radialAccelVariance"); }
+		public function set radialAccelVariance(value:Number):void { this.setProperty("radialAccelVariance", value); }
 
-		public function get tangentialAcceleration():Number
-		{
-			return this.getProperty("tangentialAcceleration");
-		}
-		public function set tangentialAcceleration(value:Number):void
-		{
-			this.setProperty("tangentialAcceleration", value);
-		}
+		public function get tangentialAcceleration():Number { return this.getProperty("tangentialAcceleration"); }
+		public function set tangentialAcceleration(value:Number):void { this.setProperty("tangentialAcceleration", value); }
 
-		public function get tangentialAccelVariance():Number
-		{
-			return this.getProperty("tangentialAccelVariance");
-		}
-		public function set tangentialAccelVariance(value:Number):void
-		{
-			this.setProperty("tangentialAccelVariance", value);
-		}
+		public function get tangentialAccelVariance():Number { return this.getProperty("tangentialAccelVariance"); }
+		public function set tangentialAccelVariance(value:Number):void { this.setProperty("tangentialAccelVariance", value); }
 
-		public function get maxRadius():Number
-		{
-			return this.getProperty("maxRadius");
-		}
-		public function set maxRadius(value:Number):void
-		{
-			this.setProperty("maxRadius", value);
-		}
+		public function get maxRadius():Number { return this.getProperty("maxRadius"); }
+		public function set maxRadius(value:Number):void { this.setProperty("maxRadius", value); }
 
-		public function get maxRadiusVariance():Number
-		{
-			return this.getProperty("maxRadiusVariance");
-		}
-		public function set maxRadiusVariance(value:Number):void
-		{
-			this.setProperty("maxRadiusVariance", value);
-		}
+		public function get maxRadiusVariance():Number { return this.getProperty("maxRadiusVariance"); }
+		public function set maxRadiusVariance(value:Number):void { this.setProperty("maxRadiusVariance", value); }
 
-		public function get minRadius():Number
-		{
-			return this.getProperty("minRadius");
-		}
-		public function set minRadius(value:Number):void
-		{
-			this.setProperty("minRadius", value);
-		}
+		public function get minRadius():Number { return this.getProperty("minRadius"); }
+		public function set minRadius(value:Number):void { this.setProperty("minRadius", value); }
 
-		public function get minRadiusVariance():Number
-		{
-			return this.getProperty("minRadiusVariance");
-		}
-		public function set minRadiusVariance(value:Number):void
-		{
-			this.setProperty("minRadiusVariance", value);
-		}
+		public function get minRadiusVariance():Number { return this.getProperty("minRadiusVariance"); }
+		public function set minRadiusVariance(value:Number):void { this.setProperty("minRadiusVariance", value); }
 
-		public function get rotatePerSecond():Number
-		{
-			return this.getProperty("rotatePerSecond");
-		}
-		public function set rotatePerSecond(value:Number):void
-		{
-			this.setProperty("rotatePerSecond", value);
-		}
+		public function get rotatePerSecond():Number { return this.getProperty("rotatePerSecond"); }
+		public function set rotatePerSecond(value:Number):void { this.setProperty("rotatePerSecond", value); }
 
-		public function get rotatePerSecondVariance():Number
-		{
-			return this.getProperty("rotatePerSecondVariance");
-		}
-		public function set rotatePerSecondVariance(value:Number):void
-		{
-			this.setProperty("rotatePerSecondVariance", value);
-		}
+		public function get rotatePerSecondVariance():Number { return this.getProperty("rotatePerSecondVariance"); }
+		public function set rotatePerSecondVariance(value:Number):void { this.setProperty("rotatePerSecondVariance", value); }
 
-		
 		// color configuration
-		public function get startColor():ColorArgb
-		{
-			return this.getProperty("startColor");
-		}
-		public function set startColor(value:ColorArgb):void
-		{
-			this.setProperty("startColor", value);
-		}
-		public function get startColorRed():Number
-		{
-			return this.startColor.red;
-		}
-		public function get startColorGreen():Number
-		{
-			return this.startColor.green;
-		}
-		public function get startColorBlue():Number
-		{
-			return this.startColor.blue;
-		}
-		public function get startColorAlpha():Number
-		{
-			return this.startColor.alpha;
-		}
+		public function get startColor():ColorArgb { return this.getProperty("startColor"); }
+		public function set startColor(value:ColorArgb):void { this.setProperty("startColor", value); }
+		public function get startColorRed():Number { return this.startColor.red; }
+		public function get startColorGreen():Number { return this.startColor.green; }
+		public function get startColorBlue():Number { return this.startColor.blue; }
+		public function get startColorAlpha():Number { return this.startColor.alpha; }
 
-		public function get startColorVariance():ColorArgb
-		{
-			return this.getProperty("startColorVariance");
-		}
-		public function set startColorVariance(value:ColorArgb):void
-		{
-			this.setProperty("startColorVariance", value);
-		}
-		public function get startColorVarianceRed():Number
-		{
-			return this.startColorVariance.red;
-		}
-		public function get startColorVarianceGreen():Number
-		{
-			return this.startColorVariance.green;
-		}
-		public function get startColorVarianceBlue():Number
-		{
-			return this.startColorVariance.blue;
-		}
-		public function get startColorVarianceAlpha():Number
-		{
-			return this.startColorVariance.alpha;
-		}
+		public function get startColorVariance():ColorArgb { return this.getProperty("startColorVariance"); }
+		public function set startColorVariance(value:ColorArgb):void { this.setProperty("startColorVariance", value); }
+		public function get startColorVarianceRed():Number { return this.startColorVariance.red; }
+		public function get startColorVarianceGreen():Number { return this.startColorVariance.green; }
+		public function get startColorVarianceBlue():Number { return this.startColorVariance.blue; }
+		public function get startColorVarianceAlpha():Number { return this.startColorVariance.alpha; }
 
-		public function get finishColor():ColorArgb
-		{
-			return this.getProperty("finishColor");
-		}
-		public function set finishColor(value:ColorArgb):void
-		{
-			this.setProperty("finishColor", value);
-		}
-		public function get finishColorRed():Number
-		{
-			return this.finishColor.red;
-		}
-		public function get finishColorGreen():Number
-		{
-			return this.finishColor.green;
-		}
-		public function get finishColorBlue():Number
-		{
-			return this.finishColor.blue;
-		}
-		public function get finishColorAlpha():Number
-		{
-			return this.finishColor.alpha;
-		}
+		public function get finishColor():ColorArgb { return this.getProperty("finishColor"); }
+		public function set finishColor(value:ColorArgb):void { this.setProperty("finishColor", value); }
+		public function get finishColorRed():Number { return this.finishColor.red; }
+		public function get finishColorGreen():Number { return this.finishColor.green; }
+		public function get finishColorBlue():Number { return this.finishColor.blue; }
+		public function get finishColorAlpha():Number { return this.finishColor.alpha; }
 
-		public function get finishColorVariance():ColorArgb
-		{
-			return this.getProperty("finishColorVariance");
-		}
-		public function set finishColorVariance(value:ColorArgb):void
-		{
-			this.setProperty("finishColorVariance", value);
-		}
-		public function get finishColorVarianceRed():Number
-		{
-			return this.finishColorVariance.red;
-		}
-		public function get finishColorVarianceGreen():Number
-		{
-			return this.finishColorVariance.green;
-		}
-		public function get finishColorVarianceBlue():Number
-		{
-			return this.finishColorVariance.blue;
-		}
-		public function get finishColorVarianceAlpha():Number
-		{
-			return this.finishColorVariance.alpha;
-		}
+		public function get finishColorVariance():ColorArgb { return this.getProperty("finishColorVariance"); }
+		public function set finishColorVariance(value:ColorArgb):void { this.setProperty("finishColorVariance", value); }
+		public function get finishColorVarianceRed():Number { return this.finishColorVariance.red; }
+		public function get finishColorVarianceGreen():Number { return this.finishColorVariance.green; }
+		public function get finishColorVarianceBlue():Number { return this.finishColorVariance.blue; }
+		public function get finishColorVarianceAlpha():Number { return this.finishColorVariance.alpha; }
 
-		public function get blendFuncSource():int
-		{
-			return this.getProperty("blendFuncSource");
-		}
-		public function set blendFuncSource(value:int):void
-		{	
-			this.setProperty("blendFuncSource", value);
-		}
+		public function get blendFuncSource():int { return this.getProperty("blendFuncSource"); }
+		public function set blendFuncSource(value:int):void { this.setProperty("blendFuncSource", value); }
+		public function get blendFuncDestination():int { return this.getProperty("blendFuncDestination"); }
+		public function set blendFuncDestination(value:int):void { this.setProperty("blendFuncDestination", value); }
 
-		public function get blendFuncDestination():int
-		{
-			return this.getProperty("blendFuncDestination");
-		}
-		public function set blendFuncDestination(value:int):void
-		{
-			this.setProperty("blendFuncDestination", value);
-		}
-
-		public function get maxParticles():Number
-		{
-			return this.getProperty("maxParticles");
-		}
-		public function set maxParticles(value:Number):void
-		{
-			this.setProperty("maxParticles", value);
-		}
-
-		public function get texture():Texture
-		{
-			return this.getProperty("texture");
-		}
-		public function set texture(value:Texture):void
-		{
-			this.setProperty("texture", value);
-		}
-
-		public function get jsonOutput():Object
-		{
-			return {
+		public function get maxParticles():Number { return this.getProperty("maxParticles"); }
+		public function set maxParticles(value:Number):void { this.setProperty("maxParticles", value); }
+ 
+/*		public function get jsonOutput():Object { return {
 				emitterType: this.emitterType,
 				duration: this.duration,
 				sourcePositionVariancex: this.sourcePositionVariancex,
@@ -525,7 +242,7 @@ package com.grantech.models
 				blendFuncDestination: this.blendFuncDestination,
 				maxParticles: this.maxParticles
 			}
-		}
+		} */
 
 		public function parseJsonConfig(json:String):void 
 		{
@@ -566,8 +283,7 @@ package com.grantech.models
 			this.blendFuncSource = config.blendFuncSource;
 			this.blendFuncDestination = config.blendFuncDestination;
 			this.duration = config.duration;
-			this.maxParticles = config.maxParticles;
-		}
+			this.maxParticles = config.maxParticles; }
 
 		public function parseXMLConfig(xml:String):void
 		{
@@ -610,14 +326,8 @@ package com.grantech.models
 			this.duration = getFloatValue(config.duration);
 			this.maxParticles = getIntValue(config.maxParticles);
 
-			function getIntValue(element:XMLList):int
-			{
-					return parseInt(element.attribute("value"));
-			}
-			function getFloatValue(element:XMLList):Number
-			{
-					return parseFloat(element.attribute("value"));
-			}
+			function getIntValue(element:XMLList):int { return parseInt(element.attribute("value")); }
+			function getFloatValue(element:XMLList):Number { return parseFloat(element.attribute("value")); }
 			function getColor(element:XMLList):ColorArgb
 			{
 					var color:ColorArgb = new ColorArgb();
