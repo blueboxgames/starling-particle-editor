@@ -4,6 +4,7 @@ package com.grantech.models
 
 	import starling.events.Event;
 	import starling.events.EventDispatcher;
+	import starling.extensions.ColorArgb;
 
 	/**
 	 * Base Data serializeable class.
@@ -25,6 +26,23 @@ package com.grantech.models
 			this.dispatchEventWith(Event.CHANGE, false, key);
 		}
 		
+		public function toJson():String
+		{
+			var ret:String = '{\n"';
+			var value:*;
+			var quotation:String;
+			for(var key:String in _properties)
+			{
+				if( _properties[key] is String )
+					ret += key + '":"' + _properties[key] + '",\n"';
+				else if( _properties[key] is ColorArgb )
+					ret += key + '":[' + _properties[key].alpha + "," + _properties[key].red + "," + _properties[key].green + "," + _properties[key].blue + '],\n"';
+				else
+					ret += key + '":' + _properties[key] + ',\n"';
+			}		
+			return ret.substr(0, ret.length- 3) + '\n}';
+		}
+
 		/**
 		 * Constructor
 		 */

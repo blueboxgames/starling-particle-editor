@@ -122,7 +122,8 @@ package com.grantech.controls.items
 		private function saveConfig():void
 		{
 			var fileRef:FileReference=new FileReference();
-			fileRef.save(JSON.stringify(ParticleDataModel(DataManager.instance.selectedlayer).jsonOutput), this.label);
+			fileRef.save(DataManager.instance.selectedlayer.toJson(), this.label);
+			// fileRef.save(JSON.stringify(ParticleDataModel(DataManager.instance.selectedlayer).jsonOutput), this.label);
 		}
 
 		private function setData(bmpData:Texture):void
