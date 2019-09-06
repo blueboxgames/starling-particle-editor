@@ -3,7 +3,7 @@ package com.grantech.panels
 	import com.grantech.controls.items.FooterItemRenderer;
 	import com.grantech.controls.items.LayerListItemRenderer;
 	import com.grantech.managers.DataManager;
-	import com.grantech.models.LayerDataModel;
+	import com.grantech.models.ParticleDataModel;
 	import com.grantech.utils.Localizations;
 
 	import feathers.controls.Callout;
@@ -50,14 +50,15 @@ package com.grantech.panels
 		protected function layersPanelFooterFactory():List
 		{
 			var footerLayout:HorizontalLayout = new HorizontalLayout();
+			footerLayout.hasVariableItemDimensions = true;
 			footerLayout.padding = footerLayout.gap = 2;
-			footerLayout.horizontalAlign = HorizontalAlign.RIGHT;
+			footerLayout.horizontalAlign = HorizontalAlign.LEFT;
 
 			footerList = new List();
 			footerList.layout = footerLayout;
 			footerList.backgroundSkin = new Quad(1,1, 0x272822);
 			footerList.itemRendererFactory = function () : IListItemRenderer { return new  FooterItemRenderer(); }
-			footerList.dataProvider = new ListCollection([FooterItemRenderer.TYPE_ADD, FooterItemRenderer.TYPE_REMOVE, FooterItemRenderer.TYPE_UP, FooterItemRenderer.TYPE_DOWN, FooterItemRenderer.TYPE_SAVE]);
+			footerList.dataProvider = new ListCollection([FooterItemRenderer.TYPE_OPEN, FooterItemRenderer.TYPE_SAVE, FooterItemRenderer.TYPE_EMPTY, FooterItemRenderer.TYPE_ADD, FooterItemRenderer.TYPE_REMOVE, FooterItemRenderer.TYPE_UP, FooterItemRenderer.TYPE_DOWN, FooterItemRenderer.TYPE_IMPORT, FooterItemRenderer.TYPE_EXPORT]);
 			footerList.addEventListener(Event.CHANGE, footer_changeHandler);
 			return footerList;
 		}
@@ -83,6 +84,18 @@ package com.grantech.panels
 			var selectedItem:String = List(footer).selectedItem as String;
 			switch( selectedItem )
 			{
+				case FooterItemRenderer.TYPE_SAVE:
+					DataManager.instance.save();
+					break;
+
+				case FooterItemRenderer.TYPE_OPEN:
+					DataManager.instance.open();
+					break;
+				
+				// select leyer assertion
+				if( DataManager.instance.selectedlayer == null )
+					return;
+				
 				case FooterItemRenderer.TYPE_ADD:
 					addLayer();
 					break;
@@ -98,6 +111,15 @@ package com.grantech.panels
 				case FooterItemRenderer.TYPE_DOWN:
 					DataManager.instance.shiftDown(listDisplay.selectedIndex);
 					break;
+
+				case FooterItemRenderer.TYPE_IMPORT:
+					ParticleDataModel(DataManager.instance.selectedlayer).importConfig();
+					break;
+				
+				case FooterItemRenderer.TYPE_EXPORT:
+					ParticleDataModel(DataManager.instance.selectedlayer).exportConfig();
+					break;
+
 			}
 			List(footer).selectedIndex = -1;
 		}
@@ -108,7 +130,7 @@ package com.grantech.panels
 			// DataManager.instance.addLayer();
 			var popUp:List = new List();
 			popUp.dataProvider = new ListCollection([0,1]);
-			popUp.itemRendererProperties.labelFunction = function(index:int, item:Object):String { return Localizations.instance.get("footer_add_item_" + index); }
+			popUp.itemRendererProperties.labelFunction = function(index:int, item:Object):String { return Localizations.instance.get("layer_type_" + index); }
 			popUp.addEventListener(Event.CHANGE, footerPopUp_changeHandler);
 			Callout.show(popUp, footerList);
 		}
@@ -118,10 +140,7 @@ package com.grantech.panels
 			var list:List = event.target as List;
 			Callout(list.parent).close();
 
-			if( list.selectedIndex == 0 )
-				DataManager.instance.addLayer(LayerDataModel.TYPE_PARTICLE);
-			else if( list.selectedIndex == 1 )
-				DataManager.instance.addLayer(LayerDataModel.TYPE_IMAGE);
+			DataManager.instance.addLayer(list.selectedItem as int);
 		}
 
 		private function removeLayer():void

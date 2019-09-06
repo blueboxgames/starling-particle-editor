@@ -8,6 +8,7 @@ package com.grantech.controls.items
 	import feathers.layout.AnchorLayoutData;
 
 	import starling.display.Quad;
+	import starling.events.Event;
 
 	public class LayerListItemRenderer extends AbstractTouchableListItemRenderer
 	{
@@ -19,7 +20,7 @@ package com.grantech.controls.items
 		override protected function initialize():void
 		{
 			super.initialize();
-			this.height = 54;
+			this.height = 48;
 
 			this.backgroundDisabledSkin = new Quad(1,1, 0x333333);
 			this.backgroundSelectedSkin = new Quad(1,1, 0x666666);
@@ -39,18 +40,26 @@ package com.grantech.controls.items
 		{
 			super.commitData();
 			
-			if (this.data == null )
+			if( this.data == null )
 				return;
 			this.layer = data as LayerDataModel;
-			this.titleDisplay.text = "Id: " + this.layer.id;
+			this.titleDisplay.text = this.layer.name;
 			
-			this.iconDisplay.source = layer.type == LayerDataModel.TYPE_PARTICLE ? Main.assetManager.getTexture("up") : null;
+			this.iconDisplay.source = layer.texture;
 		}
 
 		override public function set isSelected(value:Boolean):void
 		{
 			super.isSelected = value;
+			if( value )
+				this.layer.addEventListener(Event.CHANGE, this.layer_changeHandler);
 			this.backgroundSkin = value ? this.backgroundSelectedSkin : this.backgroundDisabledSkin;
+		}
+
+		protected function layer_changeHandler(event:Event):void
+		{
+			if( event.data == "texture" )
+				this.iconDisplay.source = layer.getProperty(event.data as String);
 		}
 
 		// protected function loadButton_triggeredHandler(event:Event):void
@@ -79,5 +88,6 @@ package com.grantech.controls.items
 		// 	event.currentTarget.removeEventListener(Event.COMPLETE, configFile_completeHandler);
 		// 	DataManager.instance.editLayerDataFile( event.currentTarget );
 		// }
+
 	}
 }

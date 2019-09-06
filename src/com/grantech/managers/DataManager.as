@@ -4,14 +4,19 @@ package com.grantech.managers
 	import com.grantech.models.ImageDataModel;
 	import com.grantech.models.LayerDataModel;
 	import com.grantech.models.ParticleDataModel;
+	import com.grantech.utils.Localizations;
 
 	import feathers.core.IFeathersEventDispatcher;
 	import feathers.data.ArrayHierarchicalCollection;
 	import feathers.data.IHierarchicalCollection;
 	import feathers.data.ListCollection;
 
+	import flash.net.FileFilter;
+	import flash.net.FileReference;
+
 	import starling.events.Event;
 	import starling.events.EventDispatcher;
+	import starling.extensions.ColorArgb;
 
 	/**
 	 * Dispatched when a layer is added.
@@ -116,24 +121,37 @@ package com.grantech.managers
 		public function addLayer(type:int):void
 		{
 			var layer:LayerDataModel;
-			// Create new particle model.
-			if (type == LayerDataModel.TYPE_PARTICLE)
-			{
+			if( type == LayerDataModel.TYPE_PARTICLE )
 				layer = new ParticleDataModel() as LayerDataModel;
-			}
-			else if (type == LayerDataModel.TYPE_IMAGE)
-			{
+			else if( type == LayerDataModel.TYPE_IMAGE )
 				layer = new ImageDataModel() as LayerDataModel;
-			}
 
-			layer.id = this.uid += 1;
 			layer.type = type;
 			layer.x = ControlsHelper.instance.getInitValue("x");
 			layer.y = ControlsHelper.instance.getInitValue("y");
 			layer.alpha = ControlsHelper.instance.getInitValue("alpha");
 			layer.scaleX = ControlsHelper.instance.getInitValue("scaleX");
 			layer.scaleY = ControlsHelper.instance.getInitValue("scaleY");
+			layer.name = Localizations.instance.get("layer_type_" + type) + " " + layer.id;
+			this.addLayerConfig(layer, null);
+		}
+
+		public function addLayerConfig(layer:LayerDataModel, config:Object):void
+		{
+			layer.id = this.uid += 1;
 			layer.order = this.layerDataProvider.length;
+
+			// set opened config
+			if( config != null )
+			{
+				for( var key:String in config )
+				{
+					if( config[key] is Array )
+						layer.setProperty(key, new ColorArgb(config[key][1], config[key][2], config[key][3], config[key][0]));
+					else
+						layer.setProperty(key, config[key]);
+				}
+			}
 			
 			// Add model to list.
 			this.layerDataProvider.addItem(layer);
@@ -218,12 +236,57 @@ package com.grantech.managers
 			newLayer.order = tmp;
 
 			this.layerDataProvider.refresh();
-			selectLayerAt(index + direction);
+			this.selectLayerAt(index + direction);
 		}
 
 		private function orderFunction(left:LayerDataModel, right:LayerDataModel):int
 		{
 			return left.order - right.order;
  		}
+
+		public function open():void
+		{
+			var fr:FileReference = new FileReference();
+			fr.addEventListener("select", fr_selectHandler);
+			fr.browse([new FileFilter("Project files", "*.mpf"), new FileFilter("All Files", "*.*")]);
+
+			function fr_selectHandler(event:*):void
+			{
+				fr.removeEventListener("select", fr_selectHandler);
+				fr.addEventListener("complete", fr_completeHandler);
+				fr.load();
+			}
+
+			function fr_completeHandler(event:*):void
+			{
+				fr.removeEventListener("complete", fr_completeHandler);
+				this.uid = 0;
+				layerDataProvider.removeAll();
+				var list:Object = JSON.parse(fr.data.toString());
+				var len:int = list.length;
+				for(var i:int = 0; i < len; i++)
+				{
+					var layer:LayerDataModel;
+					if( list[i]["type"] == LayerDataModel.TYPE_IMAGE )
+						layer = new ImageDataModel() as LayerDataModel;
+					else if( list[i]["type"] == LayerDataModel.TYPE_PARTICLE )
+						layer = new ParticleDataModel() as LayerDataModel;
+					addLayerConfig(layer, list[i]);
+				}
+			}
+		}
+		
+		public function save():void
+		{
+			var len:int = layerDataProvider.length;
+			var output:String = "[\n";
+			for(var i:int = 0; i < len; i++)
+			{
+				var layer:LayerDataModel = layerDataProvider.getItemAt(i) as LayerDataModel;
+				output += layer.toJson() + ',\n';
+			}
+			output = output.substr(0, output.length - 2) + '\n]';
+			new FileReference().save(output, "data.mpf");
+		}
 	}
 }

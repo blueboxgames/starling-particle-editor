@@ -1,5 +1,10 @@
 package com.grantech.models
 {
+	import com.grantech.managers.DataManager;
+
+	import flash.net.FileFilter;
+	import flash.net.FileReference;
+
 	import starling.extensions.ColorArgb;
 	import starling.textures.Texture;
 	import starling.utils.deg2rad;
@@ -9,18 +14,8 @@ package com.grantech.models
 	{
 		[Embed(source="/media/default.png")]
 		public static var defaultBitmap:Class;
-		public var load:String = "";
-		public var save:String = "";
+		
 		public function ParticleDataModel()
-		{
-			super();
-			this.initialize();
-		}
- 
-		/**
-		 * This function will set default properties.
-		 */
-		protected function initialize():void
 		{
 			this.emitterType = 0;
 			this.duration = -1.00;
@@ -337,6 +332,35 @@ package com.grantech.models
 					color.alpha = parseFloat(element.attribute("alpha"));
 					return color;
 			}
+		}
+		
+		public function importConfig():void
+		{
+			var fr:FileReference = new FileReference();
+			fr.addEventListener("select", fr_selectHandler);
+			fr.browse([new FileFilter("Particle Config", "*.xml;*.json;*.pex"), new FileFilter("All Files", "*.*")]);
+
+			function fr_selectHandler(event:*):void
+			{
+				fr.removeEventListener("select", fr_selectHandler);
+				fr.addEventListener("complete", fr_completeHandler);
+				fr.load();
+			}
+
+			function fr_completeHandler(event:*):void
+			{
+				fr.removeEventListener("complete", fr_completeHandler);
+				var byteStr:String = fr.data.toString();
+				if( byteStr.substr(0,10).search("<") > -1 )
+					ParticleDataModel(DataManager.instance.selectedlayer).parseXMLConfig(byteStr);
+				else
+					ParticleDataModel(DataManager.instance.selectedlayer).parseJsonConfig(byteStr);
+			}
+		}
+
+		public function exportConfig():void
+		{
+			// new FileReference().save(JSON.stringify(jsonOutput), name);
 		}
 	}
 }
