@@ -44,6 +44,7 @@ package
       this.addView(MainScreen.NAME, MainScreen);
       
       assetManager = new AssetManager(); 
+      assetManager.verbose = false;
       assetManager.enqueue(File.applicationDirectory.resolvePath("media"));
       assetManager.loadQueue(sadas);
     }

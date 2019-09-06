@@ -12,11 +12,15 @@ package com.grantech.controls.items
 
 	public class FooterItemRenderer extends AbstractTouchableListItemRenderer
 	{
+		static public const TYPE_OPEN:String = "open"
+		static public const TYPE_SAVE:String = "save";
+		static public const TYPE_EMPTY:String = "";
 		static public const TYPE_ADD:String = "add";
 		static public const TYPE_REMOVE:String = "remove";
 		static public const TYPE_UP:String = "up";
 		static public const TYPE_DOWN:String = "down";
-		static public const TYPE_SAVE:String = "save";
+		static public const TYPE_IMPORT:String = "import";
+		static public const TYPE_EXPORT:String = "export";
 
 		private var type:String;
 		private var iconDisplay:ImageLoader;
@@ -37,6 +41,8 @@ package com.grantech.controls.items
 			this.addChild(this.iconDisplay);
 
 			DataManager.instance.addEventListener(Event.SELECT, dataManager_selectHandler);
+			DataManager.instance.addEventListener(Event.ADDED, dataManager_addedremovedHandler);
+			DataManager.instance.addEventListener(Event.REMOVED, dataManager_addedremovedHandler);
 		}
 
 		override protected function commitData():void
@@ -46,7 +52,14 @@ package com.grantech.controls.items
 			if (this.data == null )
 				return;
 			this.type = this.data as String;
-			enabled = this.type == TYPE_ADD;
+			if( this.type == TYPE_EMPTY )
+			{
+				this.width = this.owner.width - (8 * 32) - (11 * 2)
+				alpha = 0;
+				return;
+			}
+
+			enabled = this.type == TYPE_ADD || this.type == TYPE_OPEN;
 			this.iconDisplay.source = Main.assetManager.getTexture(this.data as String);
 		}
 
@@ -73,21 +86,30 @@ package com.grantech.controls.items
 					enabled = index < DataManager.instance.layerDataProvider.length - 1;
 					break;
 				
-				case TYPE_SAVE:
+				case TYPE_IMPORT:
+				case TYPE_EXPORT:
 					enabled = index > -1 && DataManager.instance.selectedlayer.type == LayerDataModel.TYPE_PARTICLE;
 					break;
 			}
 		}
 
+		private function dataManager_addedremovedHandler(event:Event):void
+		{
+			if( this.type == TYPE_SAVE )
+				enabled = DataManager.instance.layerDataProvider.length > 0;
+		}
+
 		public function set enabled(value:Boolean):void
 		{
 			isEnabled = value;
-			alpha = value ? 1 : 0.5;
+			alpha = value ? 1 : 0.3;
 		}
 
 		override public function dispose():void
 		{
-			DataManager.instance.removeEventListener(Event.SELECT, dataManager_selectHandler)
+			DataManager.instance.removeEventListener(Event.SELECT, dataManager_selectHandler);
+			DataManager.instance.removeEventListener(Event.ADDED, dataManager_addedremovedHandler);
+			DataManager.instance.removeEventListener(Event.REMOVED, dataManager_addedremovedHandler);
 			super.dispose();
 		}
 
