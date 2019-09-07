@@ -3,19 +3,25 @@ package com.grantech.panels
 	import com.grantech.controls.items.FooterItemRenderer;
 	import com.grantech.controls.items.LayerListItemRenderer;
 	import com.grantech.managers.DataManager;
+	import com.grantech.models.LayerDataModel;
 	import com.grantech.models.ParticleDataModel;
 	import com.grantech.utils.Localizations;
 
 	import feathers.controls.Callout;
+	import feathers.controls.Label;
 	import feathers.controls.List;
 	import feathers.controls.PanelScreen;
 	import feathers.controls.ScrollBarDisplayMode;
+	import feathers.controls.TextInput;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.data.ListCollection;
+	import feathers.events.FeathersEventType;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.HorizontalLayout;
+
+	import flash.geom.Rectangle;
 
 	import starling.display.Quad;
 	import starling.events.Event;
@@ -33,15 +39,13 @@ package com.grantech.panels
 			this.layout = new AnchorLayout();
 			
 			this.listDisplay = new List();
+			this.listDisplay.selectedIndex = -1;
 			this.listDisplay.layoutData = new AnchorLayoutData(0, 0, 0, 0);
 			this.listDisplay.scrollBarDisplayMode = ScrollBarDisplayMode.FLOAT;
-			this.listDisplay.itemRendererFactory = function():IListItemRenderer
-			{
-				return new LayerListItemRenderer() as IListItemRenderer;
-			}
-			this.listDisplay.selectedIndex = -1;
 			this.listDisplay.dataProvider = DataManager.instance.layerDataProvider;
 			this.listDisplay.addEventListener(Event.CHANGE, listDisplay_changeHandler);
+			this.listDisplay.addEventListener(Event.SELECT, listDisplay_selectHandler);
+			this.listDisplay.itemRendererFactory = function():IListItemRenderer { return new LayerListItemRenderer() as IListItemRenderer; }
 			this.addChild(this.listDisplay);
 			
 			this.footerFactory = layersPanelFooterFactory;
@@ -68,6 +72,39 @@ package com.grantech.panels
 			this.listDisplay.removeEventListener(Event.CHANGE, listDisplay_changeHandler);
 			this.listDisplay.selectedIndex = event.data.index;
 			this.listDisplay.addEventListener(Event.CHANGE, listDisplay_changeHandler);
+		}
+
+		private function listDisplay_selectHandler(event:Event):void
+		{
+			var layer:LayerDataModel = event.data[0] as LayerDataModel;
+			var details:int = event.data[1] as int;
+
+			if( details == LayerListItemRenderer.DETAILS_NAME )
+			{
+				var rect:Rectangle = Label(event.data[2]).getBounds(listDisplay);
+				var input:TextInput = new TextInput();
+				input.x = rect.x - 5;
+				input.y = rect.y;
+				// input.width = rect.width + 20;
+				input.height = rect.height;
+				input.text = layer.name;
+				input.selectRange(0, layer.name.length);
+				input.setFocus();
+				input.addEventListener(FeathersEventType.FOCUS_OUT, input_editHandler);
+				input.addEventListener(FeathersEventType.FOCUS_OUT, input_editHandler);
+				listDisplay.addChild(input);
+				function input_editHandler(event:Event):void
+				{
+					layer.name = input.text;
+					input.removeEventListener(FeathersEventType.FOCUS_OUT,	input_editHandler);
+					input.removeEventListener(FeathersEventType.ENTER, 			input_editHandler);
+					input.removeFromParent(true);
+				}
+			}
+			else if( details == LayerListItemRenderer.DETAILS_ICON )
+			{
+				layer.importTexture();
+			}
 		}
 
 		protected function listDisplay_changeHandler(event:Event):void

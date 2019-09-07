@@ -32,7 +32,8 @@ package com.grantech.panels
 			var selectedLayerInde:int = event.data as int;
 			if( selectedLayerInde < 0 )
 			{
-				this.groupedList.dataProvider.removeAll();
+				if( this.groupedList.dataProvider != null )
+					this.groupedList.dataProvider.removeAll();
 				return;
 			}
 			// if(this.groupedList.dataProvider == DataManager.instance.currentlayer.get)
