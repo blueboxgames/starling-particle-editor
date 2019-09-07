@@ -12,10 +12,10 @@ package com.grantech.models
 	public class SerializableDataModel extends EventDispatcher
 	{
 		protected var _properties:Dictionary;
-		public function getProperty(key:String):*
+		public function getProperty(key:String, defaultValue:* = null):*
 		{
 			if( !this._properties.hasOwnProperty(key) )
-				return null;
+				return defaultValue;
 			return this._properties[key];
 		}
 		public function setProperty(key:String, value:*):void

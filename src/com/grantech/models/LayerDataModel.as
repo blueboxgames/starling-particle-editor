@@ -44,6 +44,9 @@ package com.grantech.models
 		
 		public function get name():String { return this.getProperty("name"); }
 		public function set name(value:String):void { this.setProperty("name", value); }
+		
+		public function get visible():Boolean { return this.getProperty("visible", true); }
+		public function set visible(value:Boolean):void { this.setProperty("visible", value); }
 
 		public function get x():Number { return this.getProperty("x"); }
 		public function set x(value:Number):void { this.setProperty("x", value); }

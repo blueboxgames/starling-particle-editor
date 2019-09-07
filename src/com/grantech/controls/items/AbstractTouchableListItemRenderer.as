@@ -19,8 +19,8 @@ private var _currentState:String = STATE_NORMAL;
 
 protected var touch:Touch;
 protected var touchTarget:DisplayObjectContainer;
-private var touchID:int = -1;
-private static const HELPER_POINT:Point = new Point();
+protected var touchID:int = -1;
+protected static const HELPER_POINT:Point = new Point();
 
 public function AbstractTouchableListItemRenderer(){}
 override protected function initialize():void
