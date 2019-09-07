@@ -156,7 +156,7 @@ package com.grantech.managers
 			// Add model to list.
 			this.layerDataProvider.addItem(layer);
 			// Dispatch Event.
-			dispatchEventWith(Event.ADDED, false, layer);
+			this.dispatchEventWith(Event.ADDED, false, layer);
 		}
 
 		/**
@@ -261,7 +261,8 @@ package com.grantech.managers
 			{
 				fr.removeEventListener("complete", fr_completeHandler);
 				this.uid = 0;
-				layerDataProvider.removeAll();
+				while( layerDataProvider.length > 0 )
+					removeLayerAt(layerDataProvider.length - 1);
 				var list:Object = JSON.parse(fr.data.toString());
 				var len:int = list.length;
 				for(var i:int = 0; i < len; i++)
