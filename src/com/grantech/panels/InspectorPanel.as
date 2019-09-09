@@ -11,6 +11,8 @@ package com.grantech.panels
 	import feathers.controls.GroupedList;
 	import feathers.controls.PanelScreen;
 	import feathers.controls.ScrollBarDisplayMode;
+	import feathers.controls.renderers.DefaultGroupedListHeaderOrFooterRenderer;
+	import feathers.controls.renderers.IGroupedListHeaderRenderer;
 	import feathers.controls.renderers.IGroupedListItemRenderer;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
@@ -51,6 +53,12 @@ package com.grantech.panels
 			this.title = Localizations.instance.get("inspector_panel_title");
 
 			this.groupedList = new GroupedList();
+		  this.groupedList.headerRendererFactory = function():IGroupedListHeaderRenderer
+			{
+				var ret:DefaultGroupedListHeaderOrFooterRenderer = new DefaultGroupedListHeaderOrFooterRenderer();
+				ret.contentLabelFunction = function(item:Object):String { return Localizations.instance.get("header_" + item);}
+		 	 	return ret;
+		 	}
 			this.groupedList.layoutData = new AnchorLayoutData(0, 0, 0, 0);
 			this.groupedList.scrollBarDisplayMode = ScrollBarDisplayMode.FLOAT;
 			this.groupedList.setItemRendererFactoryWithID(ControlsHelper.TYPE_BUTTON,				function ():IGroupedListItemRenderer { return new InspectorButtonItemRenderer() as IGroupedListItemRenderer; } );

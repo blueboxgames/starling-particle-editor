@@ -1,48 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <items>
-	<item  name="x"														control="slider"	category="basic"			min="-10000"	max="10000"		step="1" 		init="0" />
-	<item  name="y"														control="slider"	category="basic" 			min="-10000"	max="10000"		step="1" 		init="0" />
-	<item  name="alpha"												control="slider"	category="basic" 			min="0" 			max="1" 			step="0.05" init="1" />
-	<item  name="scaleX"											control="slider"	category="basic" 			min="0" 			max="100"			step="0.05" init="1" />
-	<item  name="scaleY"											control="slider"	category="basic" 			min="0" 			max="100"			step="0.05" init="1" />
-	<item  name="load"												control="button"	category="basic" 			min="0" 			max="1" 			step="0.05" init="1" />
-	<item  name="save"												control="button"	category="basic" 			min="0" 			max="1" 			step="0.05" init="1" />
-	<!-- <item  name="texture"											control="button"	category="ps-shape"		min="0" 			max="1" 			step="1" 		init="0" /> -->
-	<item  name="emitterType"									control="combo"		category="ps-move"		min="0"				max="1" 			step="1" 		init="0"	data="0,1" />
-	<item  name="maxParticles"		 						control="slider"	category="ps-move"		min="0"				max="10000"		step="1" 		init="300" />
-	<item  name="defaultDuration" 						control="slider"	category="ps-move"		min="-1" 			max="10000"		step="1"	 	init="0" />
-	<item  name="sourcePositionVariancex"			control="slider"	category="ps-move"		min="-10000"	max="10000"		step="1" 		init="0" />
-	<item  name="sourcePositionVariancey"			control="slider"	category="ps-move"		min="-10000"	max="10000"		step="1" 		init="0" />
-	<item  name="gravityx"										control="slider"	category="ps-move"		min="-10000"	max="10000"		step="1" 		init="0" />
-	<item  name="gravityy" 										control="slider"	category="ps-move"		min="-10000"	max="10000"		step="1" 		init="0" />
-	<item  name="particleLifespan"						control="slider"	category="ps-move"		min="0" 			max="10000"		step="0.1" 	init="0" />
-	<item  name="particleLifespanVariance" 		control="slider"	category="ps-move"		min="0" 			max="10000"		step="0.1" 	init="0" />
-	<item  name="startParticleSize"						control="slider"	category="ps-move"		min="0" 			max="10000"		step="1" 		init="0" />
-	<item  name="startParticleSizeVariance"		control="slider"	category="ps-move"		min="0"				max="10000"		step="1" 		init="0" />
-	<item  name="finishParticleSize"					control="slider"	category="ps-move"		min="0"				max="10000"		step="1" 		init="0" />
-	<item  name="finishParticleSizeVariance"	control="slider"	category="ps-move"		min="0"				max="10000"		step="1" 		init="0" />
-	<item  name="angle" 											control="slider"	category="ps-move"		min="-180" 		max="180"			step="1" 		init="0" />
-	<item  name="angleVariance" 							control="slider"	category="ps-move"		min="-180" 		max="180"			step="1" 		init="0" />
-	<item  name="rotationStart" 							control="slider"	category="ps-move"		min="-10000"	max="10000"		step="1" 		init="0" />
-	<item  name="rotationStartVariance" 			control="slider"	category="ps-move"		min="-10000"	max="10000"		step="1" 		init="0" />
-	<item  name="rotationEnd" 								control="slider"	category="ps-move"		min="-10000"	max="10000"		step="1" 		init="0" />
-	<item  name="rotationEndVariance" 				control="slider"	category="ps-move"		min="-10000"	max="10000"		step="1" 		init="0" />
-	<item  name="speed" 											control="slider"	category="ps-move"		min="0" 			max="10000"		step="1" 		init="0" />
-	<item  name="speedVariance" 							control="slider"	category="ps-move"		min="0" 			max="10000"		step="1" 		init="0" />
-	<item  name="radialAcceleration" 					control="slider"	category="ps-move"		min="-10000"	max="10000"		step="1" 		init="0" />
-	<item  name="radialAccelVariance" 				control="slider"	category="ps-move"		min="0" 			max="10000"		step="1" 		init="0" />
-	<item  name="tangentialAcceleration" 			control="slider"	category="ps-move"		min="-10000"	max="10000"		step="1" 		init="0" />
-	<item  name="tangentialAccelVariance" 		control="slider"	category="ps-move"		min="0" 			max="10000"		step="1" 		init="0" />
-	<item  name="maxRadius" 									control="slider"	category="ps-move"		min="0" 			max="10000"		step="1" 		init="0" />
-	<item  name="maxRadiusVariance" 					control="slider"	category="ps-move"		min="0" 			max="10000"		step="1" 		init="0" />
-	<item  name="minRadius" 									control="slider"	category="ps-move"		min="0" 			max="10000"		step="1" 		init="0" />
-	<item  name="minRadiusVariance" 					control="slider"	category="ps-move"		min="0" 			max="10000"		step="1" 		init="0" />
-	<item  name="rotatePerSecond" 						control="slider"	category="ps-move"		min="-360" 		max="360" 		step="1" 		init="0" />
-	<item  name="rotatePerSecondVariance" 		control="slider"	category="ps-move"		min="0" 			max="360" 		step="1" 		init="0" />
-	<item  name="startColor" 									control="color"		category="ps-shape"		min="0" 			max="255" 		step="1" 		init="0" />
-	<item  name="startColorVariance" 					control="color"		category="ps-shape"		min="0" 			max="255" 		step="1" 		init="0" />
-	<item  name="finishColor"									control="color"		category="ps-shape"		min="0" 			max="255" 		step="1" 		init="0" />
-	<item  name="finishColorVariance"					control="color"		category="ps-shape"		min="0" 			max="255" 		step="1" 		init="0" />
-	<item  name="blendFuncSource"							control="combo"		category="ps-shape"		min="0" 			max="255" 		step="1" 		init="0" 	 data="0,1,768,769,770,771,772,773,774,775" />
-	<item  name="blendFuncDestination"				control="combo"		category="ps-shape"		min="0" 			max="255" 		step="1" 		init="0" 	 data="0,1,768,769,770,771,772,773,774,775" />
+	<item  name="x"														control="slider"	category="basic"	min="-10000"	max="10000"		step="1" 		init="0" />
+	<item  name="y"														control="slider"	category="basic" 	min="-10000"	max="10000"		step="1" 		init="0" />
+	<item  name="alpha"												control="slider"	category="basic" 	min="0" 			max="1" 			step="0.05" init="1" />
+	<item  name="scaleX"											control="slider"	category="basic" 	min="0" 			max="100"			step="0.05" init="1" />
+	<item  name="scaleY"											control="slider"	category="basic" 	min="0" 			max="100"			step="0.05" init="1" />
+
+	<item  name="startColor" 									control="color"		category="color"	min="0" 			max="255" 		step="1" 		init="0" />
+	<item  name="startColorVariance" 					control="color"		category="color"	min="0" 			max="255" 		step="1" 		init="0" />
+	<item  name="finishColor"									control="color"		category="color"	min="0" 			max="255" 		step="1" 		init="0" />
+	<item  name="finishColorVariance"					control="color"		category="color"	min="0" 			max="255" 		step="1" 		init="0" />
+	<item  name="blendFuncSource"							control="combo"		category="color"	min="0" 			max="255" 		step="1" 		init="0" 	 data="0,1,768,769,770,771,772,773,774,775" />
+	<item  name="blendFuncDestination"				control="combo"		category="color"	min="0" 			max="255" 		step="1" 		init="0" 	 data="0,1,768,769,770,771,772,773,774,775" />
+
+	<item  name="emitterType"									control="combo"		category="move"		min="0"				max="1" 			step="1" 		init="0"	data="0,1" />
+	<item  name="maxParticles"		 						control="slider"	category="move"		min="0"				max="10000"		step="1" 		init="300" />
+	<item  name="sourcePositionX"							control="slider"	category="move"		min="-10000"	max="10000"		step="1" 		init="0" />
+	<item  name="sourcePositionY"							control="slider"	category="move"		min="-10000"	max="10000"		step="1" 		init="0" />
+	<item  name="sourcePositionVariancex"			control="slider"	category="move"		min="-10000"	max="10000"		step="1" 		init="0" />
+	<item  name="sourcePositionVariancey"			control="slider"	category="move"		min="-10000"	max="10000"		step="1" 		init="0" />
+	<item  name="speed" 											control="slider"	category="move"		min="0" 			max="10000"		step="1" 		init="0" />
+	<item  name="speedVariance" 							control="slider"	category="move"		min="0" 			max="10000"		step="1" 		init="0" />
+	<item  name="gravityx"										control="slider"	category="move"		min="-10000"	max="10000"		step="1" 		init="0" />
+	<item  name="gravityy" 										control="slider"	category="move"		min="-10000"	max="10000"		step="1" 		init="0" />
+	<item  name="startParticleSize"						control="slider"	category="move"		min="0" 			max="10000"		step="1" 		init="0" />
+	<item  name="startParticleSizeVariance"		control="slider"	category="move"		min="0"				max="10000"		step="1" 		init="0" />
+	<item  name="finishParticleSize"					control="slider"	category="move"		min="0"				max="10000"		step="1" 		init="0" />
+	<item  name="finishParticleSizeVariance"	control="slider"	category="move"		min="0"				max="10000"		step="1" 		init="0" />
+
+	<item  name="angle" 											control="slider"	category="move"		min="-360"		max="360"			step="0.1" 	init="0" />
+	<item  name="angleVariance" 							control="slider"	category="move"		min="-360"		max="360"			step="0.1" 	init="0" />
+	<item  name="rotationStart" 							control="slider"	category="move"		min="-360"		max="360"			step="0.1" 	init="0" />
+	<item  name="rotationStartVariance" 			control="slider"	category="move"		min="-360"		max="360"			step="0.1" 	init="0" />
+	<item  name="rotationEnd" 								control="slider"	category="move"		min="-360"		max="360"			step="0.1" 	init="0" />
+	<item  name="rotationEndVariance" 				control="slider"	category="move"		min="-360"		max="360"			step="0.1" 	init="0" />
+	<item  name="rotatePerSecond" 						control="slider"	category="move"		min="-360" 		max="360" 		step="0.1" 	init="0" />
+	<item  name="rotatePerSecondVariance" 		control="slider"	category="move"		min="-360"		max="360"			step="0.1" 	init="0" />
+	<item  name="radialAcceleration" 					control="slider"	category="move"		min="-1000"		max="1000"		step="0.1" 	init="0" />
+	<item  name="radialAccelVariance" 				control="slider"	category="move"		min="-1000"		max="1000"		step="0.1" 	init="0" />
+	<item  name="tangentialAcceleration" 			control="slider"	category="move"		min="-1000"		max="1000"		step="0.1" 	init="0" />
+	<item  name="tangentialAccelVariance" 		control="slider"	category="move"		min="-1000"		max="1000"		step="0.1" 	init="0" />
+	<item  name="maxRadius" 									control="slider"	category="move"		min="-1000"		max="1000"		step="0.1" 	init="0" />
+	<item  name="maxRadiusVariance" 					control="slider"	category="move"		min="-1000"		max="1000"		step="0.1" 	init="0" />
+	<item  name="minRadius" 									control="slider"	category="move"		min="-1000"		max="1000"		step="0.1" 	init="0" />
+	<item  name="minRadiusVariance" 					control="slider"	category="move"		min="-1000"		max="1000"		step="0.1" 	init="0" />
+
+	<item  name="duration"										control="slider"	category="time"		min="-1" 			max="100"			step="0.05" init="-1" />
+	<item  name="defaultDuration" 						control="slider"	category="time"		min="-1" 			max="10000"		step="1"	 	init="0" />
+	<item  name="particleLifespan"						control="slider"	category="time"		min="0" 			max="10000"		step="0.1" 	init="0" />
+	<item  name="particleLifespanVariance" 		control="slider"	category="time"		min="0" 			max="10000"		step="0.1" 	init="0" />
 </items>

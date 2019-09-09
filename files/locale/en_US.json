@@ -28,5 +28,13 @@
 	"emitterType_1": "Radial",
 
 	"layer_type_0": "Image",
-	"layer_type_1": "Particle"
+	"layer_type_1": "Particle",
+
+	"header_basic": "Basics",
+	"header_move": "Move",
+	"header_color": "Color",
+	"header_time": "Time"
+	
+
+	
 }
