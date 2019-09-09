@@ -20,11 +20,12 @@ package com.grantech.models
 		}
 		public function setProperty(key:String, value:*):void
 		{
-			if (this.getProperty(key) == value)
+			if( this.getProperty(key) == value )
 				return;
 			this._properties[key] = value;
 			this.dispatchEventWith(Event.CHANGE, false, key);
 		}
+		public function get properties():Dictionary { return this._properties }
 		
 		public function toJson():String
 		{

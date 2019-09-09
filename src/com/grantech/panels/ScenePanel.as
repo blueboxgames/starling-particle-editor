@@ -40,7 +40,7 @@ package com.grantech.panels
 		{
 			var layer:LayerDataModel = event.data as LayerDataModel;
 			var sceneObject:DisplayObject;
-			if (layer.type == LayerDataModel.TYPE_PARTICLE)
+			if( layer.type == LayerDataModel.TYPE_PARTICLE )
 			{
 				sceneObject = new PDSceneParticleSystem(layer, layer);
 				PDSceneParticleSystem(sceneObject).start();
@@ -78,7 +78,6 @@ package com.grantech.panels
 				trace(" sceneObject has not '" + event.data + "' variable.");
 				return;
 			}
-			
 			sceneObject[event.data] = selectedLayer.getProperty(event.data as String);
 		}
 

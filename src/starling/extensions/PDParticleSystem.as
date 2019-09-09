@@ -67,6 +67,8 @@ package starling.extensions
         public function PDParticleSystem(config:Object, texture:Texture)
         {
             super(texture);
+            if( config == null )
+                return;
 			if( config is XML )
 				parseConfig(config as XML);
 			else
@@ -213,7 +215,7 @@ package starling.extensions
             particle.alpha = particle.colorArgb.alpha;
         }
         
-        private function updateEmissionRate():void
+        protected function updateEmissionRate():void
         {
             emissionRate = (capacity - 1) / _lifespan;
         }

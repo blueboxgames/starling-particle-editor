@@ -14,13 +14,20 @@ package com.grantech.controls.displays
 	{
 		public function PDSceneParticleSystem(layer:LayerDataModel, config:Object)
 		{
-			super(config, ParticleDataModel(layer).texture);
+			super(null, ParticleDataModel(layer).texture);
 			this.layer = layer;
 		}
 		
 		private var _layer:LayerDataModel;
 		public function get layer():LayerDataModel { return this._layer; }
-		public function set layer(value:LayerDataModel):void { this._layer = value; }
+		public function set layer(value:LayerDataModel):void
+		{
+			this._layer = value;
+			for(var key:String in layer.properties)
+				if( this.hasOwnProperty(key))
+					this[key] = layer.properties[key];
+			this.updateEmissionRate();
+		}
 		public function hasOwnProperty(V:*):Boolean { return super.hasOwnProperty(V); }
 
 		public function getBlendCode(value:String):int
