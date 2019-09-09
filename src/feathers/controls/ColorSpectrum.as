@@ -129,7 +129,6 @@ package feathers.controls
 					{
 						touch.getLocation(this.colorPalette, m_TouchEndedPoint);
 						this.changeColor(m_TouchEndedPoint);
-						this.dispatchEventWith(Event.CHANGE, false, this.data);
 						// this.colorIndicator.color = this.bitmapData.getPixel(m_TouchEndedPoint.x, m_TouchEndedPoint.y);
 					}
 				}
@@ -140,7 +139,6 @@ package feathers.controls
 					{
 						touch.getLocation(this.colorPalette, m_TouchEndedPoint);
 						this.changeColor(m_TouchEndedPoint);
-						this.dispatchEventWith(Event.COMPLETE, false, this.data);
 					}
 				}
 			}
@@ -150,7 +148,10 @@ package feathers.controls
 		{
 				var currentColor:uint = this.bitmapData.getPixel(point.x, point.y);
 				// this.colorIndicator.color = currentColor;
+				var a:Number = this.data.alpha
 				this.data = ColorArgb.fromArgb(currentColor);
+				this.data.alpha = a;
+				this.dispatchEventWith(Event.CHANGE, false, this.data);
 		}
 
 		override public function dispose():void
