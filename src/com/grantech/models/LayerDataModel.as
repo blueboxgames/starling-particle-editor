@@ -127,7 +127,7 @@ package com.grantech.models
 
 				var bmpData:BitmapData = new BitmapData(loader.width, loader.height, true, 0);
 				bmpData.draw(loader);
-				setProperty("texture", bmpData);
+				setProperty("texture", Texture.fromBitmapData(bmpData));
 			}
 		}
 	}
