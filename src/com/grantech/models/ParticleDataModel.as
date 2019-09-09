@@ -23,20 +23,20 @@ package com.grantech.models
 			this.sourcePositionVariancey = 0;
 			this.gravityx = 0;
 			this.gravityy = 0;
-			this.particleLifespan = 1.1;
-			this.particleLifespanVariance = 0.4;
-			this.startParticleSize = 111;
+			this.particleLifespan = 1;
+			this.particleLifespanVariance = 0.5;
+			this.startParticleSize = 50;
 			this.startParticleSizeVariance = 10;
-			this.finishParticleSize = 40;
+			this.finishParticleSize = 0;
 			this.finishParticleSizeVariance = 0;
-			this.angle = -146;
-			this.angleVariance = 50;
-			this.rotationStart = 720;
+			this.angle = 0;
+			this.angleVariance = 360;
+			this.rotationStart = 0;
 			this.rotationStartVariance = 0;
 			this.rotationEnd = 0;
 			this.rotationEndVariance = 0;
-			this.speed = 244;
-			this.speedVariance = 5;
+			this.speed = 150;
+			this.speedVariance = 0;
 			this.radialAcceleration = 0;
 			this.radialAccelVariance = 0;
 			this.tangentialAcceleration = 0;
@@ -47,13 +47,13 @@ package com.grantech.models
 			this.minRadiusVariance = 0;
 			this.rotatePerSecond = 0;
 			this.rotatePerSecondVariance = 0;
-			this.startColor = new ColorArgb(0.4,0,0,1);
-			this.startColorVariance = new ColorArgb(0,0,0,1);
-			this.finishColor = new ColorArgb(0,0,0,1);
-			this.finishColorVariance = new ColorArgb(0,0,0,1);
+			this.startColor = new ColorArgb(1,1,1,1);
+			this.startColorVariance = new ColorArgb(0,0,0,0);
+			this.finishColor = new ColorArgb(0,0,0,0);
+			this.finishColorVariance = new ColorArgb(0,0,0,0);
 			this.blendFuncSource = 1;
 			this.blendFuncDestination = 1;
-			this.maxParticles = 300;
+			this.maxParticles = 100;
 			this.texture = Texture.fromBitmap(new defaultBitmap()) as Texture; //  File.applicationDirectory.resolvePath(File.applicationDirectory.nativePath + "/media/default.png");
 	 	}
 
@@ -186,7 +186,7 @@ package com.grantech.models
 		public function get maxParticles():Number { return this.getProperty("maxParticles"); }
 		public function set maxParticles(value:Number):void { this.setProperty("maxParticles", value); }
  
-/*		public function get jsonOutput():Object { return {
+		public function get jsonOutput():Object { return {
 				emitterType: this.emitterType,
 				duration: this.duration,
 				sourcePositionVariancex: this.sourcePositionVariancex,
@@ -199,12 +199,12 @@ package com.grantech.models
 				startParticleSizeVariance: this.startParticleSizeVariance,
 				finishParticleSize: this.finishParticleSize,
 				finishParticleSizeVariance: this.finishParticleSizeVariance,
-				angle: this.angle,
-				angleVariance: this.angleVariance,
-				rotationStart: this.rotationStart,
-				rotationStartVariance: this.rotationStartVariance,
-				rotationEnd: this.rotationEnd,
-				rotationEndVariance: this.rotationEndVariance,
+				angle: rad2deg(this.angle),
+				angleVariance: rad2deg(this.angleVariance),
+				rotationStart: rad2deg(this.rotationStart),
+				rotationStartVariance: rad2deg(this.rotationStartVariance),
+				rotationEnd: rad2deg(this.rotationEnd),
+				rotationEndVariance: rad2deg(this.rotationEndVariance),
 				speed: this.speed,
 				speedVariance: this.speedVariance,
 				radialAcceleration: this.radialAcceleration,
@@ -215,8 +215,8 @@ package com.grantech.models
 				maxRadiusVariance: this.maxRadiusVariance,
 				minRadius: this.minRadius,
 				minRadiusVariance: this.minRadiusVariance,
-				rotatePerSecond: this.rotatePerSecond,
-				rotatePerSecondVariance: this.rotatePerSecondVariance,
+				rotatePerSecond: rad2deg(this.rotatePerSecond),
+				rotatePerSecondVariance: rad2deg(this.rotatePerSecondVariance),
 				startColorRed: this.startColor.red,
 				startColorBlue: this.startColor.blue,
 				startColorGreen: this.startColor.green,
@@ -237,7 +237,7 @@ package com.grantech.models
 				blendFuncDestination: this.blendFuncDestination,
 				maxParticles: this.maxParticles
 			}
-		} */
+		}
 
 		public function parseJsonConfig(json:String):void 
 		{
@@ -360,7 +360,7 @@ package com.grantech.models
 
 		public function exportConfig():void
 		{
-			// new FileReference().save(JSON.stringify(jsonOutput), name);
+			new FileReference().save(JSON.stringify(jsonOutput), name);
 		}
 	}
 }

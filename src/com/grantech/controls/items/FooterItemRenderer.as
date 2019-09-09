@@ -101,7 +101,7 @@ package com.grantech.controls.items
 
 		public function set enabled(value:Boolean):void
 		{
-			isEnabled = value;
+			this.isEnabled = this.touchable = value;
 			alpha = value ? 1 : 0.3;
 		}
 
