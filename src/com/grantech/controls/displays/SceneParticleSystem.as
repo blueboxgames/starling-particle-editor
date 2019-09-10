@@ -10,9 +10,9 @@ package com.grantech.controls.displays
 	import starling.utils.deg2rad;
 	import starling.utils.rad2deg;
 
-	public class PDSceneParticleSystem extends PDParticleSystem implements ISceneObject
+	public class SceneParticleSystem extends PDParticleSystem implements ISceneObject
 	{
-		public function PDSceneParticleSystem(layer:LayerDataModel, config:Object)
+		public function SceneParticleSystem(layer:LayerDataModel, config:Object)
 		{
 			super(null, ParticleDataModel(layer).texture);
 			this.layer = layer;

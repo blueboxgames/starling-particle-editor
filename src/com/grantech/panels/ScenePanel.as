@@ -86,7 +86,7 @@ package com.grantech.panels
 			}
 			sceneObject[event.data] = selectedLayer.getProperty(event.data as String);
 
-			var ps:PDSceneParticleSystem = sceneObject as PDSceneParticleSystem;
+			var ps:SceneParticleSystem = sceneObject as SceneParticleSystem;
 			if( ps != null && ps.defaultDuration < Number.MAX_VALUE )
 			{
 				ps.stop();
@@ -105,7 +105,7 @@ package com.grantech.panels
 			
 			if( removedLayer.type == LayerDataModel.TYPE_PARTICLE )
 			{
-				PDSceneParticleSystem(removedObject).stop();
+				SceneParticleSystem(removedObject).stop();
 				Starling.juggler.add(removedObject as IAnimatable);
 			}
 			removedObject.removeFromParent(true);
