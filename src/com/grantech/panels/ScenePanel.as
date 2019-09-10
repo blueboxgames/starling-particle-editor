@@ -78,7 +78,22 @@ package com.grantech.panels
 				trace(" sceneObject has not '" + event.data + "' variable.");
 				return;
 			}
+			
+			if( sceneObject[event.data] == selectedLayer.getProperty(event.data as String) )
+			{
+				trace(event.data + " already updated.");
+				return;
+			}
 			sceneObject[event.data] = selectedLayer.getProperty(event.data as String);
+
+			var ps:PDSceneParticleSystem = sceneObject as PDSceneParticleSystem;
+			if( ps != null && ps.defaultDuration < Number.MAX_VALUE )
+			{
+				ps.stop();
+				Starling.juggler.removeDelayedCalls(ps.start)
+				Starling.juggler.delayCall(ps.start, 0.5, ps.defaultDuration);
+				return;
+			}
 		}
 
 		protected function dataManager_removedHandler(event:Event):void

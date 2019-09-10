@@ -378,10 +378,7 @@ package starling.extensions
         public function set emitterYVariance(value:Number):void { _emitterYVariance = value; }
 
         public function get defaultDuration():Number { return _defaultDuration; }
-        public function set defaultDuration(value:Number):void
-        {
-            _defaultDuration = value < 0 ? Number.MAX_VALUE : value;
-        }
+        public function set defaultDuration(value:Number):void { _defaultDuration = value < 0 ? Number.MAX_VALUE : value; }
 
         override public function set capacity(value:int):void
         {
