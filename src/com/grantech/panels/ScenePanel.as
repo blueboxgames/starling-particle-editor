@@ -1,7 +1,7 @@
 package com.grantech.panels
 {
 	import com.grantech.controls.displays.ISceneObject;
-	import com.grantech.controls.displays.PDSceneParticleSystem;
+	import com.grantech.controls.displays.SceneParticleSystem;
 	import com.grantech.controls.displays.SceneImage;
 	import com.grantech.managers.DataManager;
 	import com.grantech.models.LayerDataModel;
@@ -42,8 +42,8 @@ package com.grantech.panels
 			var sceneObject:DisplayObject;
 			if( layer.type == LayerDataModel.TYPE_PARTICLE )
 			{
-				sceneObject = new PDSceneParticleSystem(layer, layer);
-				PDSceneParticleSystem(sceneObject).start();
+				sceneObject = new SceneParticleSystem(layer, layer);
+				SceneParticleSystem(sceneObject).start();
 				Starling.juggler.add(sceneObject as IAnimatable);
 			}
 			else if (layer.type == LayerDataModel.TYPE_IMAGE)
@@ -92,7 +92,12 @@ package com.grantech.panels
 				ps.stop();
 				Starling.juggler.removeDelayedCalls(ps.start)
 				Starling.juggler.delayCall(ps.start, 0.5, ps.defaultDuration);
-				return;
+			}
+
+			if( event.data == "texture" && sceneObject as SceneImage )
+			{
+				sceneObject["width"]	= sceneObject["texture"].width;
+				sceneObject["height"]	= sceneObject["texture"].height;
 			}
 		}
 
